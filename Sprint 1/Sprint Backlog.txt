@@ -1,0 +1,18 @@
+Sprint Backlog :
+- Create User class 
+- Create Sign Up functionality
+   -Create a signUp module
+   -Create SignUp page
+- Create Sign In functionality
+   -Create a signIn module
+   -Create SignIn page
+- Set up basic HTML/CSS
+- Set up basic object oriented structure
+- Set up basic database 
+- Create a wrapper class for a stock API
+
+Meeting participants: Cathleen, Woody, Manav, Chunyang, Cheyenne
+Paragraph:
+
+Why did we choose these?
+We chose these tasks because we agreed that these were core functionalities that following features would have to rely on. Thus, we wanted to ensure that we had these items implemented and working, to set a good foundation for our following sprints. We chose to implement the User class as well as the Sign In/Sign Up page because this would be the first interaction that users would have with our web app. Additionally, we wanted to get our database set up as early as possible to avoid any complications later on once we had more required persistent data. Furthermore, we wanted to have some skeleton of what the object oriented structure of our project would look like, to stay as organized as possible. 
