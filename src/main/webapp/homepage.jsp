@@ -18,10 +18,22 @@
 	    	<div class="homepage-container" id="graph-container">
 	    	</div>
 	    	<div class="homepage-container" id="portfolio-container">
-	    		<div class="container-header">Your Portfolio</div>
+	    		<div class="container-header">
+	    			Your Portfolio
+	    			<div class="plus-minus-buttons-container">
+	    				<a href=""><i class="fas fa-plus-circle"></i></a>
+	    				<a href=""><i class="fas fa-minus-circle"></i></a>
+	    			</div>
+	    		</div>
 	    	</div>
 	    	<div class="homepage-container" id="viewed-container">
-	    		<div class="container-header">Viewed Stocks</div>
+	    		<div class="container-header">
+	    			Viewed Stocks
+	    			<div class="plus-minus-buttons-container">
+	    				<a href=""><i class="fas fa-plus-circle"></i></a>
+	    				<a href=""><i class="fas fa-minus-circle"></i></a>
+	    			</div>
+	    		</div>
 	    	</div>
     	</div>
     </div>

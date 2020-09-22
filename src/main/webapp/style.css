@@ -62,3 +62,13 @@ body {
 	font-weight: bold;
 	padding: 0 26px;
 }
+.plus-minus-buttons-container {
+	margin-left: auto;
+}
+.plus-minus-buttons-container svg {
+	margin-left: 6px;
+	color: #BDBDBD;
+}
+.plus-minus-buttons-container svg:hover {
+	color: #51C58E;
+}
