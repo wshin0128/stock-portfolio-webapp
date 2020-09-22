@@ -8,5 +8,6 @@ package csci310.service;
  */
 public class AlphaAdvantageClient {
 	
+	public static String API_KEY = "RR16KZC1DD427U5S";
 
 }
