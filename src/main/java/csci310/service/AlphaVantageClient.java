@@ -35,53 +35,51 @@ public class AlphaVantageClient {
 	protected static String MONTHLY_FUNCTION = "TIME_SERIES_MONTHLY_ADJUSTED";
 	
     public static Map<String, Object> getDailyValue(String stockSymbol) throws IOException{
-//    	String urlString = String.format(URL_FORMAT, DAILY_FUNCTION, stockSymbol, API_KEY);
-//		
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//		
-//		JSONObject dailyValueJsonObject = jsonObject.getJSONObject("Time Series (Daily)");
-//	
-//		Map<String, Object> result = parseJsonObject(dailyValueJsonObject);
-//		
-//		return result;
-    	return null;
+    	String urlString = String.format(URL_FORMAT, DAILY_FUNCTION, stockSymbol, API_KEY);
+		
+		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+		
+		System.out.println(jsonObject);
+		
+		JSONObject dailyValueJsonObject = jsonObject.getJSONObject("Time Series (Daily)");
+	
+		Map<String, Object> result = parseJsonObject(dailyValueJsonObject);
+		
+		return result;
     }
     
     public static Map<String, Object> getWeeklyValue(String stockSymbol) throws IOException{
-//    	String urlString = String.format(URL_FORMAT, WEEKLY_FUNCTION, stockSymbol, API_KEY);
-//		
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//        
-//		JSONObject weeklyValueJsonObject = jsonObject.getJSONObject("Weekly Adjusted Time Series");
-//	
-//		Map<String, Object> result = parseJsonObject(weeklyValueJsonObject);
-//		
-//		return result;
-    	return null;
+    	String urlString = String.format(URL_FORMAT, WEEKLY_FUNCTION, stockSymbol, API_KEY);
+		
+		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+        
+		JSONObject weeklyValueJsonObject = jsonObject.getJSONObject("Weekly Adjusted Time Series");
+	
+		Map<String, Object> result = parseJsonObject(weeklyValueJsonObject);
+		
+		return result;
     }
     
     public static Map<String, Object> getMonthlyValue(String stockSymbol) throws IOException{
-//    	String urlString = String.format(URL_FORMAT, MONTHLY_FUNCTION, stockSymbol, API_KEY);
-//		
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//        
-//		JSONObject monthlyValueJsonObject = jsonObject.getJSONObject("Monthly Adjusted Time Series");
-//	
-//		Map<String, Object> result = parseJsonObject(monthlyValueJsonObject);
-//		
-//		return result;
-    	return null;
+    	String urlString = String.format(URL_FORMAT, MONTHLY_FUNCTION, stockSymbol, API_KEY);
+		
+		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+        
+		JSONObject monthlyValueJsonObject = jsonObject.getJSONObject("Monthly Adjusted Time Series");
+	
+		Map<String, Object> result = parseJsonObject(monthlyValueJsonObject);
+		
+		return result;
     }
     
     @SuppressWarnings({ "unchecked"})
 	public static Map<String, Object> parseJsonObject(JSONObject jsonObject) throws IOException{
-    	// return new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
-    	return null;
+    	return new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
     }
     
 //    public static void main(String[] args) {
 //    	try {
-//			Map<String, StockInfo> myMap = getDailyValue("IBM");
+//			Map<String, Object> myMap = getDailyValue("IBM");
 //			System.out.println(myMap);
 //		} catch (IOException e) {
 //			// TODO Auto-generated catch block
