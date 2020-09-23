@@ -11,28 +11,28 @@
 <body>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>WebApp Name</h1>
+			<h1>Login</h1>
 			
 		</div>
 	</div>
 	<div class="login">
-		<form id="signIn">
+		<form id="stuufff">
 			<div>
 				<label for="username">Username:</label>
-		    	<input type="text" id="username" name="username">
+		    <input type="text" id="username" name="username" minlength="1" required>
 			</div>
+			<br/>
 			<div>
-				<label for="pass">Password (8 characters minimum):</label>
-			    <input type="password" id="pass" name="password" minlength="8" required>
+			<label for="pass">Password (8 characters minimum):</label>
+			<input type="password" id="pass" name="password" minlength="8" required>
+			    
+			    
 			</div>
-			<div id="subBut">
-				<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
+			<br/>
+			<div id="idk">
+			<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
 
 			</div>
-			
-		    
-	
-		
 			
 		</form>
 		
