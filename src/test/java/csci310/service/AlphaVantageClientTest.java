@@ -61,5 +61,14 @@ public class AlphaVantageClientTest {
 		
 		assertEquals(result, AlphaVantageClient.getMonthlyValue(TEST_STOCK_SYMBOL));
 	}
+	
+	@Test
+	public void testParseJsonObject(){
+		try {
+			Map<String, StockInfo> resultMap = AlphaVantageClient.parseJsonObject(new JSONObject());
+		} catch (IOException e) {
+			assertNotNull(e);
+		} 
+	}
 
 }
