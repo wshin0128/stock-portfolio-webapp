@@ -6,7 +6,8 @@ public class User {
 	private Portfolio portfolio;
 	
 	public User(String username, String password) {
-		
+		this.username = username;
+		this.password = password;
 	}
 	
 	public String getUsername() {
