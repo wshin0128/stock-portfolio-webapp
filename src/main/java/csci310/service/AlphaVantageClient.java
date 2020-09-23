@@ -1,7 +1,7 @@
 package csci310.service;
 
+
 import java.io.IOException;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +9,6 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
-
-import csci310.model.stock.StockInfo;
 
 /**
  * The service client wrapper of Alpha Advantage API for fetching stock info
@@ -28,7 +26,7 @@ public class AlphaVantageClient {
 	protected static String URL_FORMAT = "https://www.alphavantage.co/query?function=%s&symbol=%s&apikey=%s";
 	
 	@VisibleForTesting
-	protected static String DAILY_FUNCTION = "TIME_SERIES_DAILY_ADJUSTED";
+	protected static String DAILY_FUNCTION = "TIME_SERIES_DAILY";
 	
 	@VisibleForTesting
 	protected static String WEEKLY_FUNCTION = "TIME_SERIES_WEEKLY_ADJUSTED";
@@ -36,21 +34,58 @@ public class AlphaVantageClient {
 	@VisibleForTesting
 	protected static String MONTHLY_FUNCTION = "TIME_SERIES_MONTHLY_ADJUSTED";
 	
-    public static Map<Date, StockInfo> getDailyValue(String stockSymbol){
-		return null;
-    }
-    
-    public static Map<Date, StockInfo> getWeeklyValue(String stockSymbol){
-		return null;
-    }
-    
-    public static Map<Date, StockInfo> getMonthlyValue(String stockSymbol){
-		return null;
-    }
-    
-    //@SuppressWarnings({ "unchecked", "unused" })
-	public static Map<String, StockInfo> parseJsonObject(JSONObject jsonObject) throws IOException{
-//    	return new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
+    public static Map<String, Object> getDailyValue(String stockSymbol) throws IOException{
+//    	String urlString = String.format(URL_FORMAT, DAILY_FUNCTION, stockSymbol, API_KEY);
+//		
+//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+//		
+//		JSONObject dailyValueJsonObject = jsonObject.getJSONObject("Time Series (Daily)");
+//	
+//		Map<String, Object> result = parseJsonObject(dailyValueJsonObject);
+//		
+//		return result;
     	return null;
     }
+    
+    public static Map<String, Object> getWeeklyValue(String stockSymbol) throws IOException{
+//    	String urlString = String.format(URL_FORMAT, WEEKLY_FUNCTION, stockSymbol, API_KEY);
+//		
+//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+//        
+//		JSONObject weeklyValueJsonObject = jsonObject.getJSONObject("Weekly Adjusted Time Series");
+//	
+//		Map<String, Object> result = parseJsonObject(weeklyValueJsonObject);
+//		
+//		return result;
+    	return null;
+    }
+    
+    public static Map<String, Object> getMonthlyValue(String stockSymbol) throws IOException{
+//    	String urlString = String.format(URL_FORMAT, MONTHLY_FUNCTION, stockSymbol, API_KEY);
+//		
+//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+//        
+//		JSONObject monthlyValueJsonObject = jsonObject.getJSONObject("Monthly Adjusted Time Series");
+//	
+//		Map<String, Object> result = parseJsonObject(monthlyValueJsonObject);
+//		
+//		return result;
+    	return null;
+    }
+    
+    @SuppressWarnings({ "unchecked"})
+	public static Map<String, Object> parseJsonObject(JSONObject jsonObject) throws IOException{
+    	// return new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
+    	return null;
+    }
+    
+//    public static void main(String[] args) {
+//    	try {
+//			Map<String, StockInfo> myMap = getDailyValue("IBM");
+//			System.out.println(myMap);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    }
 }
