@@ -33,6 +33,9 @@ public class JsonReaderTest {
 		} catch (IOException e) {
 			assertNotNull(e);
 		}
+		
+		JsonReader jsonReader = new JsonReader();
+		assertNotNull(jsonReader);
 	}
 
 }
