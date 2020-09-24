@@ -2,6 +2,8 @@ package csci310.model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +14,22 @@ public class PortfolioTest {
 	@Before
 	public void portfolioSetup() {
 		p = new Portfolio();
+	}
+	
+	@Test
+	public void testPortfolio() {
+		ArrayList<String> testArrayList = p.getArrayList();
+		assertTrue("Portfolio ArrayList was not initialized",testArrayList != null);
+	}
+	
+	@Test
+	public void testGetArrayList() {
+		String stock = "stock";
+		ArrayList<String> testArrayList = new ArrayList<String>();
+		testArrayList.add(stock);
+		p.addStock(stock);
+		ArrayList<String> comparisonArrayList = p.getArrayList();
+		assertTrue("Incorrect ArrayList was returned",comparisonArrayList.equals(testArrayList));
 	}
 	
 	@Test
