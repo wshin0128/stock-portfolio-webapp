@@ -18,6 +18,7 @@ public class PortfolioTest {
 	
 	@Test
 	public void testPortfolio() {
+		Portfolio p = new Portfolio();
 		ArrayList<String> testArrayList = p.getArrayList();
 		assertTrue("Portfolio ArrayList was not initialized",testArrayList != null);
 	}
