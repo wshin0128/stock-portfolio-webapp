@@ -22,13 +22,15 @@ public class PortfolioTest {
 	}
 	
 	@Test
-	public void testAddStock(String stock) {
+	public void testAddStock() {
+		String stock = "stock";
 		p.addStock(stock);
 		assertTrue("Stock was not added to portfolio", p.getSize() == 1);
 	}
 	
 	@Test
-	public void testRemoveStock(String stock) {
+	public void testRemoveStock() {
+		String stock = "stock";
 		p.addStock(stock);
 		assertTrue("Stock was not added to portfolio", p.getSize() == 1);
 		p.removeStock(stock);
@@ -45,7 +47,8 @@ public class PortfolioTest {
 	}
 	
 	@Test
-	public void testContains(String stock) {
+	public void testContains() {
+		String stock = "stock";
 		assertFalse("Contains is triggering a false positive", p.contains(stock));
 		p.addStock(stock);
 		assertTrue("Contains is triggering a false negative", p.contains(stock));
