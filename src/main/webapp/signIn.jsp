@@ -23,17 +23,13 @@
 			</div>
 			<br/>
 			<div>
-			<label for="pass">Password (8 characters minimum):</label>
-			<input type="password" id="pass" name="password" minlength="8" required>
-			    
-			    
+				<label for="pass">Password (8 characters minimum):</label>
+				<input type="password" id="pass" name="password" minlength="8" required>
 			</div>
 			<br/>
 			<div id="idk">
-			<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
-
+				<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
 			</div>
-			
 		</form>
 		
 	</div>
