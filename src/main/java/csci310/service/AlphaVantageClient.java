@@ -3,12 +3,15 @@ package csci310.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 
 /**
  * The service client wrapper of Alpha Advantage API for fetching stock info
@@ -20,7 +23,9 @@ import com.google.common.annotations.VisibleForTesting;
 public class AlphaVantageClient {
 
 	@VisibleForTesting
-	protected static String API_KEY = "RR16KZC1DD427U5S";
+	protected static final List<String> API_KEY_POOL = ImmutableList.of("RR16KZC1DD427U5S", "VO06N33HTL63LQAM", "OQO8N892D2N38P6E", "WJMTZJMKGGZ9MBJG");
+	
+	private static int indexOfPool = 0;
 
 	@VisibleForTesting
 	protected static String URL_FORMAT = "https://www.alphavantage.co/query?function=%s&symbol=%s&apikey=%s";
@@ -33,9 +38,10 @@ public class AlphaVantageClient {
 
 	@VisibleForTesting
 	protected static String MONTHLY_FUNCTION = "TIME_SERIES_MONTHLY_ADJUSTED";
+	
 
 	public static Map<String, Object> getDailyValue(String stockSymbol) throws IOException{
-		String urlString = String.format(URL_FORMAT, DAILY_FUNCTION, stockSymbol, API_KEY);
+		String urlString = String.format(URL_FORMAT, DAILY_FUNCTION, stockSymbol, chooseAnAPIKey());
 
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 
@@ -47,7 +53,7 @@ public class AlphaVantageClient {
 	}
 
 	public static Map<String, Object> getWeeklyValue(String stockSymbol) throws IOException{
-		String urlString = String.format(URL_FORMAT, WEEKLY_FUNCTION, stockSymbol, API_KEY);
+		String urlString = String.format(URL_FORMAT, WEEKLY_FUNCTION, stockSymbol, chooseAnAPIKey());
 
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 
@@ -59,7 +65,7 @@ public class AlphaVantageClient {
 	}
 
 	public static Map<String, Object> getMonthlyValue(String stockSymbol) throws IOException{
-		String urlString = String.format(URL_FORMAT, MONTHLY_FUNCTION, stockSymbol, API_KEY);
+		String urlString = String.format(URL_FORMAT, MONTHLY_FUNCTION, stockSymbol, chooseAnAPIKey());
 
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 
@@ -68,6 +74,11 @@ public class AlphaVantageClient {
 		Map<String, Object> result = parseJsonObject(monthlyValueJsonObject);
 
 		return result;
+	}
+	
+	private static final String chooseAnAPIKey() {
+        indexOfPool = (indexOfPool + 1) % API_KEY_POOL.size();
+        return API_KEY_POOL.get(indexOfPool);
 	}
 
 	@SuppressWarnings({ "unchecked"})
