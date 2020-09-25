@@ -10,7 +10,7 @@
 	<div class="navbar">
 		<div class="wrap">
 			<h1>WebApp Name</h1>
-			<a href="" class="sign-out-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
+			<a href="signIn.jsp" class="sign-out-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
 		</div>
 	</div>
     <div class="wrap">
