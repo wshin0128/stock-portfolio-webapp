@@ -73,7 +73,7 @@ public class DatabaseClient {
 		}
 	}
 	
-	public boolean getUser(String username, String password) {
+	public int getUser(String username, String password) {
 		try {
 			boolean usernameExists = false;
 			boolean correctPassword = false;
@@ -96,13 +96,21 @@ public class DatabaseClient {
 				while(rs.next()) {
 					correctPassword = (rs.getInt(1) == 1);
 				}
-				return correctPassword;
+				if(correctPassword) {
+					// Password is valid (return 1)
+					return 1;
+				} else {
+					// Password is invalid (return 2)
+					return 2;
+				}
 			} else {
-				return false;
+				// Username was not found (return 0)
+				return 0;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			// SQLException (return -1)
+			return -1;
 		}
 	}
 	
