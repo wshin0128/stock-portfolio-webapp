@@ -88,13 +88,13 @@ public class DatabaseClientTest extends Mockito {
 		String username = "username";
 		String password = "password";
 		assertTrue("New user",db.createUser(username, password));
-		assertTrue(db.getUser(username, password));
+		assertTrue(db.getUser(username, password) == 1);
 		
 		String wrongUsername = "wrongUsername";
-		assertFalse(db.getUser(wrongUsername, password));
+		assertTrue(db.getUser(wrongUsername, password) == 0);
 		
 		String wrongPassword = "wrongpass";
-		assertFalse(db.getUser(username, wrongPassword));
+		assertTrue(db.getUser(username, wrongPassword) == 2);
 	}
 	
 	@Test
@@ -106,8 +106,7 @@ public class DatabaseClientTest extends Mockito {
 			when(mockConn.prepareStatement(findUsernameQuery, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			String username = "testUser2";
 			String password = "password";
-			mockDb.getUser(username, password);
-			assertTrue(true);
+			assertTrue(mockDb.getUser(username, password) == -1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
