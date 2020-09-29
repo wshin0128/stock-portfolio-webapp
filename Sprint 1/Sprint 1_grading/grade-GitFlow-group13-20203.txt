@@ -1,0 +1,18 @@
+Best Practice GitFlow Report
+Owner: group13-20203
+Grade: 8.5/10
+Comments: 
+	Bad pull (-1) [develop<-filestructure]: https://github.com/CSCI310/project-20203-group13-20203/pull/1
+
+	Direct commit to master (-1): https://github.com/CSCI310/project-20203-group13-20203/commit/cd171a5497492e2989a59d411c6e7a0d36d3b8f7
+	Direct commit to master (-1): https://github.com/CSCI310/project-20203-group13-20203/commit/264c1177f884217100beb7ec913e306031570af4
+
+
+
+
+
+
+
+
+
+
