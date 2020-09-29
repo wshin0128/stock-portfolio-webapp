@@ -1,0 +1,14 @@
+Best Practice Refactor Report
+Owner: group13-20203
+Grade: 8.0/10
+Comments: 
+Issue 19
+wshin0128 satisfied 7 of 7 requirements for this issue.
+Issue 17
+manavkau satisfied 7 of 7 requirements for this issue.
+Issue 14
+cathleenyangg satisfied 7 of 7 requirements for this issue.
+Issue 6
+mouchunyang satisfied 7 of 7 requirements for this issue.
+
+The following students did not create an issue: {'cheygaima'}
