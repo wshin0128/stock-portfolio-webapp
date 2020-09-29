@@ -1,0 +1,19 @@
+Best Practice TDD Report
+Owner: group13-20203
+Grade: 6.0/10
+Comments: 
+	Test method was not created before method : alphavantageclient.parsejsonobject
+	No test method found for: jsonreader.readall
+	No test method found for: databaseclient.setconnection
+	No test method found for: user.getusername
+	No test method found for: user.getpassword
+	No test method found for: user.setusername
+	No test method found for: user.setpassword
+	No test method found for: user.getportfolio
+	No test method found for: user.setportfolio
+	No test method found for: alphavantageclient.chooseanapikey
+	No test method found for: dbservice.setconnection
+	No test method found for: dbservice.main
+Correct TDD methods: 18
+Incorrect TDD methods: 12
+Total methods created: 30
