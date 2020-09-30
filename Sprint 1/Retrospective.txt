@@ -1,0 +1,47 @@
+List of meeting participants 
+Cathleen Yang
+Cheyenne Gaima
+Woody Shin
+Manav Kaushik
+Chunyang Mou
+
+What process aspects will be changed? 
+- Starting earlier to improve our sustainable pace 
+- Workload added was fine, might want to improve our pace to get more implementation points 
+- Start working on putting together our separate implementations, currently very insular 
+- Divide our tasks further into subtasks to see more progress in each scrum 
+- Add more tasks for things such as research 
+- Feature file for feature 1-7 & have acceptance tests for each feature to show understanding of requirements
+
+What tasks will be added to the product backlog as a result of review feedback?
+1. Prediction of future values of the portfolio 
+    a. Compare the historical performance of the stock and make predictions based on the performance.
+2. Ability to add or remove stocks from the portfolio 
+    a. Two ways of adding stocks:
+        i.  Pop up dialog
+        ii. CSV file 
+3. Track and visualize changes in value over time of user’s portfolio 
+    a. Single graph must be displayed for the entire webapp 
+        i.   Graph must be zoomable 
+        ii.  User can choose what unit of time to display on graph
+        iii. All stocks must be toggleable for display on the graph
+        iv.  Currently selected stock must be highlighted in a different color
+4. View and compare the historical performance of a stock 
+    a. Only want stocks listed on NASDAQ or NYSE
+    b. Maintain a list of viewed stocks 
+    c. Stocks must be toggleable for display on the graph
+    d. Users can specify start & end date for viewing a stock
+5. Works on the Chrome web browser and mobile devices 
+    a. Must resize responsively on mobile device view 
+6. The application must be secure and protect confidentiality of users’ data. 
+    a. Password must be hidden when users enters & must be hashed before saved into database 
+    b. User signed out under 120 seconds of inactivity 
+    c. Only logged in users can access any functionality except for login page or account creation page 
+7. Users must be able to create an account in the system 
+    a. Username must not be taken by another user 
+8. User interfaces must look modern and be attractive. 
+    a. Top banner must be displayed on all pages with the title “USC 310: Stock Portfolio Management”
+        i. Color code for grey background is #787878 (of banner)
+9. Must be implemented as a client-server based web application
+    a. Client side code must be written in html and javascript
+    b. Server side code must be written using java libraries
