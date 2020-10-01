@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import csci310.model.Portfolio;
+
 /**
  *
  * @author sqlitetutorial.net
@@ -33,7 +35,7 @@ public class DatabaseClient {
         		+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         		+ "username TEXT NOT NULL,"
         		+ "password TEXT NOT NULL"
-        		+ ");";
+        		+ ");"; 
         Statement createTableStatement;
         try {
         	createTableStatement = connection.createStatement();
@@ -71,6 +73,26 @@ public class DatabaseClient {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	// Assuming that date objects will be stored as unix time 
+	// Reference: https://stackoverflow.com/questions/2881321/how-to-insert-date-in-sqlite-through-java
+	// Reference: https://stackoverflow.com/questions/3371326/java-date-from-unix-timestamp
+	// Reference: https://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+	public boolean addStockToPortfolio(Integer userID, String tickerSymbol, int quantity, Integer dateBought, Integer dateSold) {
+		return true;
+	}
+	
+	public Portfolio getPortfolio(Integer userID) {
+		return null; 
+	}
+	
+	public boolean addStockToViewed(Integer userID, String tickerSymbol, int quantity, Integer dateBought, Integer dateSold) {
+		return true;
+	}
+	
+	public Portfolio getViewedStocks(Integer userID) {
+		return null; 
 	}
 	
 	public int getUser(String username, String password) {

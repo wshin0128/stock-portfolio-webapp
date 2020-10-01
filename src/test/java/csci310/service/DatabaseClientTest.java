@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import csci310.model.Portfolio;
 import io.cucumber.java.Before;
 
 
@@ -110,6 +111,26 @@ public class DatabaseClientTest extends Mockito {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testAddStockToPortfolio() {
+		assertTrue(db.addStockToPortfolio(1, "APPL", 2, 1599027025, 1601619025));
+	}
+	
+	@Test
+	public void testGetPortfolio() {
+		assertTrue(db.getPortfolio(1) == null);
+	}
+	
+	@Test
+	public void testAddStockToViewed() {
+		assertTrue(db.addStockToViewed(1, "APPL", 2, 1599027025, 1601619025));
+	}
+	
+	@Test
+	public void testGetViewedStocks() {
+		assertTrue(db.getViewedStocks(1) == null); 
 	}
 	
 	@Test
