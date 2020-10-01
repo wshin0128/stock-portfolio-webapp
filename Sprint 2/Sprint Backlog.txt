@@ -1,0 +1,42 @@
+Sprint Backlog 
+* Complete Sign Up functionality 
+   * Complete frontend 
+   * Connect to database 
+   * Error: Username is taken 
+   * Error: Passwords do not match 
+   * Password hidden when user is typing in 
+* Model 
+   * Create Stock class 
+   * Implement Portfolio class with Stock class
+* Security: 
+   * Research into password hashing 
+   * Password hashing service class
+   * Add signed in state using user ID from database 
+   * 120 seconds of inactivity sign out 
+* Complete Sign In functionality
+   * Connect to database 
+   * Prototype lock out after 3 failed attempts 
+   * Add link to sign up 
+   * Error: no username 
+   * Error: incorrect password 
+* Graph Display
+   * Research into how to plot line graph for stocks 
+   * Research into resizing/redrawing graph 
+* Database 
+   * Add stock to portfolio 
+   * Get stock from portfolio 
+   * Add stock to viewed stocks 
+   * Get stock from viewed stocks 
+* Home page:
+   * Add button & corresponding dialog for add stock 
+   * Add button & corresponding dialog for view stock 
+   * Add button & corresponding dialog for remove stock 
+* Stock api:
+   * Refactor input and output of the stock functions
+   * Add helper method to get stock profit given a ticker symbol & buy/sell date
+* Top banner must be displayed on all pages with the title “USC 310: Stock Portfolio Management”
+
+Meeting participants: Cathleen, Woody, Manav, Chunyang, Cheyenne
+
+Paragraph:
+After the first sprint, we feel like we need to put more stuffs in backlog to get feedback earlier. Firstly, we need to complete sign-in and sign-up functionality including the front-end and backend to get feedback from our sign-in, sign-up and home page functionality and UI. Secondly, we wanted to implement Security function since we did not got into that a lot during the last sprint. Moreover, we had a few classes created in last sprint that need more functionalities and some improvements on existing functionalities, so we put the task on database and stock api in the backlog as well. These are the stuffs we have decided to develop in order to keep our steady progress on all of the eight features.
