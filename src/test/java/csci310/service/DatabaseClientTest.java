@@ -3,6 +3,7 @@ package csci310.service;
 import static org.junit.Assert.*;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,7 +24,13 @@ public class DatabaseClientTest extends Mockito {
 	public static void setUp() {
 		try {
 			db = new DatabaseClient();
+			// write to a different database than our actual data
+			String url = "jdbc:sqlite:databaseTest.db";
+			// create a connection to the database
+			Connection connection = DriverManager.getConnection(url);
+			db.setConnection(connection);
 			mockDb = new DatabaseClient();
+			mockDb.setConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -33,6 +40,7 @@ public class DatabaseClientTest extends Mockito {
 	public void tableExists() throws SQLException {
 		db.clearDatabase();
 		db.createTable();
+		
 		db.createUser("username", "password");
 		db.createUser("username2", "password");
 	}
