@@ -151,6 +151,9 @@ button {
 	border: none;
 	height: 24px;
 }
+.error-msg {
+	color: #FF5252;
+}
 .popup-header {
 	padding: 18px;
     border-bottom: 1px solid #E6E6E6;

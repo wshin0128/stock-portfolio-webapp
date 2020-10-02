@@ -30,7 +30,7 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Add Stock</div>
 	    						<div class="popup-section">
-	    							<form>
+	    							<form id="add-stock-form">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
 	    									<input type="text" id="ticker">
@@ -47,6 +47,9 @@
 	    									<label for="date-sold">Date Sold</label>
 	    									<input type="date" id="date-sold">
 	    								</div>
+	    								<div class="form-row">
+	    									<span class="error-msg">Test error message</span>
+	    								</div>
 	    								
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
 	    							</form>
@@ -62,12 +65,14 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Import Stocks</div>
 	    						<div class="popup-section">
-	    							<form>
+	    							<form id="import-stock-form">
 	    								<div class="form-row">
 	    									<label for=""csvImport"">Upload a .csv file</label>
 	    									<input type="file" id="csvImport" accept=".csv">
 	    								</div>
-	    								
+	    								<div class="form-row">
+	    									<span class="error-msg">Test error message</span>
+	    								</div>
 	    								<button type="submit" class="button" id="import-stock-submit">Import Stocks</button>
 	    							</form>
 	    						</div>
@@ -90,7 +95,7 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">View Stock</div>
 	    						<div class="popup-section">
-	    							<form>
+	    							<form id="view-stock-form">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
 	    									<input type="text" id="ticker">
@@ -107,7 +112,9 @@
 	    									<label for="date-sold">Date Sold</label>
 	    									<input type="date" id="date-sold">
 	    								</div>
-	    								
+	    								<div class="form-row">
+	    									<span class="error-msg">Test error message</span>
+	    								</div>
 	    								<button type="submit" class="button" id="view-stock-submit">View Stock</button>
 	    							</form>
 	    						</div>
@@ -133,6 +140,7 @@
 		
 		// When user clicks add stock button
 		addStockButton.onclick = function() {
+			document.getElementById("add-stock-form").reset();
 			addStockModal.style.display = "block";
 		}
 		// When user cancels adding a stock
@@ -159,6 +167,7 @@
 		
 		// When user clicks add stock button
 		importStockButton.onclick = function() {
+			document.getElementById("import-stock-form").reset();
 			importStockModal.style.display = "block";
 		}
 		// When user cancels adding a stock
@@ -175,6 +184,7 @@
 		
 		// When user clicks add stock button
 		viewStockButton.onclick = function() {
+			document.getElementById("view-stock-form").reset();
 			viewStockModal.style.display = "block";
 		}
 		// When user cancels adding a stock
