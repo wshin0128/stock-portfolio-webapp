@@ -6,6 +6,7 @@ import org.junit.Test;
 
 public class StockTest {
 
+	// Test Stock constructor
 	@Test
 	public void testStock() {
 		Stock s = new Stock("AAPL", 21, "1999-12-28", "2020-12-28");
