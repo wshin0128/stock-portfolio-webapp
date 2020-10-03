@@ -96,9 +96,10 @@ button {
 
 .modal {
 	display: none;
+	align-items: center;
+  	justify-content: center;
 	position: fixed;
 	z-index: 2;
-	padding-top: 200px;
 	left: 0;
 	top: 0;
 	width: 100%;

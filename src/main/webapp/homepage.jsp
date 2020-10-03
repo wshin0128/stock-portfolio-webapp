@@ -141,7 +141,7 @@
 		// When user clicks add stock button
 		addStockButton.onclick = function() {
 			document.getElementById("add-stock-form").reset();
-			addStockModal.style.display = "block";
+			addStockModal.style.display = "flex";
 		}
 		// When user cancels adding a stock
 		addStockCancelButton.onclick = function() {
@@ -168,7 +168,7 @@
 		// When user clicks add stock button
 		importStockButton.onclick = function() {
 			document.getElementById("import-stock-form").reset();
-			importStockModal.style.display = "block";
+			importStockModal.style.display = "flex";
 		}
 		// When user cancels adding a stock
 		importStockCancelButton.onclick = function() {
@@ -185,7 +185,7 @@
 		// When user clicks add stock button
 		viewStockButton.onclick = function() {
 			document.getElementById("view-stock-form").reset();
-			viewStockModal.style.display = "block";
+			viewStockModal.style.display = "flex";
 		}
 		// When user cancels adding a stock
 		viewStockCancelButton.onclick = function() {
