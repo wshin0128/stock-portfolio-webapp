@@ -41,11 +41,11 @@
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
@@ -106,11 +106,11 @@
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
