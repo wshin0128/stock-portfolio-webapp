@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="styles.css">
 <title>Sign Up</title>
 </head>
 <body>
@@ -30,7 +31,7 @@
 			<br/> <br/>
 			
 			<div id="signupbutton">
-				<button type="submit" class="signup-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSignUp</button>
+				<button type="submit" class="signup-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Up</button>
 			</div>
 		</form>
 		
