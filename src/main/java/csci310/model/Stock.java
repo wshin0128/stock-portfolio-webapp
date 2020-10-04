@@ -8,11 +8,11 @@ public class Stock {
 	private String ticker;
 	private String color;
 	private int quantity;
-	private String buyDate;
-	private String sellDate;
+	private Integer buyDate;
+	private Integer sellDate;
 	
 	// Stock constructor
-	public Stock(String name, String ticker, int quantity, String buyDate, String sellDate) {
+	public Stock(String name, String ticker, int quantity, Integer buyDate, Integer sellDate) {
 		this.name = name;
 		this.ticker = ticker;
 		this.assignHexColor();
@@ -62,12 +62,12 @@ public class Stock {
 	}
 	
 	// buyDate getter
-	public String getBuyDate() {
+	public Integer getBuyDate() {
 		return buyDate;
 	}
 	
 	// sellDate getter
-	public String getSellDate() {
+	public Integer getSellDate() {
 		return sellDate;
 	}
 	
@@ -92,12 +92,12 @@ public class Stock {
 	}
 	
 	// buyDate setter
-	public void setBuyDate(String buyDate) {
+	public void setBuyDate(Integer buyDate) {
 		this.buyDate = buyDate;
 	}
 	
 	// sellDate setter
-	public void setSellDate(String sellDate) {
+	public void setSellDate(Integer sellDate) {
 		this.sellDate = sellDate;
 	}
 }
