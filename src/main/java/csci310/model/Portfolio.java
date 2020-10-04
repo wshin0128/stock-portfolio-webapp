@@ -3,54 +3,45 @@ package csci310.model;
 import java.util.ArrayList;
 
 /*
-*Current rendition of portfolio class that will be utilized within our webapp
-*Every user would have a stock portfolio, this class provides definition of what would be in every user's portfolio
-*/
+ * Current rendition of Portfolio class that will be utilized within our webapp
+ * Every User object has a Portfolio, this class provides definition of what would be in every User's Portfolio
+ */
 public class Portfolio {
-	//Arraylist that is considered the "portfolio" in this rendition of our webapp
-	//Currently ever stock in the portfolio is considered a string, thus a portfolio is an arraylist of strings
-	//TODO: See if making a a stock object to signify a stock(which would make portfolio become a map with string as the key)
-	//would be more useful implementation of the portfolio/stock object 
-	private ArrayList<String> portfolio;
+	// Arraylist that is considered the "portfolio"
+	private ArrayList<Stock> portfolio;
 	
-	//Only constructor of the portfolio, creates an empty portfolio.
-	//Only 1 constructor is needed ATM portfolio is to be created upon user creation
+	// Constructor creates empty ArrayList of Stocks
 	public Portfolio() {
-		portfolio = new ArrayList<String>();
+		portfolio = new ArrayList<Stock>();
 	}
-	//Getter for the arraylist portfolio
-	public ArrayList<String> getArrayList() {
+	
+	// Getter for the arraylist portfolio
+	public ArrayList<Stock> getPortfolio() {
 		return portfolio;
 	}
 	
-	//Returns the size of the portfolio arraylist
+	// Returns the number of stocks in the Portfolio
 	public int getSize() {
 		return portfolio.size();
 	}
 	
-	// Adds a "stock" to the key value pair which in this case would be a string
-	// TODO: See if a more complex implementation of stock is required (mentioned above)
-	// If so addStock would have to be changed to fit the new format 
-	public void addStock(String stock) {
+	// Adds a Stock to Portfolio
+	public void addStock(Stock stock) {
 		portfolio.add(stock);
 	}
 	
-	// Removes a "stock" to the key value pair which in this case would be a string
-	// TODO: See if a more complex implementation of stock is required (mentioned above)
-	// If so removeStock would have to be changed to fit the new format 
-	public void removeStock(String stock) {
+	// Removes a Stock form Portfolio
+	public void removeStock(Stock stock) {
 		portfolio.remove(stock);
 	}
 	
-	//Clears the portfolio of the user, in other words clears the array list
+	// Clear all stocks from Portfolio
 	public void resetPortfolio() {
 		portfolio.clear();
 	}
 	
-	//Checks to see if  the portfolio contains a stock
-	// TODO: See if a more complex implementation of stock is required (mentioned above)
-	// If so removeStock would have to be changed to fit the new format 
-	public boolean contains(String stock) {
+	// Checks to see if the Portfolio contains a certain stock
+	public boolean contains(Stock stock) {
 		return portfolio.contains(stock);
 	}
 	
