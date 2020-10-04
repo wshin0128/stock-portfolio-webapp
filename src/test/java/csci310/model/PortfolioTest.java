@@ -19,58 +19,62 @@ public class PortfolioTest {
 	@Test
 	public void testPortfolio() {
 		Portfolio p = new Portfolio();
-		ArrayList<String> testArrayList = p.getArrayList();
+		ArrayList<Stock> testArrayList = p.getPortfolio();
 		assertTrue("Portfolio ArrayList was not initialized",testArrayList != null);
 	}
 	
 	@Test
-	public void testGetArrayList() {
-		String stock = "stock";
-		ArrayList<String> testArrayList = new ArrayList<String>();
-		testArrayList.add(stock);
-		p.addStock(stock);
-		ArrayList<String> comparisonArrayList = p.getArrayList();
-		assertTrue("Incorrect ArrayList was returned",comparisonArrayList.equals(testArrayList));
+	public void testGetPortfolio() {
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		ArrayList<Stock> testArrayList = new ArrayList<Stock>();
+		testArrayList.add(s);
+		p.addStock(s);
+		ArrayList<Stock> comparisonArrayList = p.getPortfolio();
+		assertTrue("Incorrect ArrayList was returned - Portfolios do not match",comparisonArrayList.equals(testArrayList));
 	}
 	
 	@Test
 	public void testGetSize() {
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
 		assertTrue("Portfolio size incorrect", p.getSize() == 0);
-		p.addStock("Test");
+		p.addStock(s);
 		assertTrue("Portfolio size does not increase correctly", p.getSize() == 1);
 	}
 	
 	@Test
 	public void testAddStock() {
-		String stock = "stock";
-		p.addStock(stock);
-		assertTrue("Stock was not added to portfolio", p.getSize() == 1);
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		p.addStock(s);
+		assertTrue("Stock was not added to portfolio", p.contains(s));
 	}
 	
 	@Test
 	public void testRemoveStock() {
-		String stock = "stock";
-		p.addStock(stock);
-		assertTrue("Stock was not added to portfolio", p.getSize() == 1);
-		p.removeStock(stock);
-		assertTrue("Stock was not removed to portfolio", p.getSize() == 0);
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		p.addStock(s);
+		assertTrue("Stock was not added to portfolio", p.contains(s));
+		p.removeStock(s);
+		assertFalse("Stock was not removed to portfolio", p.contains(s));
 	}
 	
 	@Test
 	public void testResetPortfolio() {
-		p.addStock("Stock1");
-		p.addStock("Stock2");
-		p.addStock("Stock3");
+		Stock s1 = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		Stock s2 = new Stock("Alphabet Inc", "GOOGL", 21, "1999-12-28", "2020-12-28");
+		Stock s3 = new Stock("Microsoft Corporation", "MSFT", 21, "1999-12-28", "2020-12-28");
+		p.addStock(s1);
+		p.addStock(s2);
+		p.addStock(s3);
 		p.resetPortfolio();
 		assertTrue("Portfolio was not reset correctly", p.getSize() == 0);
 	}
 	
 	@Test
 	public void testContains() {
-		String stock = "stock";
-		assertFalse("Contains is triggering a false positive", p.contains(stock));
-		p.addStock(stock);
-		assertTrue("Contains is triggering a false negative", p.contains(stock));
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		assertFalse("Contains is triggering a false positive", p.contains(s));
+		p.addStock(s);
+		assertTrue("Contains is triggering a false negative", p.contains(s));
 	}
 
 }
