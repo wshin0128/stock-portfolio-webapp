@@ -16,4 +16,12 @@ public class StockTest {
 		assertTrue("Stock buy dates do not match", s.getBuyDate() == "1999-12-28");
 		assertTrue("Stock sell dates do not match", s.getSellDate() == "2020-12-28");
 	}
+	
+	// Test hexColorGenerator()
+	@Test
+	public void testAssignHexColor () {
+		Stock s = new Stock("Apple Inc", "AAPL", 21, "1999-12-28", "2020-12-28");
+		String color = s.assignHexColor();
+		assertTrue("Stock colors do not match", color == s.getColor());
+	}
 }

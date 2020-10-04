@@ -18,6 +18,11 @@ public class Stock {
 		this.sellDate = sellDate;
 	}
 	
+	// Random hex color generator
+	public String assignHexColor() {
+		return "";
+	}
+	
 	// name getter
 	public String getName() {
 		return name;
