@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+	background-color: #F5F5F5;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.navbar {
+	display: flex;
+	align-items: center;
+	height: 80px;
+	border-bottom: 2px solid #E6E6E6;
+	background-color: white;
+}
+.navbar .wrap {
+	min-width: 75%;
+	display: flex;
+	align-items: center;
+}
+.navbar h1 {
+	font-size: 22px;
+}
