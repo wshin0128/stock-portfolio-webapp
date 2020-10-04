@@ -83,8 +83,44 @@
 	    				</div>
 	    				
 	    			</div>
-	    		</div>
-	    	</div>
+	    		</div> <!-- .container-header -->
+	    		
+	    		<table id="stock-list">
+	    			<tr>
+	    				<td>Apple</td>
+	    				<td>AAPL</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Tesla</td>
+	    				<td>TSLA</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Ford Motor</td>
+	    				<td>F</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    		</table>
+	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
 	    			Viewed Stocks
@@ -125,8 +161,45 @@
 	    				</div>
 	    				
 	    			</div>
-	    		</div>
-	    	</div>
+	    		</div> <!-- .container-header -->
+	    		
+	    		<table id="stock-list">
+	    			<tr>
+	    				<td>Apple</td>
+	    				<td>AAPL</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Tesla</td>
+	    				<td>TSLA</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Ford Motor</td>
+	    				<td>F</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    			</tr>
+	    		</table>
+	    		
+	    	</div>  <!-- .homepage-container -->
     	</div>
     </div>
     
