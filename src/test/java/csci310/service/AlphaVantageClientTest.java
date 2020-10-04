@@ -3,8 +3,9 @@ package csci310.service;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.junit.Test;
 
 public class AlphaVantageClientTest {
 	
-	private final String TEST_API_KEY = AlphaVantageClient.API_KEY;
+	private final List<String> TEST_API_KEY_POOL = AlphaVantageClient.API_KEY_POOL;
 	private final String TEST_URL_FORMAT = AlphaVantageClient.URL_FORMAT;
 	
 	private final String TEST_DAILY_FUNCTION = AlphaVantageClient.DAILY_FUNCTION;
@@ -23,7 +24,7 @@ public class AlphaVantageClientTest {
 	
 	@Test
 	public void testGetDailyValue() throws IOException {
-		String urlString = String.format(TEST_URL_FORMAT, TEST_DAILY_FUNCTION, TEST_STOCK_SYMBOL, TEST_API_KEY);
+		String urlString = String.format(TEST_URL_FORMAT, TEST_DAILY_FUNCTION, TEST_STOCK_SYMBOL, chooseARandomAPI());
 		
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 		
@@ -37,31 +38,17 @@ public class AlphaVantageClientTest {
 
 	@Test
 	public void testGetWeeklyValue() throws IOException {
-//		String urlString = String.format(TEST_URL_FORMAT, TEST_WEEKLY_FUNCTION, TEST_STOCK_SYMBOL, TEST_API_KEY);
-//		
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//        
-//		JSONObject weeklyValueJsonObject = jsonObject.getJSONObject("Weekly Adjusted Time Series");
-//	
-//		Map<String, StockInfo> result = AlphaVantageClient.parseJsonObject(weeklyValueJsonObject);
-		
-		// Commented out since we have limits with api call
-//		assertEquals(result, AlphaVantageClient.getWeeklyValue(TEST_STOCK_SYMBOL));
-		
-		assertNotNull(AlphaVantageClient.getWeeklyValue(TEST_STOCK_SYMBOL));
+		assertNotNull(AlphaVantageClient.getWeeklyValue(TEST_STOCK_SYMBOL).keySet());
 	}
 
 	@Test
 	public void testGetMonthlyValue() throws IOException {
-		String urlString = String.format(TEST_URL_FORMAT, TEST_MONTHLY_FUNCTION, TEST_STOCK_SYMBOL, TEST_API_KEY);
-		
-		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-        
-		JSONObject monthlyValueJsonObject = jsonObject.getJSONObject("Monthly Adjusted Time Series");
+		assertNotNull(AlphaVantageClient.getMonthlyValue(TEST_STOCK_SYMBOL).keySet());
+	}
 	
-		Map<String, Object> result = AlphaVantageClient.parseJsonObject(monthlyValueJsonObject);
-		
-		assertEquals(result, AlphaVantageClient.getMonthlyValue(TEST_STOCK_SYMBOL));
+	private String chooseARandomAPI() {
+		int rnd = new Random().nextInt(TEST_API_KEY_POOL.size());
+        return TEST_API_KEY_POOL.get(rnd);
 	}
 	
 	@Test
