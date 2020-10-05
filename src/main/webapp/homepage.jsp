@@ -12,7 +12,7 @@
 <body>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>WebApp Name</h1>
+			<h1>USC 310: Stock Portfolio Management</h1>
 			<a href="signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
 		</div>
 	</div>
@@ -95,7 +95,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    			<tr>
 	    				<td>Tesla</td>
@@ -106,7 +106,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    			<tr>
 	    				<td>Ford Motor</td>
@@ -117,7 +117,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    		</table>
 	    	</div>  <!-- .homepage-container -->
@@ -173,7 +173,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    			<tr>
 	    				<td>Tesla</td>
@@ -184,7 +184,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    			<tr>
 	    				<td>Ford Motor</td>
@@ -195,7 +195,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash-alt"></i></a></td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 	    			</tr>
 	    		</table>
 	    		
