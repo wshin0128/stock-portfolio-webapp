@@ -6,7 +6,32 @@
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
 	
+	<script>
+		// Log out user after 120 seconds of inactivity
+		var userInactivity = function () {
+		    var time;
+		    window.onload = resetTimer;
+		    // Reset timer whenever user moves mouse or presses key
+		    document.onmousemove = resetTimer;
+		    document.onkeypress = resetTimer;
 	
+		    function logout() {
+		    	// Alert user logout
+		        alert("You have been logged out due to two minutes of inactivity.")
+		        // Redirect to sign in page
+		        location.href = "signIn.jsp";
+		    }
+		    // Reset the timer
+		    function resetTimer() {
+		        clearTimeout(time);
+		        time = setTimeout(logout, 120000)
+		    }
+		};
+		// Load timer on page load
+		window.onload = function() {
+			userInactivity(); 
+		}
+	</script>
 	
 </head>
 <body>
