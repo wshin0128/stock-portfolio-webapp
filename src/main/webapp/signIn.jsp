@@ -9,6 +9,9 @@
 <title>Sign In</title>
 </head>
 <body>
+	<div id = "banner">
+		<h3>USC 310: Stock Portfolio Management</h3>
+	</div>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>Login</h1>
@@ -16,7 +19,7 @@
 		</div>
 	</div>
 	<div class="login">
-		<form id="stuufff">
+		<form id="logInForm">
 			<div>
 				<label for="username">Username:</label>
 		    <input type="text" id="username" name="username" minlength="1" required>
@@ -27,8 +30,11 @@
 				<input type="password" id="pass" name="password" minlength="8" required>
 			</div>
 			<br/>
-			<div id="idk">
+			<div id="subButton">
 				<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
+			</div>
+			<div id = "signUpLink">
+				<a href = "">Don't have an account? Sign Up!</a>
 			</div>
 		</form>
 		

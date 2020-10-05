@@ -3,7 +3,19 @@ body {
 	margin: 0;
 	background-color: #F5F5F5;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	animation-name: color;
+  	animation-duration: 6s;
+  	animation-direction: alternate;
+  	animation-iteration-count: infinite;
 }
+
+#banner {
+	background-color: #787878;
+	display: flex;
+	height: 50px;
+	padding-left: 5px;
+}
+
 .navbar {
 	display: flex;
 	align-items: center;
@@ -43,47 +55,59 @@ input[type=password], input[type=text] {
 	width: 95%;
 	border-radius: 25px;
     border: 2px solid #51C58E;
-outline: none;   	
+	outline: none;   	
 }
-#stuufff{
-padding-left: 5px;
-padding-right: 5px;
+#logInForm{
+	padding-left: 5px;
+	padding-right: 5px;
 }
 .sign-in-button{
 	text-transform: uppercase;
-border: 2px solid #51C58E;
-color: #51C58E;
-border-radius: 4px;
-text-decoration: none;
-font-size: 14px;
-font-weight: bold;
-padding: 10px 14px;;
-transition: 0.1s;
-background: #fff;
+	border: 2px solid #51C58E;
+	color: #51C58E;
+	border-radius: 4px;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px 14px;;
+	transition: 0.1s;
+	background: #fff;
 }
 .sign-in-button:hover {
 	background-color: #51C58E;
 	color: white;
 }
+
+@keyframes color {
+  from {background-color: #F5F5F5;}
+  to {background-color: #51C58E;}
+}
+
+
 .login {
 	margin-top: 5%;
 	max-width: 75%;
-color: #444;
-width: 300px;
-height: 280px;
-margin-left: auto;
-margin-right: auto;
-background: #fff;
-   border-radius: 3px;
-   border: 1px solid #ccc;
-   box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+	color: #444;
+	width: 300px;
+	height: 280px;
+	margin-left: auto;
+	margin-right: auto;
+	background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    
 }
 
-#idk{
+#subButton{
 	padding-top: 15px;
 	text-align: center;
 }
 
+#signUpLink{
+	text-align: center;
+	margin-top: 10px;
+}
 
 form {
     margin: 0 auto;
