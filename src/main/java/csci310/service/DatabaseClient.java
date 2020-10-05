@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import csci310.model.Portfolio;
+import csci310.model.Stock;
 
 /**
  *
@@ -38,6 +39,7 @@ public class DatabaseClient {
         		+ ");"; 
 		String createPortfolioTable = "CREATE TABLE IF NOT EXISTS Portfolio ("
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "name TEXT NOT NULL,"
 				+ "tickerSymbol TEXT NOT NULL,"
 				+ "quantity INTEGER NOT NULL,"
 				+ "datePurchased INTEGER NOT NULL,"
@@ -46,6 +48,7 @@ public class DatabaseClient {
 				+ ");";
 		String createViewedStockTable = "CREATE TABLE IF NOT EXISTS ViewedStocks ("
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "name TEXT NOT NULL,"
 				+ "tickerSymbol TEXT NOT NULL,"
 				+ "quantity INTEGER NOT NULL,"
 				+ "datePurchased INTEGER NOT NULL,"
@@ -98,7 +101,7 @@ public class DatabaseClient {
 	// Reference: https://stackoverflow.com/questions/2881321/how-to-insert-date-in-sqlite-through-java
 	// Reference: https://stackoverflow.com/questions/3371326/java-date-from-unix-timestamp
 	// Reference: https://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
-	public boolean addStockToPortfolio(Integer userID, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
+	public boolean addStockToPortfolio(Integer userID, String name, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
 		try {
 			boolean inPortfolio = false;
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
@@ -111,19 +114,21 @@ public class DatabaseClient {
 				inPortfolio = (rs.getInt(1) != 0);
 			}
 			if (!inPortfolio) {
-				String createStockQuery = "INSERT INTO Portfolio(tickerSymbol, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?);";
+				String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, quantity, datePurchased, dateSold, userID)"
+										 + "VALUES(?,?,?,?,?,?);";
 				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
-				createStock.setString(1, tickerSymbol);
-				createStock.setInt(2, quantity);
-				createStock.setInt(3, datePurchased);
-				createStock.setInt(4, dateSold);
-				createStock.setInt(5, userID);
+				createStock.setString(1, name);
+				createStock.setString(2, tickerSymbol);
+				createStock.setInt(3, quantity);
+				createStock.setInt(4, datePurchased);
+				createStock.setInt(5, dateSold);
+				createStock.setInt(6, userID);
 				createStock.executeUpdate();
 				return true;
 			} else {
 				// Can users add stock that already exists in their Portfolio?
 				// should we just overwrite the previous values?
+				System.out.println("Already in portfolio");
 				return false;
 			}
 		} catch (SQLException e) {
@@ -133,10 +138,29 @@ public class DatabaseClient {
 	}
 	
 	public Portfolio getPortfolio(Integer userID) {
-		return null; 
+		Portfolio portfolio = new Portfolio();
+		String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
+		PreparedStatement getPortfolioStocks;
+		try {
+			getPortfolioStocks = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			getPortfolioStocks.setInt(1, userID);
+			ResultSet rs = getPortfolioStocks.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name"); 
+				String tickerSymbol = rs.getString("tickerSymbol");
+				int quantity = rs.getInt("quantity");
+				int datePurchased = rs.getInt("datePurchased");
+				int dateSold = rs.getInt("dateSold");
+				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return portfolio; 
 	}
 	
-	public boolean addStockToViewed(Integer userID, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
+	public boolean addStockToViewed(Integer userID, String name, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
 		try {
 			boolean alreadyViewedStock = false;
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
@@ -149,14 +173,15 @@ public class DatabaseClient {
 				alreadyViewedStock = (rs.getInt(1) != 0);
 			}
 			if (!alreadyViewedStock) {
-				String createStockQuery = "INSERT INTO ViewedStocks(tickerSymbol, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?);";
+				String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, quantity, datePurchased, dateSold, userID)"
+										 + "VALUES(?,?,?,?,?,?);";
 				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
-				createStock.setString(1, tickerSymbol);
-				createStock.setInt(2, quantity);
-				createStock.setInt(3, datePurchased);
-				createStock.setInt(4, dateSold);
-				createStock.setInt(5, userID);
+				createStock.setString(1, name);
+				createStock.setString(2, tickerSymbol);
+				createStock.setInt(3, quantity);
+				createStock.setInt(4, datePurchased);
+				createStock.setInt(5, dateSold);
+				createStock.setInt(6, userID);
 				createStock.executeUpdate();
 				return true;
 			} else {
@@ -171,7 +196,26 @@ public class DatabaseClient {
 	}
 	
 	public Portfolio getViewedStocks(Integer userID) {
-		return null; 
+		Portfolio portfolio = new Portfolio();
+		String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
+		PreparedStatement getViewedStocks;
+		try {
+			getViewedStocks = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			getViewedStocks.setInt(1, userID);
+			ResultSet rs = getViewedStocks.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name"); 
+				String tickerSymbol = rs.getString("tickerSymbol");
+				int quantity = rs.getInt("quantity");
+				int datePurchased = rs.getInt("datePurchased");
+				int dateSold = rs.getInt("dateSold");
+				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return portfolio; 
 	}
 	
 	public int getUser(String username, String password) {

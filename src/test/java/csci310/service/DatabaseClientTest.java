@@ -32,7 +32,7 @@ public class DatabaseClientTest extends Mockito {
 			mockDb = new DatabaseClient();
 			mockDb.setConnection(connection);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 	}
 	
@@ -43,6 +43,10 @@ public class DatabaseClientTest extends Mockito {
 		
 		db.createUser("username", "password");
 		db.createUser("username2", "password");
+		
+		db.addStockToPortfolio(1, "Facebook", "FB", 2, 1599027025, 1601619025);
+		db.addStockToPortfolio(1, "Microsoft", "M", 2, 1599027025, 1601619025);
+		db.addStockToPortfolio(1, "Apple", "APPL", 2, 1599027025, 1601619025);
 	}
 	
 	
@@ -94,7 +98,7 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testGetUser() {
-		String username = "username";
+		String username = "username1";
 		String password = "password";
 		assertTrue("New user",db.createUser(username, password));
 		assertTrue(db.getUser(username, password) == 1);
@@ -123,22 +127,36 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToPortfolio() {
-		assertTrue(db.addStockToPortfolio(1, "APPL", 2, 1599027025, 1601619025));
+		assertTrue(db.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025));
 	}
 	
 	@Test
 	public void testGetPortfolio() {
-		assertTrue(db.getPortfolio(1) == null);
+		db.clearDatabase();
+		db.createTable();
+		db.addStockToPortfolio(1, "Facebook", "FB", 2, 1599027025, 1601619025);
+		db.addStockToPortfolio(1, "Microsoft", "M", 2, 1599027025, 1601619025);
+		db.addStockToPortfolio(2, "Apple", "APPL", 2, 1599027025, 1601619025);
+		Portfolio p = db.getPortfolio(1);
+		int size = p.getSize();
+		assertTrue("Actual size: " + size, size == 2);
 	}
 	
 	@Test
 	public void testAddStockToViewed() {
-		assertTrue(db.addStockToViewed(1, "APPL", 2, 1599027025, 1601619025));
+		assertTrue(db.addStockToViewed(1, "Apple","APPL", 2, 1599027025, 1601619025));
 	}
 	
 	@Test
 	public void testGetViewedStocks() {
-		assertTrue(db.getViewedStocks(1) == null); 
+		db.clearDatabase();
+		db.createTable();
+		db.addStockToViewed(1, "Facebook", "FB", 2, 1599027025, 1601619025);
+		db.addStockToViewed(1, "Microsoft", "M", 2, 1599027025, 1601619025);
+		db.addStockToViewed(2, "Apple", "APPL", 2, 1599027025, 1601619025);
+		Portfolio p = db.getViewedStocks(1);
+		int size = p.getSize();
+		assertTrue("Actual size: " + size, size == 2);
 	}
 	
 	@Test
