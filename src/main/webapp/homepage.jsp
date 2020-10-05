@@ -18,8 +18,16 @@
 	</div>
     <div class="wrap">
     	<div class="grid-container">
+    	
 	    	<div class="homepage-container" id="graph-container">
-	    	</div>
+	    		<div class="graph-header">
+	    			<span id="portfolio-value">$1,349.32</span>
+	    			<div id="portfolio-value-change" style="color: #51C58E;">
+    					<span id="arrow">&#9650</span>+3.25% Today
+	    			</div>
+	    		</div>
+	    	</div> <!-- #graph-container -->
+	    	
 	    	<div class="homepage-container" id="portfolio-container">
 	    		<div class="container-header">
 	    			Your Portfolio
