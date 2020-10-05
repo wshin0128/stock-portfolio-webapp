@@ -6,20 +6,53 @@
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
 	
+	<script>
+		// Log out user after 120 seconds of inactivity
+		var userInactivity = function () {
+		    var time;
+		    window.onload = resetTimer;
+		    // Reset timer whenever user moves mouse or presses key
+		    document.onmousemove = resetTimer;
+		    document.onkeypress = resetTimer;
 	
+		    function logout() {
+		    	// Alert user logout
+		        alert("You have been logged out due to two minutes of inactivity.")
+		        // Redirect to sign in page
+		        location.href = "signIn.jsp";
+		    }
+		    // Reset the timer
+		    function resetTimer() {
+		        clearTimeout(time);
+		        time = setTimeout(logout, 120000)
+		    }
+		};
+		// Load timer on page load
+		window.onload = function() {
+			userInactivity(); 
+		}
+	</script>
 	
 </head>
 <body>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>WebApp Name</h1>
+			<h1>USC 310: Stock Portfolio Management</h1>
 			<a href="signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
 		</div>
 	</div>
     <div class="wrap">
     	<div class="grid-container">
+    	
 	    	<div class="homepage-container" id="graph-container">
-	    	</div>
+	    		<div class="graph-header">
+	    			<span id="portfolio-value">$1,349.32</span>
+	    			<div id="portfolio-value-change" style="color: #51C58E;">
+    					<span id="arrow">&#9650</span>+3.25% Today
+	    			</div>
+	    		</div>
+	    	</div> <!-- #graph-container -->
+	    	
 	    	<div class="homepage-container" id="portfolio-container">
 	    		<div class="container-header">
 	    			Your Portfolio
@@ -83,8 +116,44 @@
 	    				</div>
 	    				
 	    			</div>
-	    		</div>
-	    	</div>
+	    		</div> <!-- .container-header -->
+	    		
+	    		<table id="stock-list">
+	    			<tr>
+	    				<td>Apple</td>
+	    				<td>AAPL</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Tesla</td>
+	    				<td>TSLA</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Ford Motor</td>
+	    				<td>F</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    		</table>
+	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
 	    			Viewed Stocks
@@ -125,8 +194,45 @@
 	    				</div>
 	    				
 	    			</div>
-	    		</div>
-	    	</div>
+	    		</div> <!-- .container-header -->
+	    		
+	    		<table id="stock-list">
+	    			<tr>
+	    				<td>Apple</td>
+	    				<td>AAPL</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Tesla</td>
+	    				<td>TSLA</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Ford Motor</td>
+	    				<td>F</td>
+	    				<td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    			</tr>
+	    		</table>
+	    		
+	    	</div>  <!-- .homepage-container -->
     	</div>
     </div>
     
