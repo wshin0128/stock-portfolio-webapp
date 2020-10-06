@@ -44,7 +44,16 @@ public class AlphaVantageClient {
 	
 	
 	
-	public static Map<Date, Double> getStockPrice(TimeBasis timeBasis){
+	public static Map<Date, Double> getStockPrice(String stockSymbol, TimeBasis timeBasis){
+//		Map<String, Object> resultMap;
+//		switch (timeBasis) {
+//		case TimeBasis.Daily:
+//			resultMap = getDailyValue(stockSymbol)
+//			break;
+//
+//		default:
+//			break;
+//		}
 		return null;
 	}
 	

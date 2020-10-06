@@ -27,9 +27,9 @@ public class AlphaVantageClientTest {
 	
 	@Test
 	public void testGetStockPrice(){
-		Map<Date, Double> resultMap1 = AlphaVantageClient.getStockPrice(TimeBasis.Daily); 
-		Map<Date, Double> resultMap2 = AlphaVantageClient.getStockPrice(TimeBasis.Weekly); 
-		Map<Date, Double> resultMap3 = AlphaVantageClient.getStockPrice(TimeBasis.Monthly);
+		Map<Date, Double> resultMap1 = AlphaVantageClient.getStockPrice(TEST_STOCK_SYMBOL, TimeBasis.Daily); 
+		Map<Date, Double> resultMap2 = AlphaVantageClient.getStockPrice(TEST_STOCK_SYMBOL, TimeBasis.Weekly); 
+		Map<Date, Double> resultMap3 = AlphaVantageClient.getStockPrice(TEST_STOCK_SYMBOL, TimeBasis.Monthly);
 		
 		assertNotNull(resultMap1);
 		assertNotNull(resultMap2);
