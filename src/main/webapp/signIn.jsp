@@ -9,17 +9,15 @@
 <title>Sign In</title>
 </head>
 <body>
-	<div id = "banner">
-		<h3>USC 310: Stock Portfolio Management</h3>
-	</div>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>Login</h1>
+			<h1>USC 310: Stock Portfolio Management</h1>
 			
 		</div>
 	</div>
 	<div class="login">
 		<form id="logInForm">
+			<h3>Login</h3>
 			<div>
 				<label for="username">Username:</label>
 		    <input type="text" id="username" name="username" minlength="1" required>
