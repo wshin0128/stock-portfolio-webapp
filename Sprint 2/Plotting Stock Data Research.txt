@@ -1,0 +1,35 @@
+Plotting data on a graph/chart - research
+
+1. TradingView widget: embeddable html code that allows initial customization through their GUI, but of course this can be chsnged directly in the code. 
+  pros: 
+      - very easy to use, simple embed
+      - clean aesthetic
+      - simple scroll adjust x-axis timeline
+      - bar style changeable
+      - automatically loads popular stock values
+  cons: 
+    - (I think) only one stock can be plotted at a time; different widget available for listing multiple stocks
+    
+2. amCharts: downloadable visual editor that produces html code that can be pasted into webpage
+  pros: 
+    - multifaceted, takes a lot of inputs
+    - can display more than one line
+  cons: 
+    - extra downloading steps
+    - less intuitive
+    - unsure about adjustable x-axis
+
+3. Google Charts: embeddable html code
+  pros: 
+    - fairly intuitive 
+    - dynamic data 
+    - simple scroll adjust x-axis timeline
+  cons:
+    - 
+    
+Other options to explore:
+- Flot
+- canvasJS (!)
+    
+    
+ 
