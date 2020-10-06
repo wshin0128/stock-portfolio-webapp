@@ -128,6 +128,20 @@ public class DatabaseClientTest extends Mockito {
 	@Test
 	public void testAddStockToPortfolio() {
 		assertTrue(db.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025));
+		assertFalse(db.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025));
+	}
+	
+	@Test
+	public void testAddStockToPortfolioThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025) == false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -142,9 +156,36 @@ public class DatabaseClientTest extends Mockito {
 		assertTrue("Actual size: " + size, size == 2);
 	}
 	
+	@Test 
+	public void testGetPortfolioThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.getPortfolio(1).getSize() == 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void testAddStockToViewed() {
 		assertTrue(db.addStockToViewed(1, "Apple","APPL", 2, 1599027025, 1601619025));
+		assertFalse(db.addStockToViewed(1, "Apple","APPL", 2, 1599027025, 1601619025));
+	}
+	
+	@Test
+	public void testAddStockToViewedThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.addStockToViewed(3, "Apple", "APPL", 2, 1599027025, 1601619025) == false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -157,6 +198,19 @@ public class DatabaseClientTest extends Mockito {
 		Portfolio p = db.getViewedStocks(1);
 		int size = p.getSize();
 		assertTrue("Actual size: " + size, size == 2);
+	}
+	
+	@Test 
+	public void testGetViewedStocksThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.getViewedStocks(1).getSize() == 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
