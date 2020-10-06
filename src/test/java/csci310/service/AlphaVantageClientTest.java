@@ -3,12 +3,15 @@ package csci310.service;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONObject;
 import org.junit.Test;
+
+import io.cucumber.java.lu.dann;
 
 
 public class AlphaVantageClientTest {
@@ -21,6 +24,17 @@ public class AlphaVantageClientTest {
 	private final String TEST_MONTHLY_FUNCTION = AlphaVantageClient.MONTHLY_FUNCTION;
 	
 	private final String TEST_STOCK_SYMBOL = "IBM";
+	
+	@Test
+	public void testGetStockPrice(){
+		Map<Date, Double> resultMap1 = AlphaVantageClient.getStockPrice(TimeBasis.Daily); 
+		Map<Date, Double> resultMap2 = AlphaVantageClient.getStockPrice(TimeBasis.Weekly); 
+		Map<Date, Double> resultMap3 = AlphaVantageClient.getStockPrice(TimeBasis.Monthly);
+		
+		assertNotNull(resultMap1);
+		assertNotNull(resultMap2);
+		assertNotNull(resultMap3);
+	}
 	
 	@Test
 	public void testGetDailyValue() throws IOException {

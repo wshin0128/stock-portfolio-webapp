@@ -2,6 +2,7 @@ package csci310.service;
 
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+
+enum TimeBasis { Daily, Weekly, Monthly}; 
 
 /**
  * The service client wrapper of Alpha Advantage API for fetching stock info
@@ -38,6 +41,12 @@ public class AlphaVantageClient {
 
 	@VisibleForTesting
 	protected static String MONTHLY_FUNCTION = "TIME_SERIES_MONTHLY_ADJUSTED";
+	
+	
+	
+	public static Map<Date, Double> getStockPrice(TimeBasis timeBasis){
+		return null;
+	}
 	
 
 	public static Map<String, Object> getDailyValue(String stockSymbol) throws IOException{
@@ -85,5 +94,6 @@ public class AlphaVantageClient {
 	public static Map<String, Object> parseJsonObject(JSONObject jsonObject) throws IOException{
 		return new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
 	}
-
 }
+
+
