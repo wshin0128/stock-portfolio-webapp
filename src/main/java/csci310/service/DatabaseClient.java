@@ -128,7 +128,6 @@ public class DatabaseClient {
 			} else {
 				// Can users add stock that already exists in their Portfolio?
 				// should we just overwrite the previous values?
-				System.out.println("Already in portfolio");
 				return false;
 			}
 		} catch (SQLException e) {
@@ -265,8 +264,8 @@ public class DatabaseClient {
 			String clearPortfolioCommand = "DELETE FROM 'Portfolio'";
 			String clearViewedStocksCommand = "DELETE FROM 'ViewedStocks'";
 			Statement clearDatabase = connection.createStatement();
-			System.out.println("output: " + clearDatabase.executeUpdate(clearUserCommand));
-			System.out.println("output: " + clearDatabase.executeUpdate(clearPortfolioCommand));
+			clearDatabase.executeUpdate(clearUserCommand);
+			clearDatabase.executeUpdate(clearPortfolioCommand);
 			clearDatabase.executeUpdate(clearViewedStocksCommand);
 		} catch (SQLException e) {
 			e.printStackTrace();
