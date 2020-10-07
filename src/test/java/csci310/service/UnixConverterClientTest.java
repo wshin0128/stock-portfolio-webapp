@@ -19,8 +19,8 @@ public class UnixConverterClientTest {
 	    Date resultDate = UnixConverterClient.convertUnixToDate(unix);
 	    Calendar cal = Calendar.getInstance();
         cal.setTime(resultDate);
-        int date = cal.get(Calendar.DATE);
-        assertEquals(5,  date);
+        int year = cal.get(Calendar.YEAR);
+        assertEquals(2020, year);
         
         // TEST constructor
         @SuppressWarnings("unused")
