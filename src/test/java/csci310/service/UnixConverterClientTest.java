@@ -21,6 +21,10 @@ public class UnixConverterClientTest {
         cal.setTime(resultDate);
         int date = cal.get(Calendar.DATE);
         assertEquals(5,  date);
+        
+        // TEST constructor
+        @SuppressWarnings("unused")
+		UnixConverterClient unixConverterClient = new UnixConverterClient();
 	}
 
 	@Test
