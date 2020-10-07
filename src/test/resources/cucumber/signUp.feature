@@ -3,7 +3,7 @@ Feature: Sign Up Page
 		Given I am on the sign up page
 		When I enter an invalid username "username" that already exists
 		And I enter a password
-		Then I should see the error message "Username already taken!"
+		Then I should see the invalid username error "Username already taken!"
 	
 	Scenario: Successful register
 		Given I am on the sign up page
