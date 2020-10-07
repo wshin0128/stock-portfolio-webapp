@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import csci310.model.Portfolio;
+import csci310.model.Stock;
 import io.cucumber.java.Before;
 
 
@@ -44,9 +45,13 @@ public class DatabaseClientTest extends Mockito {
 		db.createUser("username", "password");
 		db.createUser("username2", "password");
 		
-		db.addStockToPortfolio(1, "Facebook", "FB", 2, 1599027025, 1601619025);
-		db.addStockToPortfolio(1, "Microsoft", "M", 2, 1599027025, 1601619025);
-		db.addStockToPortfolio(1, "Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToPortfolio(1, fb);
+		db.addStockToPortfolio(1, msft);
+		db.addStockToPortfolio(1, appl);
 	}
 	
 	
@@ -127,8 +132,10 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToPortfolio() {
-		assertTrue(db.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025));
-		assertFalse(db.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025));
+		Stock testStock = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		assertTrue(db.addStockToPortfolio(3, testStock));
+		
+		assertFalse(db.addStockToPortfolio(3, testStock));
 	}
 	
 	@Test
@@ -138,7 +145,9 @@ public class DatabaseClientTest extends Mockito {
 			mockDb.setConnection(mockConn);
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
-			assertTrue(mockDb.addStockToPortfolio(3, "Apple", "APPL", 2, 1599027025, 1601619025) == false);
+			
+			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			assertTrue(mockDb.addStockToPortfolio(3, appl) == false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -148,9 +157,14 @@ public class DatabaseClientTest extends Mockito {
 	public void testGetPortfolio() {
 		db.clearDatabase();
 		db.createTable();
-		db.addStockToPortfolio(1, "Facebook", "FB", 2, 1599027025, 1601619025);
-		db.addStockToPortfolio(1, "Microsoft", "M", 2, 1599027025, 1601619025);
-		db.addStockToPortfolio(2, "Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToPortfolio(1, fb);
+		db.addStockToPortfolio(1, msft);
+		db.addStockToPortfolio(2, appl);
 		Portfolio p = db.getPortfolio(1);
 		int size = p.getSize();
 		assertTrue("Actual size: " + size, size == 2);
@@ -171,8 +185,10 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToViewed() {
-		assertTrue(db.addStockToViewed(1, "Apple","APPL", 2, 1599027025, 1601619025));
-		assertFalse(db.addStockToViewed(1, "Apple","APPL", 2, 1599027025, 1601619025));
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		assertTrue(db.addStockToViewed(1, appl));
+		assertFalse(db.addStockToViewed(1, appl));
 	}
 	
 	@Test
@@ -182,7 +198,9 @@ public class DatabaseClientTest extends Mockito {
 			mockDb.setConnection(mockConn);
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
-			assertTrue(mockDb.addStockToViewed(3, "Apple", "APPL", 2, 1599027025, 1601619025) == false);
+			
+			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			assertTrue(mockDb.addStockToViewed(3, appl) == false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -192,9 +210,14 @@ public class DatabaseClientTest extends Mockito {
 	public void testGetViewedStocks() {
 		db.clearDatabase();
 		db.createTable();
-		db.addStockToViewed(1, "Facebook", "FB", 2, 1599027025, 1601619025);
-		db.addStockToViewed(1, "Microsoft", "M", 2, 1599027025, 1601619025);
-		db.addStockToViewed(2, "Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToViewed(1, fb);
+		db.addStockToViewed(1, msft);
+		db.addStockToViewed(2, appl);
 		Portfolio p = db.getViewedStocks(1);
 		int size = p.getSize();
 		assertTrue("Actual size: " + size, size == 2);
