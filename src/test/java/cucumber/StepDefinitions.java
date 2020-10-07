@@ -29,8 +29,8 @@ public class StepDefinitions {
 	public void i_enter_an_invalid_username_that_already_exists(String string) {
 	    
 	}
-	@When("I enter any password")
-	public void i_enter_any_password() {
+	@When("I enter a password")
+	public void i_enter_a_password() {
 	    
 	}
 	@Then("I should see the error {string}")
