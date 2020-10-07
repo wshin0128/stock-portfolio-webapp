@@ -27,40 +27,39 @@ public class FinnhubClient {
 	private String API_KEY = "btug69748v6vqmm3nn10";
 	
 	public Map<Date, Double> getStockPrice(String symbol, Resolution resolution, long startTime, long endTime) throws Exception {
-//		String resolutionString = null;
-//		switch (resolution) {
-//		case Daily:
-//			resolutionString = "D";
-//			break;
-//		case Weekly:
-//			resolutionString = "W";
-//			break;
-//		case Monthly:
-//			resolutionString = "M";
-//			break;
-//		}
-//		
-//		String urlString = String.format(URL_FORMAT, symbol, resolutionString, startTime, endTime, API_KEY);
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//		ObjectMapper mapper = new ObjectMapper();
-//		ObjectNode node = (ObjectNode) mapper.readTree(jsonObject.toString());
-//		JsonNode priceArrayNode = node.get("c");
-//		//System.out.println(priceArrayNode);
-//		List<Double> pricesList = new ObjectMapper().readValue(priceArrayNode.traverse(), new TypeReference<ArrayList<Double>>() {});
-//		
-//		JsonNode dateArrayNode = node.get("t");
-//		//System.out.println(dateArrayNode);
-//		List<Long> dateList = new ObjectMapper().readValue(dateArrayNode.traverse(), new TypeReference<List<Long>>() {});
-//		Map<Date, Double> resultMap = new HashMap<>();
-//		for (int i = 0; i < pricesList.size(); ++i) {
-//			Double priceDouble = pricesList.get(i);
-//			long dateLong = dateList.get(i);
-//			
-//			Date date = UnixConverterClient.convertUnixToDate(dateLong);
-//			resultMap.put(date, priceDouble);
-//		}
-//		//System.out.println(resultMap);
-//		return resultMap;
-		return null;
+		String resolutionString = null;
+		switch (resolution) {
+		case Daily:
+			resolutionString = "D";
+			break;
+		case Weekly:
+			resolutionString = "W";
+			break;
+		case Monthly:
+			resolutionString = "M";
+			break;
+		}
+		
+		String urlString = String.format(URL_FORMAT, symbol, resolutionString, startTime, endTime, API_KEY);
+		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode node = (ObjectNode) mapper.readTree(jsonObject.toString());
+		JsonNode priceArrayNode = node.get("c");
+		//System.out.println(priceArrayNode);
+		List<Double> pricesList = new ObjectMapper().readValue(priceArrayNode.traverse(), new TypeReference<ArrayList<Double>>() {});
+		
+		JsonNode dateArrayNode = node.get("t");
+		//System.out.println(dateArrayNode);
+		List<Long> dateList = new ObjectMapper().readValue(dateArrayNode.traverse(), new TypeReference<List<Long>>() {});
+		Map<Date, Double> resultMap = new HashMap<>();
+		for (int i = 0; i < pricesList.size(); ++i) {
+			Double priceDouble = pricesList.get(i);
+			long dateLong = dateList.get(i);
+			
+			Date date = UnixConverterClient.convertUnixToDate(dateLong);
+			resultMap.put(date, priceDouble);
+		}
+		//System.out.println(resultMap);
+		return resultMap;
 	}
 }
