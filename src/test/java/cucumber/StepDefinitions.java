@@ -80,17 +80,19 @@ public class StepDefinitions {
 	public void i_enter_an_invalid_username_that_already_exists(String string) {
 	    
 	}
-	@When("I enter any password")
-	public void i_enter_any_password() {
+	@When("I enter a password")
+	public void i_enter_a_password() {
 	    
 	}
-	@Then("I should see the error {string}")
-	public void i_should_see_the_error(String string) {
+	@Then("I should see the invalid username error {string}")
+	public void i_should_see_the_invalid_username_error(String string) {
 	    
 	}
+  
+	/*************************************************************************/
 
-	@When("I enter a valid username {string}")
-	public void i_enter_a_valid_username(String string) {
+	@When("I enter a valid username {string} that does not exist")
+	public void i_enter_a_valid_username_that_does_not_exist(String string) {
 	   
 	}
 	@When("I enter a valid password {string}")
