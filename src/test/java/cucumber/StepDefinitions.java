@@ -84,8 +84,8 @@ public class StepDefinitions {
 	public void i_enter_a_password() {
 	    
 	}
-	@Then("I should see the error message {string}")
-	public void i_should_see_the_error(String string) {
+	@Then("I should see the invalid username error {string}")
+	public void i_should_see_the_invalid_username_error(String string) {
 	    
 	}
   
