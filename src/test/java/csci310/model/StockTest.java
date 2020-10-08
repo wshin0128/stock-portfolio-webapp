@@ -17,6 +17,24 @@ public class StockTest {
 		assertTrue("Stock sell dates do not match", s.getSellDate() == 1609142400);
 	}
 	
+	// Test modifying stocks
+	@Test
+	public void testSetters() {
+		Stock s = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
+		s.setName("Microsoft");
+		s.setTicker("MSFT");
+		s.setColor("#000000");
+		s.setQuantity(22);
+		s.setBuyDate(946368001);
+		s.setSellDate(1609142401);
+		
+		assertTrue("Stock names do not match", s.getName() == "Microsoft");
+		assertTrue("Stock tickers do not match", s.getTicker() == "MSFT");
+		assertTrue("Stock quantities do not match", s.getQuantity() == 22);
+		assertTrue("Stock buy dates do not match", s.getBuyDate() == 946368001);
+		assertTrue("Stock sell dates do not match", s.getSellDate() == 1609142401);
+	}
+	
 	// Test hexColorGenerator()
 	@Test
 	public void testAssignHexColor () {
