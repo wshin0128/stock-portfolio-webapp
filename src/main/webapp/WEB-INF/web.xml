@@ -4,4 +4,12 @@
 
 <web-app>
   <display-name>Project2</display-name>
+  <servlet>
+	  <servlet-name>login</servlet-name>
+	  <servlet-class>csci310.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>login</servlet-name>
+  <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
 </web-app>

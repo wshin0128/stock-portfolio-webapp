@@ -2,20 +2,20 @@ package csci310.model;
 
 public class User {
 	private String username;
-	private String password;
+	private int userID;
 	private Portfolio portfolio;
 	
-	public User(String username, String password) {
+	public User(String username, int userID) {
 		this.username = username;
-		this.password = password;
+		this.userID = userID;
 	}
 	
 	public String getUsername() {
 		return username;
 	}
 	
-	public String getPassword() {
-		return password;
+	public int getUserID() {
+		return userID;
 	}
 	
 	public Portfolio getPortfolio() {
@@ -26,8 +26,8 @@ public class User {
 		this.username = username;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	
 	public void setPortfolio(Portfolio portfolio) {

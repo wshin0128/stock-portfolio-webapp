@@ -25,11 +25,12 @@ public class Stock {
 	public String assignHexColor() {
 		Random rand = new Random();
 		
-		// Generate random number with maximum being #FFFFFF
-        int rawColor = rand.nextInt(0xffffff + 1);
+		
+        int rawColor = 16777215;
         
         // If rawColor is white, generate a new color
         while(rawColor == 16777215) {
+        	// Generate random number with maximum being #FFFFFF
         	rawColor = rand.nextInt(0xffffff + 1);
         }
                 

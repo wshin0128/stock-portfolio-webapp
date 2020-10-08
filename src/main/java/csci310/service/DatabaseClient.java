@@ -101,8 +101,15 @@ public class DatabaseClient {
 	// Reference: https://stackoverflow.com/questions/2881321/how-to-insert-date-in-sqlite-through-java
 	// Reference: https://stackoverflow.com/questions/3371326/java-date-from-unix-timestamp
 	// Reference: https://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
-	public boolean addStockToPortfolio(Integer userID, String name, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
+	public boolean addStockToPortfolio(Integer userID, Stock stock) {
 		try {
+			// Get stock parameters from Stock object
+			String name = stock.getName();
+			String tickerSymbol = stock.getTicker();
+			int quantity = stock.getQuantity();
+			Integer datePurchased = stock.getBuyDate();
+			Integer dateSold = stock.getSellDate();
+			
 			boolean inPortfolio = false;
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
 			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -159,8 +166,15 @@ public class DatabaseClient {
 		return portfolio; 
 	}
 	
-	public boolean addStockToViewed(Integer userID, String name, String tickerSymbol, int quantity, Integer datePurchased, Integer dateSold) {
+	public boolean addStockToViewed(Integer userID, Stock stock) {
 		try {
+			// Get stock parameters from Stock object
+			String name = stock.getName();
+			String tickerSymbol = stock.getTicker();
+			int quantity = stock.getQuantity();
+			Integer datePurchased = stock.getBuyDate();
+			Integer dateSold = stock.getSellDate();
+						
 			boolean alreadyViewedStock = false;
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
 			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
