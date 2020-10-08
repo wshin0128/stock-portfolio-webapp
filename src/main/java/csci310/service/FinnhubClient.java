@@ -1,7 +1,6 @@
 package csci310.service;
 
-import java.io.IOException;
-import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,11 +14,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import net.bytebuddy.description.ByteCodeElement.Token;
 
 
 enum Resolution { Daily, Weekly, Monthly}; 
 
+/**
+ * Usage: 
+ * FinnhubClient client = new FinnhubClient();
+ * try {
+ *     Map<Date, Double> stockPrice = client.getStockPrice(<"IBM">, <"Daily">, <1572566400>, <1601942400>);
+ *     // Successfully retrieved Stock price map 
+ * } catch (Exception e){
+ *     // Unsuccessfully retrieved
+ * }
+ * 
+ * @author chunyangmou
+ *
+ */
 public class FinnhubClient {
 	
 	protected String URL_FORMAT = "https://finnhub.io/api/v1/stock/candle?symbol=%s&resolution=%s&from=%d&to=%d&token=%s";
