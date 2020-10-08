@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -26,11 +27,13 @@ public class StepDefinitions {
 
 	@When("I enter an valid username {string}")
 	public void i_enter_an_valid_username(String string) throws InterruptedException {
-		Thread.sleep(2000);
+		WebElement queryBox = driver.findElement(By.id("username"));
+		queryBox.sendKeys(string);
 	}
 	@When("I enter the correct password {string}")
 	public void i_enter_the_correct_password(String string) {
-	    
+		WebElement queryBox = driver.findElement(By.id("pass"));
+		queryBox.sendKeys(string);
 	}
 	@Then("I should be taken to the home page")
 	public void i_should_be_taken_to_the_home_page() {
@@ -39,19 +42,31 @@ public class StepDefinitions {
 	
 	@When("I enter an incorrect password {string}")
 	public void i_enter_an_incorrect_password(String string) {
-	    
+		WebElement queryBox = driver.findElement(By.id("pass"));
+		queryBox.sendKeys(string);
 	}
 	@Then("I should see the error {string}")
 	public void i_should_see_the_error(String string) {
+		WebElement errorBox = driver.findElement(By.id("Merror"));
+		assertTrue(string.equalsIgnoreCase(errorBox.getText()));
 	}
 	
 	@When("I enter an invalid username {string}")
 	public void i_enter_an_invalid_username(String string) {
-
+		WebElement queryBox = driver.findElement(By.id("username"));
+		queryBox.sendKeys(string);
 	}
 	@When("I enter any password")
 	public void i_enter_any_password() {
-
+		WebElement queryBox = driver.findElement(By.id("pass"));
+		queryBox.sendKeys("test2test");
+	}
+	
+	@When("I click submit on login")
+	public void i_click_submit_on_login() throws InterruptedException {
+		WebElement searchButton = driver.findElement(By.className("sign-in-button"));
+	    searchButton.click();
+	    Thread.sleep(1000);
 	}
 	
 	@Given("I am on the home page")
