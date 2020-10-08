@@ -2,6 +2,11 @@ package csci310.model;
 
 import java.util.Random;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Stock {
 	// Stock variables
 	private String name;
@@ -41,63 +46,7 @@ public class Stock {
 		return color;
 	}
 	
-	// name getter
-	public String getName() {
-		return name;
-	}
 	
-	// ticker getter
-	public String getTicker() {
-		return ticker;
-	}
 	
-	// color getter
-	public String getColor() {
-		return color;
-	}
 	
-	// quantity getter
-	public int getQuantity() {
-		return quantity;
-	}
-	
-	// buyDate getter
-	public Integer getBuyDate() {
-		return buyDate;
-	}
-	
-	// sellDate getter
-	public Integer getSellDate() {
-		return sellDate;
-	}
-	
-	// name setter
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	// ticker setter
-	public void setTicker(String ticker) {
-		this.ticker = ticker;
-	}
-	
-	// color setter
-	public void setColor(String color) {
-		this.color = color;
-	}
-	
-	// quantity setter
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
-	// buyDate setter
-	public void setBuyDate(Integer buyDate) {
-		this.buyDate = buyDate;
-	}
-	
-	// sellDate setter
-	public void setSellDate(Integer sellDate) {
-		this.sellDate = sellDate;
-	}
 }

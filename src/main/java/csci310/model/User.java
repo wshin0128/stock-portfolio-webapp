@@ -1,5 +1,10 @@
 package csci310.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+// @Setter
 public class User {
 	private String username;
 	private String password;
@@ -10,27 +15,4 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public Portfolio getPortfolio() {
-		return portfolio;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public void setPortfolio(Portfolio portfolio) {
-		this.portfolio = portfolio;
-	}
 }
