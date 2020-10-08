@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 			if(result == 0) {
 				session.setAttribute("login", false);
 			}
-			else if(result == 1) {
+			else if(result >= 1) {
 				session.setAttribute("login", true);
 				session.setAttribute("loginID", uname);
 			}

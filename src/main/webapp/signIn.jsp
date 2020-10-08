@@ -56,10 +56,10 @@
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">No user with this username exists</p>";
 				document.querySelector(".login").style.height = "350px";
 			}
-			else if(num == 1){
+			else if(num >= 1){
 				window.location.href = "homepage.jsp"
 			}
-			else if(num == 2){
+			else if(num == -2){
 				//error 3
 				document.body.id = "errorScreen";
 				numFailed++;
