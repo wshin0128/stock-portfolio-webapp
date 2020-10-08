@@ -2,11 +2,6 @@ package csci310.model;
 
 import java.util.Random;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Stock {
 	// Stock variables
 	private String name;
