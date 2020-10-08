@@ -3,6 +3,7 @@ package csci310.service;
 import static org.junit.Assert.*;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -10,6 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import csci310.model.Portfolio;
+import csci310.model.Stock;
 import io.cucumber.java.Before;
 
 
@@ -22,9 +25,15 @@ public class DatabaseClientTest extends Mockito {
 	public static void setUp() {
 		try {
 			db = new DatabaseClient();
+			// write to a different database than our actual data
+			String url = "jdbc:sqlite:databaseTest.db";
+			// create a connection to the database
+			Connection connection = DriverManager.getConnection(url);
+			db.setConnection(connection);
 			mockDb = new DatabaseClient();
+			mockDb.setConnection(connection);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 	}
 	
@@ -32,8 +41,17 @@ public class DatabaseClientTest extends Mockito {
 	public void tableExists() throws SQLException {
 		db.clearDatabase();
 		db.createTable();
+		
 		db.createUser("username", "password");
 		db.createUser("username2", "password");
+		
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToPortfolio(1, fb);
+		db.addStockToPortfolio(1, msft);
+		db.addStockToPortfolio(1, appl);
 	}
 	
 	
@@ -85,16 +103,16 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testGetUser() {
-		String username = "username";
+		String username = "username1";
 		String password = "password";
 		assertTrue("New user",db.createUser(username, password));
-		assertTrue(db.getUser(username, password));
+		assertTrue(db.getUser(username, password) == 1);
 		
 		String wrongUsername = "wrongUsername";
-		assertFalse(db.getUser(wrongUsername, password));
+		assertTrue(db.getUser(wrongUsername, password) == 0);
 		
 		String wrongPassword = "wrongpass";
-		assertFalse(db.getUser(username, wrongPassword));
+		assertTrue(db.getUser(username, wrongPassword) == 2);
 	}
 	
 	@Test
@@ -106,8 +124,113 @@ public class DatabaseClientTest extends Mockito {
 			when(mockConn.prepareStatement(findUsernameQuery, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			String username = "testUser2";
 			String password = "password";
-			mockDb.getUser(username, password);
-			assertTrue(true);
+			assertTrue(mockDb.getUser(username, password) == -1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAddStockToPortfolio() {
+		Stock testStock = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		assertTrue(db.addStockToPortfolio(3, testStock));
+		
+		assertFalse(db.addStockToPortfolio(3, testStock));
+	}
+	
+	@Test
+	public void testAddStockToPortfolioThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			
+			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			assertTrue(mockDb.addStockToPortfolio(3, appl) == false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetPortfolio() {
+		db.clearDatabase();
+		db.createTable();
+		
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToPortfolio(1, fb);
+		db.addStockToPortfolio(1, msft);
+		db.addStockToPortfolio(2, appl);
+		Portfolio p = db.getPortfolio(1);
+		int size = p.getSize();
+		assertTrue("Actual size: " + size, size == 2);
+	}
+	
+	@Test 
+	public void testGetPortfolioThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.getPortfolio(1).getSize() == 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAddStockToViewed() {
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		assertTrue(db.addStockToViewed(1, appl));
+		assertFalse(db.addStockToViewed(1, appl));
+	}
+	
+	@Test
+	public void testAddStockToViewedThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			
+			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			assertTrue(mockDb.addStockToViewed(3, appl) == false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetViewedStocks() {
+		db.clearDatabase();
+		db.createTable();
+		
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		
+		db.addStockToViewed(1, fb);
+		db.addStockToViewed(1, msft);
+		db.addStockToViewed(2, appl);
+		Portfolio p = db.getViewedStocks(1);
+		int size = p.getSize();
+		assertTrue("Actual size: " + size, size == 2);
+	}
+	
+	@Test 
+	public void testGetViewedStocksThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			assertTrue(mockDb.getViewedStocks(1).getSize() == 0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
