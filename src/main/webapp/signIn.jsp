@@ -53,7 +53,7 @@
 				numFailed++;
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
-				document.querySelector("#errorMessage").innerHTML = "<p>No Username Found</p>";
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">No user with this username exists</p>";
 				document.querySelector(".login").style.height = "350px";
 			}
 			else if(num == 1){
@@ -65,7 +65,7 @@
 				numFailed++;
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
-				document.querySelector("#errorMessage").innerHTML = "<p>Incorrect Password</p>";
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">The password you entered is invalid</p>";
 				document.querySelector(".login").style.height = "350px";
 			}
 			
@@ -80,7 +80,7 @@
 			
 			if(numFailed > 2){
 				document.querySelector(".sign-in-button").enabled = false;
-				document.querySelector("#errorMessage").innerHTML = "<p>You have been locked for failing to sign in three times</p>";
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
 				document.querySelector(".login").style.height = "350px";
 			}	
 			else if(userName.length < 1){
@@ -89,11 +89,11 @@
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
 				if(pass.length < 8){
-					document.querySelector("#errorMessage").innerHTML = "<p>Please input a username of atleast 1 character as well as a password of atleast 8 characters</p>";
+					document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a username of atleast 1 character as well as a password of atleast 8 characters</p>";
 					
 				}
 				else{
-					document.querySelector("#errorMessage").innerHTML = "<p>Please input a username of atleast 1 character</p>";
+					document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a username of atleast 1 character</p>";
 				}
 				document.querySelector(".login").style.height = "350px";
 			}
@@ -102,7 +102,7 @@
 				numFailed++;
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
-				document.querySelector("#errorMessage").innerHTML = "<p>Please input a password of atleast 8 characters</p>";
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a password of atleast 8 characters</p>";
 				document.querySelector(".login").style.height = "350px";
 			}
 			else{
