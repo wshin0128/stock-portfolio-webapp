@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="styleSI.css">
+<link rel="stylesheet" href="styles.css">
 <title>Sign Up</title>
 </head>
 <body>
