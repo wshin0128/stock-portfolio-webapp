@@ -19,7 +19,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class LoginServletTest extends Mockito {
-
+	
+	//Correct username and password
 	@Test
 	public void testDoPost() throws ServletException, IOException {
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -41,6 +42,7 @@ public class LoginServletTest extends Mockito {
 		assertTrue(s >= 1);
 	}
 	
+	//Correct username, incorrect password
 	@Test
 	public void testDoPost1() throws ServletException, IOException {
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -60,6 +62,7 @@ public class LoginServletTest extends Mockito {
 		assertTrue(stringWriter.toString().contains("-2"));
 	}
 	
+	//Incorrect username
 	@Test
 	public void testDoPost2() throws ServletException, IOException {
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -79,6 +82,7 @@ public class LoginServletTest extends Mockito {
 		assertTrue(stringWriter.toString().contains("0"));
 	}
 	
+	//Check for IOExceptions
 	@Test
 	public void testDoPost3() throws ServletException, IOException {
 		try {
@@ -99,6 +103,7 @@ public class LoginServletTest extends Mockito {
 
 	}
 	
+	//Check for other general Exceptions
 	@Test
 	public void testDoPost4() throws ServletException, IOException {
 		try {

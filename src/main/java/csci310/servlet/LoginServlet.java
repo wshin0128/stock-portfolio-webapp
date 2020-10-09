@@ -31,22 +31,29 @@ public class LoginServlet extends HttpServlet {
 			String hashedPass = passAuth.hash("test2test", null, null);
 			db.createUser("test2", hashedPass);//Here atm for testing purposes as no way to create user
 			int result = 0;
+			
+			//Takes POST parameters and parses them into JSON String
 			String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			HttpSession session = request.getSession();
+			//Parse JSON string into a useable JSON object
+			//JSON object can be used to extract username and password
 			JSONObject jo = new JSONObject(requestBody);
 			String uname = jo.getString("username");
 			String password =jo.getString("password");
-			
+			//Passes password and username into the database with the password authentication class to be hashed
 			result = db.getUser(passAuth, uname, password);
 			System.out.println(result);
 			
+			//Username is incorrect
 			if(result == 0) {
 				session.setAttribute("login", false);
 			}
+			//Valid username and password
 			else if(result >= 1) {
 				session.setAttribute("login", true);
 				session.setAttribute("loginID", uname);
 			}
+			//Password is incorrect for user
 			else{
 				session.setAttribute("login", false);
 			}
