@@ -246,20 +246,23 @@ public class DatabaseClient {
 			} 
 			
 			if(usernameExists) {
-				String passwordCheckQuery = "SELECT COUNT(*) FROM User WHERE username=? AND password=?";
+				String passwordCheckQuery = "SELECT id FROM User WHERE username=? AND password=?";
 				PreparedStatement passwordCheck = connection.prepareStatement(passwordCheckQuery);
 				passwordCheck.setString(1, username);
 				passwordCheck.setString(2, password);
 				rs = passwordCheck.executeQuery();
+				int userID = -1;
 				while(rs.next()) {
-					correctPassword = (rs.getInt(1) == 1);
+					correctPassword = true;
+					userID = rs.getInt("id");
 				}
 				if(correctPassword) {
-					// Password is valid (return 1)
-					return 1;
+					// Password is valid (return userID)
+					return userID;
 				} else {
 					// Password is invalid (return 2)
-					return 2;
+					// Password is invalid (return -2)
+					return -2;
 				}
 			} else {
 				// Username was not found (return 0)

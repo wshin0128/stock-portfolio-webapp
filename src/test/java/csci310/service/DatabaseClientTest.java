@@ -106,13 +106,13 @@ public class DatabaseClientTest extends Mockito {
 		String username = "username1";
 		String password = "password";
 		assertTrue("New user",db.createUser(username, password));
-		assertTrue(db.getUser(username, password) == 1);
+		assertTrue(db.getUser(username, password) >= 1);
 		
 		String wrongUsername = "wrongUsername";
 		assertTrue(db.getUser(wrongUsername, password) == 0);
 		
 		String wrongPassword = "wrongpass";
-		assertTrue(db.getUser(username, wrongPassword) == 2);
+		assertTrue(db.getUser(username, wrongPassword) == -2);
 	}
 	
 	@Test
