@@ -9,9 +9,10 @@ import java.nio.charset.Charset;
 
 import org.json.JSONObject;
 
-
+//Class to get information more easily formatted from JSON data form APIs
 public class JsonReader {
-	
+	//Reads all of the data from a Reader and coverts it to a string
+	//Useful in various location in the server
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -20,7 +21,7 @@ public class JsonReader {
 	    }
 	    return sb.toString();
 	  }
-	
+	//Converts a given string URL into a JSONobject, which is useful for parsing more easily
 	public static JSONObject readJsonFromUrl(String url) throws IOException {
 		InputStream is = new URL(url).openStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
