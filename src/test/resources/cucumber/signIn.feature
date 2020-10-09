@@ -44,7 +44,7 @@ Feature: Sign in Page
     
   Scenario: Successful Sign in
     Given I am on the sign in page
-    When I enter an valid username "test1"
+    When I enter an valid username "test2"
     And I enter the correct password "test2test"
     And I click submit on login
     Then I should be taken to the home page
