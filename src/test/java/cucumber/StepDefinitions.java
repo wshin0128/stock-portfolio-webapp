@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,6 +21,29 @@ public class StepDefinitions {
 
 	private final WebDriver driver = new ChromeDriver();
 
+	@Given("I am on the index page")
+	public void i_am_on_the_index_page() {
+		driver.get(ROOT_URL);
+	}
+
+	@When("I click the link {string}")
+	public void i_click_the_link(String linkText) throws InterruptedException {
+		Thread.sleep(1000);
+		driver.findElement(By.linkText(linkText)).click();
+	}
+
+	@Then("I should see header {string}")
+	public void i_should_see_header(String header) throws InterruptedException {
+		Thread.sleep(1000);
+		assertTrue(driver.findElement(By.cssSelector("h2")).getText().contains(header));
+	}
+	
+	@Then("I should see text {string}")
+	public void i_should_see_text(String text) throws InterruptedException {
+		Thread.sleep(1000);
+		assertTrue(driver.getPageSource().contains(text));
+	}
+	
 	@Given("I am on the sign in page")
 	public void i_am_on_the_sign_in_page() {
 	    driver.get(ROOT_URL+"signIn.jsp");
@@ -30,11 +54,13 @@ public class StepDefinitions {
 		WebElement queryBox = driver.findElement(By.id("username"));
 		queryBox.sendKeys(string);
 	}
+	
 	@When("I enter the correct password {string}")
 	public void i_enter_the_correct_password(String string) {
 		WebElement queryBox = driver.findElement(By.id("pass"));
 		queryBox.sendKeys(string);
 	}
+	
 	@Then("I should be taken to the home page")
 	public void i_should_be_taken_to_the_home_page() {
 
@@ -79,15 +105,17 @@ public class StepDefinitions {
 	@When("I click on the sign out button")
 	public void i_click_on_the_sign_out_button() throws InterruptedException {
 	    Thread.sleep(1000);
+	    driver.findElement(By.xpath("/html/body/div[1]/div/a")).click();
+	    Thread.sleep(1000);
 	}
 	@Then("I should be signed out and taken back to the sign in page")
 	public void i_should_be_signed_out_and_taken_back_to_the_sign_in_page() {
-
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase("http://localhost:8080/signIn.jsp"));
 	}
-  
-  /*************************************************************************/
-  
-  @Given("I am on the sign up page")
+	
+/*************************************************************************/
+	
+	@Given("I am on the sign up page")
 	public void i_am_on_the_sign_up_page() {
 		driver.get(ROOT_URL+"signup.jsp");
 	}
@@ -118,6 +146,97 @@ public class StepDefinitions {
 	@Then("I should land on the homepage")
 	public void i_should_land_on_the_homepage() {
 	    
+	}
+
+	
+	@When("I click Add Stock in the Portfolio box")
+	public void i_click_Add_Stock_in_the_Portfolio_box() throws InterruptedException {
+		WebElement addStockButton = driver.findElement(By.xpath("//*[@id=\"add-stock-button\"]"));
+		addStockButton.click();
+		Thread.sleep(1000);
+	}
+
+	@Then("I should see a popup dialogue to add a stock")
+	public void i_should_see_a_popup_dialogue_to_add_a_stock() throws InterruptedException {
+		Thread.sleep(3000);
+	    WebElement addStockPopup = driver.findElement(By.xpath("//*[@id='add-stock-modal']"));
+	    assertTrue(addStockPopup.getCssValue("display") != "none");
+	}
+
+	@When("I click View Stock in the Viewed Stocks box")
+	public void i_click_View_Stock_in_the_Viewed_Stocks_box() throws InterruptedException {
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("#viewed-container .add-stocks-container > .button")).click();
+		Thread.sleep(1000);
+	}
+
+	@Then("I should see a popup dialogue to view a stock")
+	public void i_should_see_a_popup_dialogue_to_view_a_stock() throws InterruptedException {
+		Thread.sleep(3000);
+		WebElement viewStockPopup = driver.findElement(By.xpath("//*[@id=\"view-stock-modal\"]"));
+	    assertTrue(viewStockPopup.getCssValue("display") != "none");
+	}
+
+	@When("I click the trash icon on a stock row in the Portfolio box")
+	public void i_click_the_trash_icon_on_a_stock_row_in_the_Portfolio_box() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement deleteStockButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/table/tbody/tr[1]/td[4]/a"));
+		deleteStockButton.click();
+		Thread.sleep(1000);
+	}
+
+	@Then("the stock should be removed from the Portfolio box")
+	public void the_stock_should_be_removed_from_the_Portfolio_box() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement stockRow = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/table/tbody/tr[1]"));
+		assertTrue(stockRow == null);
+	}
+
+	@When("I click the trash icon on a stock row in the Viewed Stocks box")
+	public void i_click_the_trash_icon_on_a_stock_row_in_the_Viewed_Stocks_box() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement deleteStockButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/table/tbody/tr[1]/td[4]/a"));
+		deleteStockButton.click();
+		Thread.sleep(1000);
+	}
+
+	@Then("the stock should be removed from the Viewed Stocks box")
+	public void the_stock_should_be_removed_from_the_Viewed_Stocks_box() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement stockRow = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/table/tbody/tr[1]"));
+		assertTrue(stockRow == null);
+	}
+
+	@When("{int} seconds of inactivity occurs")
+	public void seconds_of_inactivity_occurs(Integer int1) throws InterruptedException {
+		int ms = int1 * 1000;
+		Thread.sleep(ms + 7000);
+	}
+
+	@Then("I should see an alert that I am being logged out")
+	public void i_should_see_an_alert_that_I_am_being_logged_out() {
+		boolean alert;
+	    try {
+	    	driver.switchTo().alert();
+	    	alert = true;
+	    } catch (NoAlertPresentException nape) {
+	    	alert = false;
+	    }
+	    assertTrue(alert);
+	}
+	
+	@When("I click Import CSV")
+	public void i_click_Import_CSV() throws InterruptedException {
+		WebElement addStockButton = driver.findElement(By.xpath("//*[@id=\"import-stock-button\"]"));
+		addStockButton.click();
+		Thread.sleep(1000);
+	}
+	
+	@Then("I should see a popup dialogue to import a csv file")
+	public void i_should_see_a_popup_dialogue_to_import_a_csv_file() throws InterruptedException {
+	    Thread.sleep(3000);
+	    WebElement viewImportPopup = driver.findElement(By.xpath("//*[@id=\"import-stock-modal\"]"));
+	    assertTrue(viewImportPopup.getCssValue("display") != "none");
 	}
 
 	@After()
