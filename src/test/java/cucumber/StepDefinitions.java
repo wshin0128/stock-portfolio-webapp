@@ -63,8 +63,9 @@ public class StepDefinitions {
 	
 	@Then("I should be taken to the home page")
 	public void i_should_be_taken_to_the_home_page() throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"homepage.jsp"));
+		Thread.sleep(3000);
 	}
 	
 	@When("I enter an incorrect password {string}")
