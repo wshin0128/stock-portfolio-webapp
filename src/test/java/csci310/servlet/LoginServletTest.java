@@ -36,7 +36,9 @@ public class LoginServletTest extends Mockito {
 		ls.doPost(request, response);
 		
 		writer.flush();
-		assertTrue(stringWriter.toString().contains("1"));
+		
+		int s = Integer.parseInt(stringWriter.toString());
+		assertTrue(s >= 1);
 	}
 	
 	@Test
@@ -55,7 +57,7 @@ public class LoginServletTest extends Mockito {
 		ls.doPost(request, response);
 		
 		writer.flush();
-		assertTrue(stringWriter.toString().contains("2"));
+		assertTrue(stringWriter.toString().contains("-2"));
 	}
 	
 	@Test
