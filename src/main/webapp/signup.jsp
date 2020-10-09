@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styleSI.css">
 <title>Sign Up</title>
 </head>
 <body>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>Sign Up</h1>
+			<h1>USC CS 310: Stock Portfolio Management</h1>
 		</div>
 	</div>
 	<div class="signup"> 
