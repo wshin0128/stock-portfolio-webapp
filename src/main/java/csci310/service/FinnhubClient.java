@@ -32,11 +32,13 @@ enum Resolution { Daily, Weekly, Monthly};
  *
  */
 public class FinnhubClient {
-	
+	//URL for Stock data
 	protected String URL_FORMAT = "https://finnhub.io/api/v1/stock/candle?symbol=%s&resolution=%s&from=%d&to=%d&token=%s";
-	
+	//Key for Stock URL
 	private String API_KEY = "btug69748v6vqmm3nn10";
 	
+	//Method to get the stock price from the API, takes in a ticker symbol, resolution, startTime, and endTime
+	//Inputs these values to then recieve JSON info and then parses infor to create a map between the data and price of the stock
 	public Map<Date, Double> getStockPrice(String symbol, Resolution resolution, long startTime, long endTime) throws Exception {
 		String resolutionString = null;
 		switch (resolution) {
