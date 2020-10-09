@@ -2,6 +2,7 @@ package csci310.service;
 
 import static org.junit.Assert.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -102,17 +103,37 @@ public class DatabaseClientTest extends Mockito {
 	}
 	
 	@Test
-	public void testGetUser() {
+	public void testGetUser() throws NoSuchAlgorithmException {
 		String username = "username1";
 		String password = "password";
-		assertTrue("New user",db.createUser(username, password));
-		assertTrue(db.getUser(username, password) >= 1);
+		
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		String hashedPass = passAuth.hash("password", null, null);
+		
+		assertTrue("New user",db.createUser(username, hashedPass));
+		assertTrue(db.getUser(passAuth, username, password) >= 1);
 		
 		String wrongUsername = "wrongUsername";
-		assertTrue(db.getUser(wrongUsername, password) == 0);
+		assertTrue(db.getUser(passAuth, wrongUsername, password) == 0);
 		
 		String wrongPassword = "wrongpass";
-		assertTrue(db.getUser(username, wrongPassword) == -2);
+		assertTrue(db.getUser(passAuth, username, wrongPassword) == -2);
+	}
+	
+	@Test
+	public void testGetUserThrowsNoSuchAlgorithmException() {
+		try {
+			PasswordAuthentication mockPassAuth = mock(PasswordAuthentication.class);
+			when(mockPassAuth.verify(anyString(), anyString())).thenThrow(new NoSuchAlgorithmException());
+			String username = "username1";
+			String password = "password";
+			db.getUser(mockPassAuth, username, password);
+			int result = db.getUser(mockPassAuth, username, password);
+			assertTrue("Actual is " + result, result == -1);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -124,7 +145,7 @@ public class DatabaseClientTest extends Mockito {
 			when(mockConn.prepareStatement(findUsernameQuery, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			String username = "testUser2";
 			String password = "password";
-			assertTrue(mockDb.getUser(username, password) == -1);
+			assertTrue(mockDb.getUser(new PasswordAuthentication(), username, password) == -1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

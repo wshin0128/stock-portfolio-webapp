@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import csci310.service.DatabaseClient;
+import csci310.service.PasswordAuthentication;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +27,9 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			DatabaseClient db = new DatabaseClient();
-			db.createUser("test1", "test2test");//Here atm for testing purposes as no way to create user
+			PasswordAuthentication passAuth = new PasswordAuthentication();
+			String hashedPass = passAuth.hash("test2test", null, null);
+			db.createUser("test2", hashedPass);//Here atm for testing purposes as no way to create user
 			int result = 0;
 			String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			HttpSession session = request.getSession();
@@ -34,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 			String uname = jo.getString("username");
 			String password =jo.getString("password");
 			
-			result = db.getUser(uname, password);
+			result = db.getUser(passAuth, uname, password);
 			System.out.println(result);
 			
 			if(result == 0) {

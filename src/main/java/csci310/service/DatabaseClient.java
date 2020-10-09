@@ -1,5 +1,6 @@
 package csci310.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -231,7 +232,7 @@ public class DatabaseClient {
 		return portfolio; 
 	}
 	
-	public int getUser(String username, String password) {
+	public int getUser(PasswordAuthentication passAuth, String username, String password) {
 		try {
 			boolean usernameExists = false;
 			boolean correctPassword = false;
@@ -246,21 +247,20 @@ public class DatabaseClient {
 			} 
 			
 			if(usernameExists) {
-				String passwordCheckQuery = "SELECT id FROM User WHERE username=? AND password=?";
+				String passwordCheckQuery = "SELECT id, password FROM User WHERE username=?";
 				PreparedStatement passwordCheck = connection.prepareStatement(passwordCheckQuery);
 				passwordCheck.setString(1, username);
-				passwordCheck.setString(2, password);
 				rs = passwordCheck.executeQuery();
 				int userID = -1;
 				while(rs.next()) {
-					correctPassword = true;
+					String dbPass = rs.getString("password");
+					correctPassword = passAuth.verify(password, dbPass);
 					userID = rs.getInt("id");
 				}
 				if(correctPassword) {
 					// Password is valid (return userID)
 					return userID;
 				} else {
-					// Password is invalid (return 2)
 					// Password is invalid (return -2)
 					return -2;
 				}
@@ -271,6 +271,9 @@ public class DatabaseClient {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// SQLException (return -1)
+			return -1;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 			return -1;
 		}
 	}
