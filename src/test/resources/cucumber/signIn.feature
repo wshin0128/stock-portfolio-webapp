@@ -1,14 +1,14 @@
 Feature: Sign in Page
   Scenario: Sign in with username that does not exist
     Given I am on the sign in page
-    When I enter an invalid username "test2"
+    When I enter an invalid username "test3"
     And I enter any password
     And I click submit on login
     Then I should see the error "No user with this username exists"
     
   Scenario: Sign in with valid username but invalid password
     Given I am on the sign in page
-    When I enter an valid username "test1"
+    When I enter an valid username "test2"
     And I enter an incorrect password "test2test2"
     And I click submit on login
     Then I should see the error "The password you entered is invalid"
