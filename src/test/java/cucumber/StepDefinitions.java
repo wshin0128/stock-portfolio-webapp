@@ -46,7 +46,8 @@ public class StepDefinitions {
 		queryBox.sendKeys(string);
 	}
 	@Then("I should see the error {string}")
-	public void i_should_see_the_error(String string) {
+	public void i_should_see_the_error(String string) throws InterruptedException {
+		Thread.sleep(1000);
 		WebElement errorBox = driver.findElement(By.id("Merror"));
 		assertTrue(string.equalsIgnoreCase(errorBox.getText()));
 	}
