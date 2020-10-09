@@ -37,7 +37,7 @@
 <body>
 	<div class="navbar">
 		<div class="wrap">
-			<h1>USC 310: Stock Portfolio Management</h1>
+			<h1>USC CS 310: Stock Portfolio Management</h1>
 			<a href="signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
 		</div>
 	</div>
