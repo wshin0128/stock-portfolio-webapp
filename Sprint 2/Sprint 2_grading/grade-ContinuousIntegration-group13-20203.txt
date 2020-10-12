@@ -1,0 +1,10 @@
+Best Practice ContinuousIntegration Report
+Owner: group13-20203
+Grade: 6/10
+Comments: 
+Develop branch check build failed: https://github.com/CSCI310/project-20203-group13-20203/commit/a0732dc967875ee2b2229b134c153abc37d8377c
+Develop branch check build failed: https://github.com/CSCI310/project-20203-group13-20203/commit/1366e81b144f346f04db96dadfe7a747b221d474
+Develop branch check build failed: https://github.com/CSCI310/project-20203-group13-20203/commit/5b9a60477ad054cb575eaeb8f6f95d04d0dbf8b6
+Develop branch check build failed: https://github.com/CSCI310/project-20203-group13-20203/commit/2a939fc694db06f8e6ac9eb43f99439d9e9d84e8
+Total successful commits: 21
+Total failing commits: 4
