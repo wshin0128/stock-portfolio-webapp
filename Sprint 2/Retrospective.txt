@@ -1,0 +1,27 @@
+List of meeting participants 
+Cathleen Yang
+Cheyenne Gaima
+Woody Shin
+Manav Kaushik
+Chunyang Mou
+
+What process aspects will be changed? 
+- Make sure that tasks mentioned during meeting are in sync with the Scrum chart
+- Make sure that Scrum chart is being updated accurately with our progress
+- Make sure that documentation for each scrum is pushed immediately after the scrum meeting (even if the zoom link is not ready)
+- For continuous integration, make sure we wait for Travis to run tests before accepting merge request 
+- Do a better job keeping sustainable pace, especially near the end of the sprint when we have last-minute changes/fixes
+- Make sure that we are commenting refactors
+
+What tasks will be added to the product backlog as a result of review feedback?
+1. Prediction of future values of the portfolio 
+    a. Research feasibility of this feature and potentially submit a feasibility study.
+3. Track and visualize changes in value over time of user’s portfolio 
+    a. Implement a single line representing portfolio value and individual lines for each viewed stock (each with a distinct color that corresponds with the ticker symbol in the viewed stocks list)
+6. The application must be secure and protect confidentiality of users’ data. 
+    a. All pages must only be accessible via SSL (https)
+    b. A button present on the UI must log out user and return to login screen
+7. Users must be able to create an account in the system 
+    a. Sign up page must have users input their password twice, error message must be displayed if the passwords do not match 
+8. User interfaces must look modern and be attractive. 
+    a. Choose a better font for website
