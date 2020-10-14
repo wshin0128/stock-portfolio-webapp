@@ -1,0 +1,44 @@
+Sprint backlog:
+1. SignUp integration:
+    a. Make sure our current sign up servlet works
+    b. If not implemented right, fix the servlet
+    c. Update front-end if possible
+    d. Add checks for homepage, login, sign up to see if signed in
+2. Adding stock:
+    a. Link front-end for adding, viewing, and importing stocks to database
+    b. Update front-end when stock is added
+3. Removing stock:
+    a. Implement removing stock from database back-end
+    b. Link front-end for removing stocks from portfolio and viewed stocks list to database
+    c. Update front end when stock is removed
+4. Graph Display:
+    a. Implement graph to show portfolio and viewing stocks
+    b. Show percent change of portfolio value and corresponding triangle
+    c. Use dummy values to test graph
+      i. Time should be java.util.Date;
+      ii. Stock price as long
+5. Importing CSV File:
+    a. Establish correct formatting for CSV file
+    b. Connect front-end to back-end for uploading CSV file
+    c. Show correct error messages when file format is incorrect
+6. Home Page module:
+    a. Add stock function
+      i. Via a stock symbol
+      ii. Via a csv file
+        1. Decide the format of the csv file
+        2. Throw an error message if the file is formatted incorrectly.
+    b. Remove stock function
+    c. Portfolio value prediction function
+      i. Research feasibility of stock portfolio value prediction and submit feasibility report
+    d. Get earnings compare with prev day function
+      i. Returns a percentage
+7. Front-end
+    a. Make homepage resize responsively
+    b. Change font to look nicer
+8. Acceptance Tests
+    a. Create feature files and acceptance tests for all features on product backlog
+    
+Paragraph explanation:
+We felt that the pace we set in our previous sprint was appropriate, so we aimed to get a similar amount of tasks completed by the end of sprint 3. First, we prioritized completing and implementing the signup functionality so that we could start working on linking the current user’s session info to the new home page module. We also planned to connect the front-end of adding, removing, and importing stocks to the database since both sides are completed and just need to be connected together. We felt a priority to get the graph working/close to done as it’s a major component we haven’t touched yet. We also needed a class to handle the functionality of the home page, so we decided to create a dedicated back-end module for it. Based on feedback from our Sprint 2 Review, we will also be changing the font used in our webapp and writing feature files for all of the features in the product backlog.
+
+Meeting Participants: Woody Shin, Mark Zhan, Manav Kaushik, Chunyang Mou, Nandhakumar Saravana
