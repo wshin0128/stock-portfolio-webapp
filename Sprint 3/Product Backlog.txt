@@ -1,0 +1,35 @@
+Product Backlog:
+1. Prediction of future values of the portfolio 
+    a. Compare the historical performance of the stock and make predictions based on the performance.
+    b. Research feasibility of this feature and potentially submit a feasibility study.
+2. Ability to add or remove stocks from the portfolio 
+    a. Two ways of adding stocks:
+      i. Pop up dialog
+      ii. CSV file 
+3. Track and visualize changes in value over time of user’s portfolio 
+    a. Single graph must be displayed for the entire web app 
+      i. Graph must be zoomable 
+      ii. User can choose what unit of time to display on graph
+      iii. All stocks must be toggleable for display on the graph
+      iv. Implement a single line representing portfolio value and individual lines for each viewed stock (each with a distinct color that corresponds with the ticker symbol in the viewed stocks list)
+4. View and compare the historical performance of a stock 
+    a. Only want stocks listed on NASDAQ or NYSE
+    b. Maintain a list of viewed stocks 
+    c. Stocks must be toggleable for display on the graph
+    d. Users can specify start & end date for viewing a stock
+5. Works on the Chrome web browser and mobile devices
+    a. Must resize responsively on mobile device view
+6. The application must be secure and protect confidentiality of users’ data. 
+    a. User signed out under 120 seconds of inactivity
+    b. Only logged in users can access any functionality except for login page or account creation page
+    c. All pages must only be accessible via SSL (https)
+    d. A button present on the UI must log out user and return to login screen
+7. Users must be able to create an account in the system 
+    a. Username must not be taken by another user 
+    b. Sign up page must have users input their password twice, error message must be displayed if the passwords do not match
+    c. User gets redirected to Login page after successful Sign up
+8. User interfaces must look modern and be attractive. 
+    a. Choose a better font for website
+9. Must be implemented as a client-server based web application
+    a. Client side code must be written in html and javascript
+    b. Server side code must be written using java libraries
