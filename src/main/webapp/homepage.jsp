@@ -5,6 +5,8 @@
 	<link rel="stylesheet" href="style.css">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	
 	<script>
 		// Log out user after 120 seconds of inactivity
@@ -50,6 +52,17 @@
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
     					<span id="arrow">&#9650</span>+3.25% Today
 	    			</div>
+	    		</div>
+	    		<form name="getdata" action="/stockperformance" method="post">
+	     		<div class="row justify-content-center" role="group" aria-label="Basic example">
+				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>
+				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>
+				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>
+				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>
+				</div>
+				</form>
+	    		<div class = "graph-main">
+	    		<canvas id="myChart" width="900" height="210"></canvas>
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
@@ -297,6 +310,37 @@
 		viewStockCancelButton.onclick = function() {
 			viewStockModal.style.display = "none";
 		}
+	</script>
+	
+	<!-- Temp graph script, need to change -->
+	<script>
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],
+        datasets: [{
+            label: 'value in $',
+            data: [1200, 1900, 3000, 5000, 2000, 3000],
+            fill: false,
+            borderColor: [
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+    	responsive: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: false
+                }
+            }]
+        }
+        
+    }
+});
 	</script>
 	
 </body>
