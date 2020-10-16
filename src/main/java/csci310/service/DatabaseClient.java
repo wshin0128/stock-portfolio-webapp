@@ -294,4 +294,8 @@ public class DatabaseClient {
 		return true;
 	}
 	
+	public boolean removeStockFromPortfolio(Integer userID, String tickerSymbol) {
+		return false;
+	}
+	
 }

@@ -274,6 +274,51 @@ public class DatabaseClientTest extends Mockito {
 		mockDb.clearDatabase();
 		assertTrue(true);
 	}
+	
+	@Test
+	public void testRemoveStockFromPortfolio() {
+		db.clearDatabase();
+		db.createTable();
+		
+		// create 3 stocks
+		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		// add to stocks to same user Portfolio
+		db.addStockToPortfolio(1234, fb);
+		db.addStockToPortfolio(1234, msft);
+		db.addStockToPortfolio(1234, appl);
+		
+		// first test remove stocks
+		assertTrue(db.removeStockFromPortfolio(1234, "FB"));
+		assertTrue(db.removeStockFromPortfolio(1234, "MSFT"));
+		assertTrue(db.removeStockFromPortfolio(1234, "APPL"));
+		// after removed stock does not exist
+		// so they cannot be removed again
+		assertFalse(db.removeStockFromPortfolio(1234, "FB"));
+		assertFalse(db.removeStockFromPortfolio(1234, "MSFT"));
+		assertFalse(db.removeStockFromPortfolio(1234, "APPL"));
+		
+		// testing with a stock that user does not own
+		assertFalse(db.removeStockFromPortfolio(1234, "NULL"));
+		// testing with a different user should result in false
+		assertFalse(db.removeStockFromPortfolio(2, "APPL"));
+		assertFalse(db.removeStockFromPortfolio(2, "NULL"));
+	}
+	
+	@Test 
+	public void testRemoveStockFromPortfolioThrowsException() {
+		try {
+			Connection mockConn = mock(Connection.class);
+			mockDb.setConnection(mockConn);
+			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+			
+			assertFalse(mockDb.removeStockFromPortfolio(1, "FB"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 
