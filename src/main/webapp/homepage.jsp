@@ -317,7 +317,7 @@
 	
 	var datasetinfo = {
             label: ' Portfolio value in $',
-            data: [1200, 1900, 3000, 5000, 2000, 3000],
+            data: [120, 190, 300, 500, 200, 300],
             fill: false,
             borderColor: [
                 'rgba(255, 99, 132, 1)'  <!-- get a random color here -->
@@ -327,13 +327,15 @@
    
 	var temp = {
             label: 'TSLA value in $',
-            data: [200, 900, 1000, 700, 400, 300],
+            data: [200, 900, 100, 70, 40, 30],
             fill: false,
             borderColor: [
                 'rgba(195, 199, 132, 1)'
             ],
             borderWidth: 1
         }	
+        
+   var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}
 	
    var config = {
     type: 'line',
@@ -356,6 +358,7 @@
   
   config.data.datasets.push(datasetinfo)
   config.data.datasets.push(temp)
+  config.data.datasets.push(apple_from_javafile_output)
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);
