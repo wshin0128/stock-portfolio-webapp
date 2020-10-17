@@ -312,22 +312,34 @@
 		}
 	</script>
 	
-	<!-- Temp graph script, need to change -->
+	<!-- graph script, got the main idea done -->
 	<script>
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],
-        datasets: [{
-            label: 'value in $',
+	
+	var datasetinfo = {
+            label: ' Portfolio value in $',
             data: [1200, 1900, 3000, 5000, 2000, 3000],
             fill: false,
             borderColor: [
-                'rgba(255, 99, 132, 1)'
+                'rgba(255, 99, 132, 1)'  <!-- get a random color here -->
             ],
             borderWidth: 1
-        }]
+        }
+   
+	var temp = {
+            label: 'TSLA value in $',
+            data: [200, 900, 1000, 700, 400, 300],
+            fill: false,
+            borderColor: [
+                'rgba(195, 199, 132, 1)'
+            ],
+            borderWidth: 1
+        }	
+	
+   var config = {
+    type: 'line',
+    data: {
+        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],
+        datasets: []
     },
     options: {
     	responsive: false,
@@ -340,7 +352,15 @@ var myChart = new Chart(ctx, {
         }
         
     }
-});
+  }
+  
+  config.data.datasets.push(datasetinfo)
+  config.data.datasets.push(temp)
+	
+	var ctx = document.getElementById('myChart');
+	var myChart = new Chart(ctx, config);
+	
+	
 	</script>
 	
 </body>
