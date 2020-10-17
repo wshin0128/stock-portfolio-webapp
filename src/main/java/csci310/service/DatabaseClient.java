@@ -108,8 +108,8 @@ public class DatabaseClient {
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
 			int quantity = stock.getQuantity();
-			Integer datePurchased = stock.getBuyDate();
-			Integer dateSold = stock.getSellDate();
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
 			
 			boolean inPortfolio = false;
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
@@ -128,8 +128,8 @@ public class DatabaseClient {
 				createStock.setString(1, name);
 				createStock.setString(2, tickerSymbol);
 				createStock.setInt(3, quantity);
-				createStock.setInt(4, datePurchased);
-				createStock.setInt(5, dateSold);
+				createStock.setLong(4, datePurchased);
+				createStock.setLong(5, dateSold);
 				createStock.setInt(6, userID);
 				createStock.executeUpdate();
 				return true;
@@ -173,8 +173,8 @@ public class DatabaseClient {
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
 			int quantity = stock.getQuantity();
-			Integer datePurchased = stock.getBuyDate();
-			Integer dateSold = stock.getSellDate();
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
 						
 			boolean alreadyViewedStock = false;
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
@@ -193,8 +193,8 @@ public class DatabaseClient {
 				createStock.setString(1, name);
 				createStock.setString(2, tickerSymbol);
 				createStock.setInt(3, quantity);
-				createStock.setInt(4, datePurchased);
-				createStock.setInt(5, dateSold);
+				createStock.setLong(4, datePurchased);
+				createStock.setLong(5, dateSold);
 				createStock.setInt(6, userID);
 				createStock.executeUpdate();
 				return true;
