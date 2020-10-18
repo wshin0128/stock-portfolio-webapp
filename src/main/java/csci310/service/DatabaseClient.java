@@ -320,8 +320,31 @@ public class DatabaseClient {
 	}
 	
 	public boolean removeStockFromViewed(Integer userID, String tickerSymbol) {
-		// shell
-		return false;
+		try {
+			boolean inPortfolio = false;
+			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			checkContainsStock.setInt(1, userID);
+			checkContainsStock.setString(2, tickerSymbol);
+			ResultSet rs = checkContainsStock.executeQuery();
+			while (rs.next()) {
+				// check if user actually owns stock
+				inPortfolio = (rs.getInt(1) != 0);
+			}
+			if (inPortfolio) {
+				String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				deleteStock.setInt(1, userID);
+				deleteStock.setString(2, tickerSymbol);
+				deleteStock.executeUpdate();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException from removeStockFromViewed()");
+			return false;
+		}
 	}
 	
 }
