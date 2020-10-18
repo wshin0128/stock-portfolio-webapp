@@ -36,11 +36,12 @@ public class HomePageModuleTest extends Mockito{
 	
 	@BeforeClass 
 	public static void setUp() {
-		homePageModule = new HomePageModule(mockPortfolio);
 		mockPortfolio = mock(Portfolio.class);
 		stockList = new ArrayList<>();
 		stockList.add(TEST_STOCK_1);
 		stockList.add(TEST_STOCK_2);
+		
+		homePageModule = new HomePageModule(mockPortfolio);
 	}
 	
 	
@@ -82,10 +83,7 @@ public class HomePageModuleTest extends Mockito{
 				// add to total
 				todayTotalDouble += todayPrice;
 				yesterdayTotalDouble += yesterdayPrice;
-			} catch (Exception e) {
-				// Could not fetch the info of this stock, just pass
-				// e.printStackTrace();
-				System.out.println("Could not fetch price of stock symbol: " + stock.getTicker());			
+			} catch (Exception e) {			
 			}
 		}
 		// Calculate change percentage
