@@ -1,6 +1,7 @@
 package csci310.service;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 enum Resolution { Daily, Weekly, Monthly}; 
 
 /**
+ * Frequency Limit: 
  * Usage: 
  * FinnhubClient client = new FinnhubClient();
  * try {
@@ -33,7 +35,10 @@ enum Resolution { Daily, Weekly, Monthly};
  */
 public class FinnhubClient {
 	//URL for Stock data
-	protected String URL_FORMAT = "https://finnhub.io/api/v1/stock/candle?symbol=%s&resolution=%s&from=%d&to=%d&token=%s";
+	protected String STOCK_PRICE_URL_FORMAT = "https://finnhub.io/api/v1/stock/candle?symbol=%s&resolution=%s&from=%d&to=%d&token=%s";
+	
+	// URL for company profile function
+	protected String COMPANY_PROFILE_URL_FORMAT = "https://finnhub.io/api/v1/stock/profile2?symbol=%s&token=%s";
 	//Key for Stock URL
 	private String API_KEY = "btug69748v6vqmm3nn10";
 	
@@ -53,7 +58,7 @@ public class FinnhubClient {
 			break;
 		}
 		
-		String urlString = String.format(URL_FORMAT, symbol, resolutionString, startTime, endTime, API_KEY);
+		String urlString = String.format(STOCK_PRICE_URL_FORMAT, symbol, resolutionString, startTime, endTime, API_KEY);
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = (ObjectNode) mapper.readTree(jsonObject.toString());
@@ -76,8 +81,19 @@ public class FinnhubClient {
 		return resultMap;
 	}
 	
-	public String getCompanyNameString(String symbolString) {
+	/**
+	 * Get the company name based on the symbol string input 
+	 * @param symbolString ex: "APPL"
+	 * @return ex: "Apple Inc"
+	 * @throws Exception when the fetch fails
+	 */
+	public String getCompanyNameString(String symbolString) throws Exception {
+//		String urlString = String.format(COMPANY_PROFILE_URL_FORMAT, symbolString, API_KEY);
+//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+//		
+//		String name = jsonObject.getString("name");
+//		System.out.println(name);
+//		return name;
 		return null;
-		
 	}
 }

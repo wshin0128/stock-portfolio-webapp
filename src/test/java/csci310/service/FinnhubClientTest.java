@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.junit.Test;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 
 
@@ -38,10 +39,19 @@ public class FinnhubClientTest {
 	public void testGetCompanyNameString() {
         String appleSymbolString = "AAPL";
         String appleCompanyString = "Apple Inc";
-        assertEquals(appleCompanyString, finnhubClient.getCompanyNameString(appleSymbolString));
+        try {
+			assertEquals(appleCompanyString, finnhubClient.getCompanyNameString(appleSymbolString));
+		} catch (Exception e) {
+			fail();
+		}
         
-        String randomString = "abc";
-        assertNull(finnhubClient.getCompanyNameString(randomString));
+        String randomString = "abcdefg";
+        try {
+			finnhubClient.getCompanyNameString(randomString);
+			fail();
+		} catch (Exception e) {
+			// Pass this test case
+		}
         
 	}
 
