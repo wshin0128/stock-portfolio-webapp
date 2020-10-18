@@ -319,4 +319,9 @@ public class DatabaseClient {
 		}
 	}
 	
+	public boolean removeStockFromViewed(Integer userID, String tickerSymbol) {
+		// shell
+		return false;
+	}
+	
 }
