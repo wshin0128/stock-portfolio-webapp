@@ -75,4 +75,9 @@ public class FinnhubClient {
 		//System.out.println(resultMap);
 		return resultMap;
 	}
+	
+	public String getCompanyNameString(String symbolString) {
+		return null;
+		
+	}
 }
