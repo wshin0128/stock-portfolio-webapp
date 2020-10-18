@@ -88,12 +88,11 @@ public class FinnhubClient {
 	 * @throws Exception when the fetch fails
 	 */
 	public String getCompanyNameString(String symbolString) throws Exception {
-//		String urlString = String.format(COMPANY_PROFILE_URL_FORMAT, symbolString, API_KEY);
-//		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
-//		
-//		String name = jsonObject.getString("name");
-//		System.out.println(name);
-//		return name;
-		return null;
+		String urlString = String.format(COMPANY_PROFILE_URL_FORMAT, symbolString, API_KEY);
+		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
+		
+		String name = jsonObject.getString("name");
+		// System.out.println(name);
+		return name;
 	}
 }
