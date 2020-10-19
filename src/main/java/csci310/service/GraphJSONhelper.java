@@ -43,8 +43,10 @@ public class GraphJSONhelper {
 				  
 			}
 			
-			JSONObject json = new JSONObject();
-			 json.put("label", "Apple value in $");
+			JSONObject json = new JSONObject(); // Make a helper that gets the Stock name
+			String company_name = FC.getCompanyNameString(symbol);
+			company_name = company_name + " value in $";
+			 json.put("label", company_name);
 			 json.put("data", values);
 			 json.put("fill", "false");
 			 int r = rand.nextInt(256);
@@ -68,10 +70,10 @@ public class GraphJSONhelper {
 			
 	}
 	
-	public static void main(String [] args) {
-		GraphJSONhelper G = new GraphJSONhelper();
-		G.StockGraphInfo("AAPL", Resolution.Monthly, 1572566400, 1601942400);
-		
-			
-	}
+//	public static void main(String [] args) {
+//		GraphJSONhelper G = new GraphJSONhelper();
+//		G.StockGraphInfo("AAPL", Resolution.Monthly, 1572566400, 1601942400);
+//		
+//			
+//	}
 }
