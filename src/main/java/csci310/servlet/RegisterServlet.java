@@ -26,7 +26,47 @@ public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+HttpSession session = request.getSession();
 		
+		String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		
+		JSONObject jo = new JSONObject(requestBody);
+		String uname = jo.getString("username");
+		String pass =jo.getString("password");
+		
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		int result = -1;
+		
+		try {
+			String hashedPass = passAuth.hash(pass, null, null);
+			DatabaseClient database = new DatabaseClient();
+			boolean validUser = database.createUser(uname, pass);
+			if (!validUser) {
+				result = 0;
+				session.setAttribute("registered", false);
+			}
+			else {
+				result = 1;
+				session.setAttribute("registered", true);
+				session.setAttribute("logUname", uname);
+				session.setAttribute("logPass", pass);
+			}
+			
+			try {
+				PrintWriter pw = response.getWriter();
+				pw.write("" + result);
+				pw.flush();
+			} catch (IOException e) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				System.out.println("Error");
+				return;
+			}
+			
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+			System.out.println("Error");
+		}
 	}
 
 }
