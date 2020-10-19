@@ -63,7 +63,7 @@ public class HomePageModule {
 			} catch (Exception e) {
 				// Could not fetch the info of this stock, just pass
 				// e.printStackTrace();
-				System.out.println("Could not fetch price of stock symbol: " + stock.getTicker());			
+				System.out.println("Home Page Module: Could not fetch price of stock symbol: " + stock.getTicker());			
 			}
 		}
 		// Calculate change percentage
