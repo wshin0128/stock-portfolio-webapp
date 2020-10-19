@@ -9,6 +9,19 @@
 <title>Sign In</title>
 </head>
 <body id = "start">
+	<%
+		Object login = session.getAttribute("login");
+		boolean loginB = false;
+		if (login != null) {
+			loginB = (boolean) login;
+		}
+		
+		if(loginB){
+			String site = new String("homepage.jsp");
+	         response.setStatus(response.SC_MOVED_TEMPORARILY);
+	         response.setHeader("Location", site);
+		}
+	%>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
