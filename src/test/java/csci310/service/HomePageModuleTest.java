@@ -27,6 +27,7 @@ public class HomePageModuleTest extends Mockito{
 
 	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
 	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", 0, 100, 100);
+	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value", "some dummy value", 1, 100, 100);
 	
 	private static Portfolio portfolio;
 	
@@ -39,6 +40,7 @@ public class HomePageModuleTest extends Mockito{
 	public static void setUp() {
 		portfolio = new Portfolio();
 		portfolio.addStock(TEST_STOCK_1);
+		portfolio.addStock(TEST_STOCK_2);
 		
 		user = new User("jdoe",1);
 		user.setPortfolio(portfolio);
@@ -68,10 +70,10 @@ public class HomePageModuleTest extends Mockito{
 			Calendar cal = Calendar.getInstance();
 			long currentTime = cal.getTimeInMillis() / 1000;
 			cal.add(Calendar.DAY_OF_YEAR, -7);
-			long yesterdayTime = cal.getTimeInMillis() / 1000;
+			long lastWeekTime = cal.getTimeInMillis() / 1000;
 			try {
 				// Get the whole week's data 
-				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily,yesterdayTime, currentTime);
+				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily,lastWeekTime, currentTime);
 				// System.out.println(priceMap);
 				
 				// Fetch the most recent two dates, and their prices
