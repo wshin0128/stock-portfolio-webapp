@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="styles.css">
-<title>Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet"><title>Sign Up</title>
 </head>
 <body>
 	<div class="navbar">

@@ -64,7 +64,7 @@ public class DatabaseClient {
         	createTableStatement.executeUpdate(createViewedStockTable);
         	return true;
         } catch(SQLException e) {
-        	e.printStackTrace();
+        	System.out.println("SQLException from createTable()");
         	return false;
         }
 	}
@@ -93,7 +93,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from createUser()");
 			return false;
 		}
 	}
@@ -139,7 +139,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from addStockToPortfolio()");
 			return false;
 		}
 	}
@@ -161,8 +161,7 @@ public class DatabaseClient {
 				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from getPortfolio()");
 		}
 		return portfolio; 
 	}
@@ -204,7 +203,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from addStockToViewed()");
 			return false;
 		}
 	}
@@ -226,8 +225,7 @@ public class DatabaseClient {
 				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from getViewedStocks()");
 		}
 		return portfolio; 
 	}
@@ -269,11 +267,10 @@ public class DatabaseClient {
 				return 0;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			// SQLException (return -1)
+			System.out.println("SQLException from getUser()");
 			return -1;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			System.out.println("NoSuchAlgorithmException from getUser()");
 			return -1;
 		}
 	}
@@ -288,10 +285,66 @@ public class DatabaseClient {
 			clearDatabase.executeUpdate(clearPortfolioCommand);
 			clearDatabase.executeUpdate(clearViewedStocksCommand);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from clearDatabase()");
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean removeStockFromPortfolio(Integer userID, String tickerSymbol) {
+		try {
+			boolean inPortfolio = false;
+			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			checkContainsStock.setInt(1, userID);
+			checkContainsStock.setString(2, tickerSymbol);
+			ResultSet rs = checkContainsStock.executeQuery();
+			while (rs.next()) {
+				// check if user actually owns stock
+				inPortfolio = (rs.getInt(1) != 0);
+			}
+			if (inPortfolio) {
+				String deleteStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				deleteStock.setInt(1, userID);
+				deleteStock.setString(2, tickerSymbol);
+				deleteStock.executeUpdate();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException from removeStockFromPortfolio()");
+			return false;
+		}
+	}
+	
+	public boolean removeStockFromViewed(Integer userID, String tickerSymbol) {
+		try {
+			boolean inPortfolio = false;
+			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			checkContainsStock.setInt(1, userID);
+			checkContainsStock.setString(2, tickerSymbol);
+			ResultSet rs = checkContainsStock.executeQuery();
+			while (rs.next()) {
+				// check if user actually owns stock
+				inPortfolio = (rs.getInt(1) != 0);
+			}
+			if (inPortfolio) {
+				String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				deleteStock.setInt(1, userID);
+				deleteStock.setString(2, tickerSymbol);
+				deleteStock.executeUpdate();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException from removeStockFromViewed()");
+			return false;
+		}
 	}
 	
 }
