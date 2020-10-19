@@ -2,7 +2,7 @@ package csci310.service;
 
 import static org.junit.Assert.*;
 
-
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -13,10 +13,10 @@ import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import csci310.model.Portfolio;
 import csci310.model.Stock;
+import csci310.model.User;
 
 import org.mockito.Mockito;
 
@@ -27,37 +27,44 @@ public class HomePageModuleTest extends Mockito{
 
 	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
 	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", 0, 100, 100);
-	private static List<Stock> stockList;
 	
-	@Mock
-	private static Portfolio mockPortfolio;
+	private static Portfolio portfolio;
+	
+	private static User user;
 	
 	private static HomePageModule homePageModule;
+	private static DatabaseClient databaseClient;
 	
 	@BeforeClass 
 	public static void setUp() {
-		mockPortfolio = mock(Portfolio.class);
-		stockList = new ArrayList<>();
-		stockList.add(TEST_STOCK_1);
-		stockList.add(TEST_STOCK_2);
+		portfolio = new Portfolio();
+		portfolio.addStock(TEST_STOCK_1);
 		
-		homePageModule = new HomePageModule(mockPortfolio);
+		user = new User("jdoe",1);
+		user.setPortfolio(portfolio);
+		homePageModule = new HomePageModule(user);
+		
+		try {
+			databaseClient = new DatabaseClient();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
 	@Test
 	public void testHomePageModule() {
 		@SuppressWarnings("unused")
-		HomePageModule homePageModuleTemp = new HomePageModule(mockPortfolio);
+		HomePageModule homePageModuleTemp = new HomePageModule(user);
 	}
 
 	@Test
 	public void testGetChangePercentDouble() {
-		when(mockPortfolio.getPortfolio()).thenReturn((ArrayList<Stock>) stockList);
 		FinnhubClient finnhubClient = new FinnhubClient();
 		Double todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
-		for (Stock stock : stockList) {
+		for (Stock stock : portfolio.getPortfolio()) {
 			Calendar cal = Calendar.getInstance();
 			long currentTime = cal.getTimeInMillis() / 1000;
 			cal.add(Calendar.DAY_OF_YEAR, -7);
@@ -90,6 +97,24 @@ public class HomePageModuleTest extends Mockito{
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
 		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+	}
+	
+	@Test
+	public void testAddStock() {
+		// assertFalse(portfolio.contains(TEST_STOCK_2));
+		homePageModule.addStock(TEST_STOCK_2);
+		// assertTrue(portfolio.contains(TEST_STOCK_2));
+		
+		// test updates to database
+	}
+	
+	@Test
+	public void testRemoveStock() {
+		// assertTrue(portfolio.contains(TEST_STOCK_1));
+		homePageModule.removeStock("AAPL");
+		// assertFalse(portfolio.contains(TEST_STOCK_1));
+		
+		// test updates to database
 	}
 
 }
