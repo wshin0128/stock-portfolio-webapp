@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,8 +19,14 @@ import org.json.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import csci310.model.Portfolio;
+import csci310.model.Stock;
+import csci310.model.User;
 import csci310.service.DatabaseClient;
-import csci310.service.PasswordAuthentication;
+import csci310.service.GraphJSONhelper;
+import csci310.service.GraphJSONhelper.Data_and_Labels;
+import csci310.service.HomePageModule;
+import csci310.service.*;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -52,6 +60,35 @@ public class LoginServlet extends HttpServlet {
 			else if(result >= 1) {
 				session.setAttribute("login", true);
 				session.setAttribute("loginID", uname);
+				
+								
+				User u = new User(uname,result);
+				
+				HomePageModule Current_user_module = new HomePageModule(u);
+				
+				Portfolio Current_user_view_portfolio = db.getViewedStocks(result);
+				
+				ArrayList<String> user_view_stocks_graph_info = new ArrayList<String>();
+				ArrayList<String> Labels = null;
+				boolean first_time = true; //need to set labels only once
+				
+				for(Stock s: Current_user_view_portfolio.getPortfolio())
+				{
+					
+					GraphJSONhelper G = new GraphJSONhelper();
+					Data_and_Labels DnL = G.StockGraphInfo(s.getTicker(), ResolutionGetter.Month(), 1572566400, 1601942400); //hard coded dates rn, need to change
+					user_view_stocks_graph_info.add(DnL.Data_Json);
+					
+					if(first_time)
+					{
+						Labels = new ArrayList<String>(DnL.Labels);
+					}
+					
+				}
+				
+				session.setAttribute("GraphData", user_view_stocks_graph_info);
+				session.setAttribute("GraphLabels", Labels);
+				
 			}
 			//Password is incorrect for user
 			else{

@@ -7,10 +7,14 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.json.JSONObject;
 import java.util.Random; 
-
 public class GraphJSONhelper {
+	
+	public class Data_and_Labels{
+		public String Data_Json;
+		public ArrayList<String> Labels;
+	}
 
-	public String StockGraphInfo(String symbol, Resolution resolution, long startTime, long endTime) // need to have another class that passes the x-axis labels to the jsp
+	public Data_and_Labels StockGraphInfo(String symbol, Resolution resolution, long startTime, long endTime) // need to have another class that passes the x-axis labels to the jsp
 	{
 		FinnhubClient FC = new FinnhubClient();
 		Random rand = new Random();
@@ -61,11 +65,16 @@ public class GraphJSONhelper {
 			 
 			 System.out.println(json.toString());
 	          
-			 return json.toString();
+			 Data_and_Labels DnL = new Data_and_Labels();
+			 DnL.Data_Json = json.toString();
+			 DnL.Labels = dates;
+			 
+			 return DnL;
+			 //return json.toString();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "";
+			return null;
 		}
 			
 	}

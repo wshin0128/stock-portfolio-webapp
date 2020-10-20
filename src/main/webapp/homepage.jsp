@@ -336,6 +336,7 @@
             borderWidth: 1
         }	
         
+                
    var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}
 	
    var config = {
