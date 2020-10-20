@@ -109,6 +109,13 @@ public class Stock {
 	
 	@Override
 	public boolean equals(Object o) {
-		return true;
+		Stock s = (Stock) o;
+		return
+			this.name.equals(s.getName()) &&
+			this.ticker.equals(s.getTicker()) &&
+			this.color.equals(s.getColor()) &&
+			this.quantity == s.getQuantity() &&
+			this.buyDate == s.getBuyDate() &&
+			this.sellDate == s.getSellDate();
 	}
 }
