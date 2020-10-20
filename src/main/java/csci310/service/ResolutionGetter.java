@@ -4,6 +4,7 @@ public class ResolutionGetter {
 	
 	public static Resolution Month()
 	{
+		
 		return Resolution.Monthly;
 	}
 

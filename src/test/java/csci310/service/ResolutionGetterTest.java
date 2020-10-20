@@ -8,6 +8,7 @@ public class ResolutionGetterTest {
 
 	@Test
 	public void testMonth() {
+		
 		assertTrue(ResolutionGetter.Month()==Resolution.Monthly);
 	}
 
