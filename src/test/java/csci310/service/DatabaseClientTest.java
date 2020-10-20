@@ -46,9 +46,9 @@ public class DatabaseClientTest extends Mockito {
 		db.createUser("username", "password");
 		db.createUser("username2", "password");
 		
-		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
-		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
-		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock fb = new Stock("Facebook", "FB", null, 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", null, 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		
 		db.addStockToPortfolio(1, fb);
 		db.addStockToPortfolio(1, msft);
@@ -153,7 +153,7 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToPortfolio() {
-		Stock testStock = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock testStock = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		assertTrue(db.addStockToPortfolio(3, testStock));
 		
 		assertFalse(db.addStockToPortfolio(3, testStock));
@@ -167,7 +167,7 @@ public class DatabaseClientTest extends Mockito {
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			
-			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 			assertTrue(mockDb.addStockToPortfolio(3, appl) == false);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -179,9 +179,9 @@ public class DatabaseClientTest extends Mockito {
 		db.clearDatabase();
 		db.createTable();
 		
-		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
-		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
-		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock fb = new Stock("Facebook", "FB", null, 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", null, 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		
 		db.addStockToPortfolio(1, fb);
 		db.addStockToPortfolio(1, msft);
@@ -196,7 +196,7 @@ public class DatabaseClientTest extends Mockito {
 		try {
 			Connection mockConn = mock(Connection.class);
 			mockDb.setConnection(mockConn);
-			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
+			String query = "SELECT name, tickerSymbol, color, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			assertTrue(mockDb.getPortfolio(1).getSize() == 0);
 		} catch (SQLException e) {
@@ -206,7 +206,7 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToViewed() {
-		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		
 		assertTrue(db.addStockToViewed(1, appl));
 		assertFalse(db.addStockToViewed(1, appl));
@@ -220,7 +220,7 @@ public class DatabaseClientTest extends Mockito {
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			
-			Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+			Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 			assertTrue(mockDb.addStockToViewed(3, appl) == false);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -232,9 +232,9 @@ public class DatabaseClientTest extends Mockito {
 		db.clearDatabase();
 		db.createTable();
 		
-		Stock fb = new Stock("Facebook", "FB", 2, 1599027025, 1601619025);
-		Stock msft = new Stock("Microsoft", "MSFT", 2, 1599027025, 1601619025);
-		Stock appl = new Stock("Apple", "APPL", 2, 1599027025, 1601619025);
+		Stock fb = new Stock("Facebook", "FB", null, 2, 1599027025, 1601619025);
+		Stock msft = new Stock("Microsoft", "MSFT", null, 2, 1599027025, 1601619025);
+		Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		
 		db.addStockToViewed(1, fb);
 		db.addStockToViewed(1, msft);
@@ -249,7 +249,7 @@ public class DatabaseClientTest extends Mockito {
 		try {
 			Connection mockConn = mock(Connection.class);
 			mockDb.setConnection(mockConn);
-			String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
+			String query = "SELECT name, tickerSymbol, color, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
 			assertTrue(mockDb.getViewedStocks(1).getSize() == 0);
 		} catch (SQLException e) {
