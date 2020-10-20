@@ -15,7 +15,13 @@ public class ResolutionGetterTest {
 	@Test
 	public void testWeek() {
 		
-		assertTrue(ResolutionGetter.Month()==Resolution.Weekly);
+		assertTrue(ResolutionGetter.Week()==Resolution.Weekly);
+	}
+	
+	@Test
+	public void testDay() {
+		
+		assertTrue(ResolutionGetter.Day()==Resolution.Daily);
 	}
 	
 	

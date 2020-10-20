@@ -13,4 +13,10 @@ public class ResolutionGetter {
 		
 		return Resolution.Weekly;
 	}
+	
+	public static Resolution Day()
+	{
+		
+		return Resolution.Daily;
+	}
 }
