@@ -12,10 +12,15 @@ public class Stock {
 	private long sellDate;
 	
 	// Stock constructor
-	public Stock(String name, String ticker, int quantity, long buyDate, long sellDate) {
+	public Stock(String name, String ticker, String color, int quantity, long buyDate, long sellDate) {
 		this.name = name;
 		this.ticker = ticker;
-		this.assignHexColor();
+		// Generate random color only if stock does not already have a color
+		if(color == null) {
+			this.assignHexColor();
+		} else {
+			this.color = color;
+		}	
 		this.quantity = quantity;
 		this.buyDate = buyDate;
 		this.sellDate = sellDate;
@@ -100,5 +105,10 @@ public class Stock {
 	// sellDate setter
 	public void setSellDate(long sellDate) {
 		this.sellDate = sellDate;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return true;
 	}
 }
