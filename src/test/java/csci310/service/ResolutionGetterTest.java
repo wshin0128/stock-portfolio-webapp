@@ -12,4 +12,11 @@ public class ResolutionGetterTest {
 		assertTrue(ResolutionGetter.Month()==Resolution.Monthly);
 	}
 
+	@Test
+	public void testWeek() {
+		
+		assertTrue(ResolutionGetter.Month()==Resolution.Weekly);
+	}
+	
+	
 }

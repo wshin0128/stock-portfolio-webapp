@@ -8,4 +8,9 @@ public class ResolutionGetter {
 		return Resolution.Monthly;
 	}
 
+	public static Resolution Week()
+	{
+		
+		return Resolution.Weekly;
+	}
 }
