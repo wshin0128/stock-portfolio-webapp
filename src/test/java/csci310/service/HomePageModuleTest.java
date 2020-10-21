@@ -90,8 +90,8 @@ public class HomePageModuleTest extends Mockito{
 				Double yesterdayPrice = priceMap.get(yesterdayDate);
 				
 				// add to total
-				todayTotalDouble += todayPrice;
-				yesterdayTotalDouble += yesterdayPrice;
+				todayTotalDouble += todayPrice * stock.getQuantity();
+				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
 			} catch (Exception e) {			
 			}
 		}
