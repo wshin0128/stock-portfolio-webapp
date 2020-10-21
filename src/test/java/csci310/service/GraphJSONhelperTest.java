@@ -2,6 +2,10 @@ package csci310.service;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.Test;
 
 public class GraphJSONhelperTest {
@@ -24,4 +28,13 @@ public class GraphJSONhelperTest {
 		assertTrue(G.Total_portfolio_Info(null).equals(""));
 	}
 
+	@Test
+	public void testPortfolioInfoParse() {
+		GraphJSONhelper G = new GraphJSONhelper();
+		Map<Date, Double> stock_info = new TreeMap<Date, Double>();
+		Date D = new Date();
+		Double val = (double) 100;
+		stock_info.put(D, val);
+		assertTrue(!G.Total_portfolio_Info(stock_info).equals(""));
+	}
 }

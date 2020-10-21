@@ -51,7 +51,8 @@
 	    		<div class="graph-header">
 	    			<span id="portfolio-value">$1,349.32</span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-    					<span id="arrow">&#9650</span>+3.25% Today
+    					<span id="arrow">&#9650 +3.25% Today</span>
+    					<span id="arrow2">&#128315 -3.25% Today</span>
 	    			</div>
 	    		</div>
 	    		<form name="getdata" action="/stockperformance" method="post">
@@ -63,7 +64,7 @@
 				</div>
 				</form>
 	    		<div class = "graph-main">
-	    		<canvas id="myChart" width="900" height="210"></canvas>
+	    		<canvas id="myChart" width="1800" height="210"></canvas>
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
@@ -298,6 +299,10 @@
 	
 	<!-- View stocks popup box -->
 	<script>
+		
+		
+	
+	
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
 		var viewStockCancelButton = document.getElementById("view-stock-cancel");
@@ -313,36 +318,43 @@
 		}
 	</script>
 	
-	<!-- graph script, got the main idea done -->
+	<!-- graph script, main idea and getting data from session done -->
 	<script>
 	
-	var datasetinfo = {
-            label: ' Portfolio value in $',
-            data: [120, 190, 300, 500, 200, 300],
-            fill: false,
-            borderColor: [
-                'rgba(255, 99, 132, 1)'  <!-- get a random color here -->
-            ],
-            borderWidth: 1
-        }
-   
-	var temp = {
-            label: 'TSLA value in $',
-            data: [200, 900, 100, 70, 40, 30],
-            fill: false,
-            borderColor: [
-                'rgba(195, 199, 132, 1)'
-            ],
-            borderWidth: 1
-        }	
-        
-                
-   var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}
+	var graphdata = <%= (String) session.getAttribute("GraphData") %>
+	var labels = <%= (String) session.getAttribute("GraphLabels") %>
+	var change_per = <%= (Double) session.getAttribute("ChangePercent") %> 
+	var Today_val = <%= (Double) session.getAttribute("TodaysVal") %> 
+	Today_val = Today_val.toFixed(2);
+	change_per = change_per.toFixed(2);
 	
+		console.log(labels);
+     	console.log(change_per);
+     	console.log(Today_val);
+   
+   
+   document.getElementById('portfolio-value').innerHTML = "$" + Today_val;  	
+    
+    if(change_per>=0)
+    {
+    	document.getElementById("arrow2").style.display = "none";
+    	document.getElementById("arrow").innerHTML = "&#9650" + change_per + "% Today"  
+    }
+    else
+    {
+    	document.getElementById("arrow").style.display = "none";
+    	document.getElementById("arrow2").innerHTML = "&#128315" + change_per + "% Today"  
+    }
+    
+   var tester = JSON.parse(graphdata[0]);            
+   var apple_from_javafile_output = {"borderColor":["rgba(120,0,114, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242,79.480003356934,91.199996948242,106.26000213623,129.03999328613,115.80999755859,117.51000213623],"borderWidth":1,"label":"Apple Inc value in $","fill":"false"}
+   console.log(tester)
+   console.log (apple_from_javafile_output)
+   
    var config = {
     type: 'line',
     data: {
-        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],
+        labels: [],
         datasets: []
     },
     options: {
@@ -358,9 +370,16 @@
     }
   }
   
-  config.data.datasets.push(datasetinfo)
-  config.data.datasets.push(temp)
-  config.data.datasets.push(apple_from_javafile_output)
+	for(var i=0; i<graphdata.length; i++)
+	{
+		
+		
+	config.data.datasets.push(JSON.parse(graphdata[i]));	
+		
+	}
+
+  
+  config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);
