@@ -1,8 +1,17 @@
-<%@ page import="csci310.*" %>
+<%@ page import="csci310.*" isELIgnored="false"%>
+
+    
+<%
+	HttpSession s = request.getSession();
+	if(s.getAttribute("login") == "false" || s.getAttribute("login") == null) {
+		response.sendRedirect("signIn.jsp");
+	}
+%>
+
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/style.css">
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
@@ -20,7 +29,7 @@
 		    	// Alert user logout
 		        alert("You have been logged out due to two minutes of inactivity.")
 		        // Redirect to sign in page
-		        location.href = "signIn.jsp";
+		        location.href = "/signIn.jsp";
 		    }
 		    // Reset the timer
 		    function resetTimer() {
@@ -64,25 +73,26 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Add Stock</div>
 	    						<div class="popup-section">
-	    							<form id="add-stock-form">
+	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker">
+	    									<input type="text" id="ticker" name="ticker" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares">
+	    									<input type="number" id="shares" name="shares" required>
+	    									
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
 	    								</div>
 	    								<div class="form-row">
-	    									<span class="error-msg">Test error message</span>
+	    									<span class="error-msg">${errorMessage}</span>
 	    								</div>
 	    								
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
@@ -107,7 +117,7 @@
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
 	    								</div>
-	    								<button type="submit" class="button" id="import-stock-submit">Import Stocks</button>
+	    								<button type="submit" class="button" id="import-stock-submit">Upload File</button>
 	    							</form>
 	    						</div>
 	    						<div class="popup-section">
@@ -244,6 +254,7 @@
 		var addStockModal = document.getElementById("add-stock-modal");
 		var addStockButton = document.getElementById("add-stock-button");
 		var addStockCancelButton = document.getElementById("add-stock-cancel");
+		var errorMessage = '${errorMessage}';
 		
 		// When user clicks add stock button
 		addStockButton.onclick = function() {
@@ -263,6 +274,11 @@
 			} else if (event.target == viewStockModal) {
 				viewStockModal.style.display = "none";
 			}
+		}
+		// If the servlet returns an error message, display popup
+		if(errorMessage != "") {
+			console.log("errorMessage = " + errorMessage);
+			addStockModal.style.display = "flex";
 		}
 	</script>
 	
