@@ -17,5 +17,11 @@ public class GraphJSONhelperTest {
 		GraphJSONhelper G = new GraphJSONhelper();
 		assertTrue(G.StockGraphInfo("AAMBALA", Resolution.Weekly, 1572566400, 1601942400)==null);
 	}
+	
+	@Test
+	public void testPortfolioInfo() {
+		GraphJSONhelper G = new GraphJSONhelper();
+		assertTrue(G.Total_portfolio_Info(null).equals(""));
+	}
 
 }

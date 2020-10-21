@@ -79,6 +79,11 @@ public class GraphJSONhelper {
 			
 	}
 	
+	public String Total_portfolio_Info(Map<Date, Double> StockInfo)
+	{
+		return "";
+	}
+	
 //	public static void main(String [] args) {
 //		GraphJSONhelper G = new GraphJSONhelper();
 //		G.StockGraphInfo("AAPL", Resolution.Monthly, 1572566400, 1601942400);
