@@ -34,10 +34,9 @@ public class AddStockServletTest extends Mockito{
 		when(request.getParameter("date-purchased")).thenReturn("2020-10-10");
 		when(request.getParameter("date-sold")).thenReturn("2020-10-14");
 		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("userID")).thenReturn(1);
-		when(request.getAttribute("colorOverride")).thenReturn("#000000");
-		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+		when(session.getAttribute("userID")).thenReturn(123);
 		
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		
 		// Run servlet
 		AddStockServlet as = new AddStockServlet();
@@ -46,7 +45,7 @@ public class AddStockServletTest extends Mockito{
 		// Make sure there is no error message
 		assertTrue(request.getAttribute("errorMessage") == null);
 		
-		// Make sure stock was added to portfolio
+		// Convert dates
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date datePurchasedObject = dateFormatter.parse("2020-10-10");
 		long datePurchasedUnix = datePurchasedObject.getTime();
@@ -54,11 +53,27 @@ public class AddStockServletTest extends Mockito{
 		long dateSoldUnix = dateSoldObject.getTime();
 		
 		// Check if stock was added to the portfolio
-		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
-		Portfolio port = dbc.getPortfolio(1);
+		Portfolio port = dbc.getPortfolio(123);
 		ArrayList<Stock> p = port.getPortfolio();
-		System.out.println(p.size());
-		assertTrue(p.contains(s));
+		assertTrue(p.get(0).getName().equals("Apple Inc"));
+		assertTrue(p.get(0).getTicker().equals("AAPL"));
+		assertTrue(p.get(0).getQuantity() == 14);
+		assertTrue(p.get(0).getBuyDate() == datePurchasedUnix);
+		assertTrue(p.get(0).getSellDate() == dateSoldUnix);
+		
+		// Run again with color override
+		when(session.getAttribute("userID")).thenReturn(1234);
+		when(request.getAttribute("colorOverride")).thenReturn("#000000");
+		as.doPost(request, response);
+		
+		// Make sure there is no error message
+		assertTrue(request.getAttribute("errorMessage") == null);
+		
+		// Check if stock was added to the portfolio
+		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
+		Portfolio port2 = dbc.getPortfolio(1234);
+		ArrayList<Stock> p2 = port2.getPortfolio();
+		assertTrue(p2.contains(s));
 	}
 	
 	@Test
@@ -89,6 +104,10 @@ public class AddStockServletTest extends Mockito{
 		
 		// Make sure there is an error message
 		verify(request).setAttribute("errorMessage", "Your ticker is invalid");
+		
+		// Check exception catching coverage
+		request = null;
+		as.doPost(request, response);
 	}
 	
 	@Test
