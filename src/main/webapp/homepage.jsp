@@ -5,6 +5,7 @@
 	HttpSession s = request.getSession();
 	if(s.getAttribute("login") == "false" || s.getAttribute("login") == null) {
 		response.sendRedirect("signIn.jsp");
+
 	}
 %>
 
@@ -346,6 +347,9 @@
 	<!-- graph script, main idea and getting data from session done -->
 	<script>
 	
+
+	
+	var isGraph = <%= (String) session.getAttribute("noGraph") %>
 	var graphdata = <%= (String) session.getAttribute("GraphData") %>
 	var labels = <%= (String) session.getAttribute("GraphLabels") %>
 	var change_per = <%= (Double) session.getAttribute("ChangePercent") %> 
@@ -369,6 +373,17 @@
     {
     	document.getElementById("arrow").style.display = "none";
     	document.getElementById("arrow2").innerHTML = "&#128315" + change_per + "% Today"  
+    }
+    
+    if(isGraph==null || isGraph=="")
+    {
+    	
+    }
+    else
+    {
+    	document.getElementById("arrow").style.display = "none";
+    	document.getElementById("arrow2").style.display = "none";
+    	document.getElementById('portfolio-value').innerHTML = "";
     }
     
    var tester = JSON.parse(graphdata[0]);            
