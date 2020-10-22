@@ -1,13 +1,20 @@
-<%@ page import="csci310.*" %>
+<%@ page import="csci310.*" isELIgnored="false"%>
+
+    
+<%
+	HttpSession s = request.getSession();
+	if(s.getAttribute("login") == "false" || s.getAttribute("login") == null) {
+		response.sendRedirect("signIn.jsp");
+	}
+%>
+
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/style.css">
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	
 	<script>
 		// Log out user after 120 seconds of inactivity
@@ -22,7 +29,7 @@
 		    	// Alert user logout
 		        alert("You have been logged out due to two minutes of inactivity.")
 		        // Redirect to sign in page
-		        location.href = "signIn.jsp";
+		        location.href = "/signIn.jsp";
 		    }
 		    // Reset the timer
 		    function resetTimer() {
@@ -54,17 +61,6 @@
     					<span id="arrow">&#9650</span>+3.25% Today
 	    			</div>
 	    		</div>
-	    		<form name="getdata" action="/stockperformance" method="post">
-	     		<div class="row justify-content-center" role="group" aria-label="Basic example">
-				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>
-				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>
-				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>
-				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>
-				</div>
-				</form>
-	    		<div class = "graph-main">
-	    		<canvas id="myChart" width="900" height="210"></canvas>
-	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
 	    	<div class="homepage-container" id="portfolio-container">
@@ -77,25 +73,26 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Add Stock</div>
 	    						<div class="popup-section">
-	    							<form id="add-stock-form">
+	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker">
+	    									<input type="text" id="ticker" name="ticker" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares">
+	    									<input type="number" id="shares" name="shares" required>
+	    									
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
 	    								</div>
 	    								<div class="form-row">
-	    									<span class="error-msg">Test error message</span>
+	    									<span class="error-msg">${errorMessage}</span>
 	    								</div>
 	    								
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
@@ -120,7 +117,7 @@
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
 	    								</div>
-	    								<button type="submit" class="button" id="import-stock-submit">Import Stocks</button>
+	    								<button type="submit" class="button" id="import-stock-submit">Upload File</button>
 	    							</form>
 	    						</div>
 	    						<div class="popup-section">
@@ -257,6 +254,7 @@
 		var addStockModal = document.getElementById("add-stock-modal");
 		var addStockButton = document.getElementById("add-stock-button");
 		var addStockCancelButton = document.getElementById("add-stock-cancel");
+		var errorMessage = '${errorMessage}';
 		
 		// When user clicks add stock button
 		addStockButton.onclick = function() {
@@ -276,6 +274,11 @@
 			} else if (event.target == viewStockModal) {
 				viewStockModal.style.display = "none";
 			}
+		}
+		// If the servlet returns an error message, display popup
+		if(errorMessage != "") {
+			console.log("errorMessage = " + errorMessage);
+			addStockModal.style.display = "flex";
 		}
 	</script>
 	
@@ -311,60 +314,6 @@
 		viewStockCancelButton.onclick = function() {
 			viewStockModal.style.display = "none";
 		}
-	</script>
-	
-	<!-- graph script, got the main idea done -->
-	<script>
-	
-	var datasetinfo = {
-            label: ' Portfolio value in $',
-            data: [120, 190, 300, 500, 200, 300],
-            fill: false,
-            borderColor: [
-                'rgba(255, 99, 132, 1)'  <!-- get a random color here -->
-            ],
-            borderWidth: 1
-        }
-   
-	var temp = {
-            label: 'TSLA value in $',
-            data: [200, 900, 100, 70, 40, 30],
-            fill: false,
-            borderColor: [
-                'rgba(195, 199, 132, 1)'
-            ],
-            borderWidth: 1
-        }	
-        
-   var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}
-	
-   var config = {
-    type: 'line',
-    data: {
-        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],
-        datasets: []
-    },
-    options: {
-    	responsive: false,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: false
-                }
-            }]
-        }
-        
-    }
-  }
-  
-  config.data.datasets.push(datasetinfo)
-  config.data.datasets.push(temp)
-  config.data.datasets.push(apple_from_javafile_output)
-	
-	var ctx = document.getElementById('myChart');
-	var myChart = new Chart(ctx, config);
-	
-	
 	</script>
 	
 </body>
