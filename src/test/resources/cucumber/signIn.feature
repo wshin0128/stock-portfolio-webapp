@@ -48,3 +48,24 @@ Feature: Sign in Page
     And I enter the correct password "test2test"
     And I click submit on login
     Then I should be taken to the home page
+    
+  Scenario: Autoredirect to homepage from signIn after login
+  	Given I am on the sign in page
+    When I enter an valid username "test2"
+    And I enter the correct password "test2test"
+    And I click submit on login
+    And I redirect to sign in
+    Then I should be taken to the home page
+    
+  Scenario: Autoredirect to homepage from signUp after login
+  	Given I am on the sign in page
+    When I enter an valid username "test2"
+    And I enter the correct password "test2test"
+    And I click submit on login
+    And I redirect to sign up
+    Then I should be taken to the home page
+    
+  Scenario: Go to signUp from login
+  	Given I am on the sign in page
+  	When I click on the sign up link
+  	Then I should be taken to sign up

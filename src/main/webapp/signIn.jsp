@@ -9,6 +9,33 @@
 <title>Sign In</title>
 </head>
 <body id = "start">
+	<%
+		Object login = session.getAttribute("login");
+		boolean loginB = false;
+		if (login != null) {
+			loginB = (boolean) login;
+		}
+		
+		if(loginB){
+			String site = new String("homepage.jsp");
+	         response.setStatus(response.SC_MOVED_TEMPORARILY);
+	         response.setHeader("Location", site);
+		}
+		
+		Object reg = session.getAttribute("registered");
+		boolean regB = false;
+		
+		if(reg != null){
+			regB = (boolean)reg;
+		}
+		String user = "";
+		String pass = "";
+		if(regB){
+			user = (String) session.getAttribute("logUname");
+			pass = (String) session.getAttribute("logPass");
+			session.setAttribute("registered", false);
+		}
+	%>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
@@ -19,16 +46,14 @@
 			<h3>Login</h3>
 			<div>
 				<label for="username">Username:</label>
-		    <input type="text" id="username" name="username">
+		    <input type="text" id="username" name="username" value= <%=user %>>
 			</div>
-			<br/>
 			<div>
 				<label for="pass">Password (8 characters minimum):</label>
-				<input type="password" id="pass" name="password">
+				<input type="password" id="pass" name="password" value = <%=pass %>>
 			</div>
-			<br/>
 			<div id="subButton">
-				<button type="submit" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
+				<button type="submit" id="b" class="sign-in-button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In</button>
 			</div>
 			<div id = "signUpLink">
 				<a href = "signup.jsp">Don't have an account? Sign Up!</a>
@@ -54,7 +79,8 @@
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">No user with this username exists</p>";
-				document.querySelector(".login").style.height = "350px";
+				document.querySelector('#b').className = "sign-in-button-error";
+				//document.querySelector(".login").style.height = "350px";
 			}
 			else if(num >= 1){
 				window.location.href = "homepage.jsp"
@@ -66,7 +92,8 @@
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">The password you entered is invalid</p>";
-				document.querySelector(".login").style.height = "350px";
+				document.querySelector('#b').className = "sign-in-button-error";
+				//document.querySelector(".login").style.height = "350px";
 			}
 			
 					
@@ -79,15 +106,17 @@
 			let pass = document.querySelector("#pass").value;
 			
 			if(numFailed > 2){
-				document.querySelector(".sign-in-button").enabled = false;
+				document.querySelector("#b").enabled = false;
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
-				document.querySelector(".login").style.height = "350px";
+				document.querySelector('#b').className = "sign-in-button-error";
+				//document.querySelector(".login").style.height = "350px";
 			}	
 			else if(userName.length < 1){
 				document.body.id = "errorScreen";
 				numFailed++;
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
+				document.querySelector('#b').className = "sign-in-button-error";
 				if(pass.length < 8){
 					document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a username of atleast 1 character as well as a password of atleast 8 characters</p>";
 					
@@ -95,7 +124,7 @@
 				else{
 					document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a username of atleast 1 character</p>";
 				}
-				document.querySelector(".login").style.height = "350px";
+				//document.querySelector(".login").style.height = "350px";
 			}
 			else if(pass.length < 8){
 				document.body.id = "errorScreen";
@@ -103,7 +132,8 @@
 				document.querySelector("#pass").style.borderColor = "#ff0033";
 				document.querySelector("#username").style.borderColor = "#ff0033";
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">Please input a password of atleast 8 characters</p>";
-				document.querySelector(".login").style.height = "350px";
+				document.querySelector('#b').className = "sign-in-button-error";
+				//document.querySelector(".login").style.height = "350px";
 			}
 			else{
 				let httpRequest = new XMLHttpRequest();
