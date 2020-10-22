@@ -371,12 +371,18 @@
     }	
   }	
   	
-  config.data.datasets.push(datasetinfo)	
-  config.data.datasets.push(temp)	
-  config.data.datasets.push(apple_from_javafile_output)	
+	for(var i=0; i<graphdata.length; i++)
+	{
 		
-	var ctx = document.getElementById('myChart');	
-	var myChart = new Chart(ctx, config);	
+		
+	config.data.datasets.push(JSON.parse(graphdata[i]));	
+		
+	}
+  
+  config.data.labels = labels
+	
+	var ctx = document.getElementById('myChart');
+	var myChart = new Chart(ctx, config);
 		
 		
 	</script>
