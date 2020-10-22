@@ -88,6 +88,6 @@ public class HomePageModule {
     }
     
     public ArrayList<Stock> getStockList(){
-    	return null;
+    	return user.getPortfolio().getPortfolio();
     }
 }
