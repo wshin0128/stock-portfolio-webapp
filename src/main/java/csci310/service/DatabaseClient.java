@@ -229,8 +229,8 @@ public class DatabaseClient {
 				String tickerSymbol = rs.getString("tickerSymbol");
 				String color = rs.getString("color");
 				int quantity = rs.getInt("quantity");
-				int datePurchased = rs.getInt("datePurchased");
-				int dateSold = rs.getInt("dateSold");
+				long datePurchased = rs.getLong("datePurchased");
+				long dateSold = rs.getLong("dateSold");
 				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {

@@ -186,25 +186,25 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">View Stock</div>
 	    						<div class="popup-section">
-	    							<form id="view-stock-form">
+	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker">
+	    									<input type="text" id="ticker" name="ticker" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares">
+	    									<input type="number" id="shares" name="shares" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
 	    								</div>
 	    								<div class="form-row">
-	    									<span class="error-msg">Test error message</span>
+	    									<span class="error-msg">${viewStockErrorMessage}</span>
 	    								</div>
 	    								<button type="submit" class="button" id="view-stock-submit">View Stock</button>
 	    							</form>
@@ -315,6 +315,7 @@
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
 		var viewStockCancelButton = document.getElementById("view-stock-cancel");
+		var viewStockErrorMessage = '${viewStockErrorMessage}';
 		
 		// When user clicks add stock button
 		viewStockButton.onclick = function() {
@@ -324,6 +325,11 @@
 		// When user cancels adding a stock
 		viewStockCancelButton.onclick = function() {
 			viewStockModal.style.display = "none";
+		}
+		// If the servlet returns an error message, display popup
+		if(viewStockErrorMessage != "") {
+			console.log("viewStockErrorMessage = " + errorMessage);
+			viewStockModal.style.display = "flex";
 		}
 	</script>
 	
