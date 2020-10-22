@@ -34,7 +34,7 @@ public class AddStockServletTest extends Mockito{
 		when(request.getParameter("date-purchased")).thenReturn("2020-10-10");
 		when(request.getParameter("date-sold")).thenReturn("2020-10-14");
 		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("userID")).thenReturn(8);
+		when(session.getAttribute("userID")).thenReturn(1);
 		when(request.getAttribute("colorOverride")).thenReturn("#000000");
 		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		
@@ -55,8 +55,9 @@ public class AddStockServletTest extends Mockito{
 		
 		// Check if stock was added to the portfolio
 		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
-		Portfolio port = dbc.getPortfolio(8);
+		Portfolio port = dbc.getPortfolio(1);
 		ArrayList<Stock> p = port.getPortfolio();
+		System.out.println(p.size());
 		assertTrue(p.contains(s));
 	}
 	
