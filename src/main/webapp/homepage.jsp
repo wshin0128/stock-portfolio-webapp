@@ -61,6 +61,17 @@
     					<span id="arrow">&#9650</span>+3.25% Today
 	    			</div>
 	    		</div>
+	    		<form name="getdata" action="/stockperformance" method="post">	
+	     		<div class="row justify-content-center" role="group" aria-label="Basic example">	
+				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>	
+				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>	
+				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>	
+				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>	
+				</div>	
+				</form>	
+	    		<div class = "graph-main">	
+	    		<canvas id="myChart" width="900" height="210"></canvas>	
+	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
 	    	<div class="homepage-container" id="portfolio-container">
@@ -314,6 +325,60 @@
 		viewStockCancelButton.onclick = function() {
 			viewStockModal.style.display = "none";
 		}
+	</script>
+	
+	<!-- graph script, got the main idea done -->	
+	<script>	
+		
+	var datasetinfo = {	
+            label: ' Portfolio value in $',	
+            data: [120, 190, 300, 500, 200, 300],	
+            fill: false,	
+            borderColor: [	
+                'rgba(255, 99, 132, 1)'  <!-- get a random color here -->	
+            ],	
+            borderWidth: 1	
+        }	
+   	
+	var temp = {	
+            label: 'TSLA value in $',	
+            data: [200, 900, 100, 70, 40, 30],	
+            fill: false,	
+            borderColor: [	
+                'rgba(195, 199, 132, 1)'	
+            ],	
+            borderWidth: 1	
+        }		
+        	
+   var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}	
+		
+   var config = {	
+    type: 'line',	
+    data: {	
+        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],	
+        datasets: []	
+    },	
+    options: {	
+    	responsive: false,	
+        scales: {	
+            yAxes: [{	
+                ticks: {	
+                    beginAtZero: false	
+                }	
+            }]	
+        }	
+        	
+    }	
+  }	
+  	
+  config.data.datasets.push(datasetinfo)	
+  config.data.datasets.push(temp)	
+  config.data.datasets.push(apple_from_javafile_output)	
+		
+	var ctx = document.getElementById('myChart');	
+	var myChart = new Chart(ctx, config);	
+		
+		
 	</script>
 	
 </body>
