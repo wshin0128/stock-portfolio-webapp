@@ -89,4 +89,8 @@ public class HomePageModule {
     	
     	// deal with the case where stock is not already in portfolio
     }
+    
+    public ArrayList<Stock> getStockList(){
+    	return user.getPortfolio().getPortfolio();
+    }
 }
