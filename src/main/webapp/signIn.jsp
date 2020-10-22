@@ -106,7 +106,7 @@
 			let pass = document.querySelector("#pass").value;
 			
 			if(numFailed > 2){
-				document.querySelector(".sign-in-button").enabled = false;
+				document.querySelector("#b").enabled = false;
 				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
 				document.querySelector('#b').className = "sign-in-button-error";
 				//document.querySelector(".login").style.height = "350px";
