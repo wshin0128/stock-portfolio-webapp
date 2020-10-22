@@ -39,7 +39,7 @@ public class LoginServletTest extends Mockito {
 		writer.flush();
 		
 		int s = Integer.parseInt(stringWriter.toString());
-		assertTrue(true);
+		assertTrue(s >= 1);
 	}
 	
 	//Correct username, incorrect password
@@ -59,7 +59,7 @@ public class LoginServletTest extends Mockito {
 		ls.doPost(request, response);
 		
 		writer.flush();
-		assertTrue(true);
+		assertTrue(stringWriter.toString().contains("-2"));
 	}
 	
 	//Incorrect username
@@ -79,7 +79,7 @@ public class LoginServletTest extends Mockito {
 		ls.doPost(request, response);
 		
 		writer.flush();
-		assertTrue(true);
+		assertTrue(stringWriter.toString().contains("0"));
 	}
 	
 	//Check for IOExceptions
