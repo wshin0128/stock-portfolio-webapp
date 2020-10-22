@@ -12,6 +12,10 @@
 	<servlet-name>addStock</servlet-name>
 	<servlet-class>csci310.servlet.AddStockServlet</servlet-class>
   </servlet>
+  <servlet>
+	<servlet-name>viewStock</servlet-name>
+	<servlet-class>csci310.servlet.ViewStockServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   <servlet-name>login</servlet-name>
   <url-pattern>/api/login</url-pattern>
@@ -19,5 +23,9 @@
   <servlet-mapping>
   	<servlet-name>addStock</servlet-name>
   	<url-pattern>/api/addstock</url-pattern>
-  	</servlet-mapping>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>viewStock</servlet-name>
+  	<url-pattern>/api/viewstock</url-pattern>
+  </servlet-mapping>
 </web-app>
