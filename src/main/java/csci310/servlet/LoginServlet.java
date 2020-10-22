@@ -51,7 +51,8 @@ public class LoginServlet extends HttpServlet {
 			//Valid username and password
 			else if(result >= 1) {
 				session.setAttribute("login", true);
-				session.setAttribute("loginID", uname);
+				session.setAttribute("username", uname);
+				session.setAttribute("userID", result);
 			}
 			//Password is incorrect for user
 			else{

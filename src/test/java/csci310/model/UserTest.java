@@ -25,7 +25,7 @@ public class UserTest {
 	@Test
 	public void testUserPortfolio() {
 		Portfolio p = new Portfolio();
-		Stock s = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
+		Stock s = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
 		p.addStock(s);
 		
 		User testUser = new User("jdoe",1);
