@@ -90,8 +90,15 @@ public class LoginServlet extends HttpServlet {
 				
 				ArrayList<String> user_view_stocks_graph_info = new ArrayList<String>();
 				
+				if(db.getPortfolio(result).getSize() <=0)
+				{
+					System.out.println("empty portfolio");
+					
+				}
+				else
+				{
 				user_view_stocks_graph_info.add(main_portfolio_json);
-				
+				}
 				String Labels = "";
 				boolean first_time = true; //need to set labels only once
 				
@@ -105,7 +112,7 @@ public class LoginServlet extends HttpServlet {
 					
 					
 					
-					Data_and_Labels DnL = G.StockGraphInfo(s.getTicker(), ResolutionGetter.Month(), start_time, curr_time); //hard coded dates and resolution rn, need to change
+					Data_and_Labels DnL = G.StockGraphInfo(s.getTicker(), s.getQuantity(), ResolutionGetter.Month(), start_time, curr_time); //hard coded dates and resolution rn, need to change
 					user_view_stocks_graph_info.add(DnL.Data_Json);
 					
 					if(first_time)
@@ -137,7 +144,7 @@ public class LoginServlet extends HttpServlet {
 				
 				//rn there is nothing as the test user has no viewed stock and portfolio. FOr the moment, I am hard coding view stocks and portfolio 
 				
-				if(Labels.equals(""))
+				if(user_view_stocks_graph_info.size() <=0)
 				{
 					
 					System.out.println("here");
@@ -170,7 +177,7 @@ public class LoginServlet extends HttpServlet {
 					{
 						
 						GraphJSONhelper G = new GraphJSONhelper();
-						Data_and_Labels DnL = G.StockGraphInfo(s.getTicker(), ResolutionGetter.Month(), start_time, curr_time); //hard coded dates rn.
+						Data_and_Labels DnL = G.StockGraphInfo(s.getTicker(), s.getQuantity(),ResolutionGetter.Month(), start_time, curr_time); //hard coded dates rn.
 						view_stocks_test.add(DnL.Data_Json);
 						
 						if(firstTime)

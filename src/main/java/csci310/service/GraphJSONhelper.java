@@ -16,7 +16,7 @@ public class GraphJSONhelper {
 		public String Labels;
 	}
 
-	public Data_and_Labels StockGraphInfo(String symbol, Resolution resolution, long startTime, long endTime) // need to have another class that passes the x-axis labels to the jsp
+	public Data_and_Labels StockGraphInfo(String symbol, int quantity, Resolution resolution, long startTime, long endTime) // need to have another class that passes the x-axis labels to the jsp
 	{
 		FinnhubClient FC = new FinnhubClient();
 		Random rand = new Random();
@@ -43,7 +43,7 @@ public class GraphJSONhelper {
 				 
 				 final_date = month + "/" + day + "/" + year;
 				 dates.add(final_date);
-				 values.add(entry.getValue());
+				 values.add(entry.getValue() * quantity);
 				 
 				 //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 				  
