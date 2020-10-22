@@ -59,8 +59,10 @@ public class HomePageModule {
 				Double yesterdayPrice = priceMap.get(yesterdayDate);
 				
 				// add to total
-				todayTotalDouble += todayPrice * stock.getQuantity();;
-				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();;
+
+				todayTotalDouble += todayPrice * stock.getQuantity();
+				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
+
 			} catch (Exception e) {
 				// Could not fetch the info of this stock, just pass
 				// e.printStackTrace();

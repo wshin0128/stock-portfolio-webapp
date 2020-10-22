@@ -16,9 +16,9 @@ import csci310.model.Stock;
 
 public class GraphingModuleTest {
 	
-	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
-	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", 0, 100, 100);
-	private static final Stock TEST_STOCK_3 = new Stock("IBM Inc", "IBM", 100, 100, 100);
+	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
+	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 100, 100);
+	private static final Stock TEST_STOCK_3 = new Stock("IBM Inc", "IBM", null, 100, 100, 100);
 	
     private static Portfolio portfolio;
 	

@@ -213,6 +213,7 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("GraphData", GraphData);
 				session.setAttribute("GraphLabels", Labels);
 				}
+        
 			}
 			//Password is incorrect for user
 			else{
