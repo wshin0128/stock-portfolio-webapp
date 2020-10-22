@@ -9,7 +9,7 @@ public class StockTest {
 	// Test Stock constructor
 	@Test
 	public void testStock() {
-		Stock s = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
+		Stock s = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
 		assertTrue("Stock names do not match", s.getName() == "Apple Inc");
 		assertTrue("Stock tickers do not match", s.getTicker() == "AAPL");
 		assertTrue("Stock quantities do not match", s.getQuantity() == 21);
@@ -20,7 +20,7 @@ public class StockTest {
 	// Test modifying stocks
 	@Test
 	public void testSetters() {
-		Stock s = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
+		Stock s = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
 		s.setName("Microsoft");
 		s.setTicker("MSFT");
 		s.setColor("#000000");
@@ -38,8 +38,17 @@ public class StockTest {
 	// Test hexColorGenerator()
 	@Test
 	public void testAssignHexColor () {
-		Stock s = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
+		Stock s = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
 		String color = s.assignHexColor();
 		assertTrue("Stock colors do not match", color == s.getColor());
+	}
+	
+	// Test equals
+	@Test
+	public void testEquals() {
+		Stock s1 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
+		Stock s2 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
+		assertTrue(s1.equals(s2));
+		
 	}
 }

@@ -42,18 +42,20 @@ public class DatabaseClient {
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "name TEXT NOT NULL,"
 				+ "tickerSymbol TEXT NOT NULL,"
+				+ "color TEXT NOT NULL,"
 				+ "quantity INTEGER NOT NULL,"
-				+ "datePurchased INTEGER NOT NULL,"
-				+ "dateSold INTEGER NOT NULL,"
+				+ "datePurchased BIGINT NOT NULL,"
+				+ "dateSold BIGINT NOT NULL,"
 				+ "userID INTEGER NOT NULL"
 				+ ");";
 		String createViewedStockTable = "CREATE TABLE IF NOT EXISTS ViewedStocks ("
 				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "name TEXT NOT NULL,"
 				+ "tickerSymbol TEXT NOT NULL,"
+				+ "color TEXT NOT NULL,"
 				+ "quantity INTEGER NOT NULL,"
-				+ "datePurchased INTEGER NOT NULL,"
-				+ "dateSold INTEGER NOT NULL,"
+				+ "datePurchased BIGINT NOT NULL,"
+				+ "dateSold BIGINT NOT NULL,"
 				+ "userID INTEGER NOT NULL"
 				+ ");";
         Statement createTableStatement;
@@ -107,10 +109,11 @@ public class DatabaseClient {
 			// Get stock parameters from Stock object
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
+			String color = stock.getColor();
 			int quantity = stock.getQuantity();
-			Integer datePurchased = stock.getBuyDate();
-			Integer dateSold = stock.getSellDate();
-			
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
+						
 			boolean inPortfolio = false;
 			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
 			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -122,15 +125,16 @@ public class DatabaseClient {
 				inPortfolio = (rs.getInt(1) != 0);
 			}
 			if (!inPortfolio) {
-				String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?,?);";
+				String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+										 + "VALUES(?,?,?,?,?,?,?);";
 				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
 				createStock.setString(1, name);
 				createStock.setString(2, tickerSymbol);
-				createStock.setInt(3, quantity);
-				createStock.setInt(4, datePurchased);
-				createStock.setInt(5, dateSold);
-				createStock.setInt(6, userID);
+				createStock.setString(3, color);
+				createStock.setInt(4, quantity);
+				createStock.setLong(5, datePurchased);
+				createStock.setLong(6, dateSold);
+				createStock.setInt(7, userID);
 				createStock.executeUpdate();
 				return true;
 			} else {
@@ -146,7 +150,7 @@ public class DatabaseClient {
 	
 	public Portfolio getPortfolio(Integer userID) {
 		Portfolio portfolio = new Portfolio();
-		String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
+		String query = "SELECT name, tickerSymbol, color, quantity, datePurchased, dateSold FROM Portfolio WHERE userID=?";
 		PreparedStatement getPortfolioStocks;
 		try {
 			getPortfolioStocks = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -155,10 +159,11 @@ public class DatabaseClient {
 			while (rs.next()) {
 				String name = rs.getString("name"); 
 				String tickerSymbol = rs.getString("tickerSymbol");
+				String color = rs.getString("color");
 				int quantity = rs.getInt("quantity");
-				int datePurchased = rs.getInt("datePurchased");
-				int dateSold = rs.getInt("dateSold");
-				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
+				long datePurchased = rs.getLong("datePurchased");
+				long dateSold = rs.getLong("dateSold");
+				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -172,9 +177,10 @@ public class DatabaseClient {
 			// Get stock parameters from Stock object
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
+			String color = stock.getColor();
 			int quantity = stock.getQuantity();
-			Integer datePurchased = stock.getBuyDate();
-			Integer dateSold = stock.getSellDate();
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
 						
 			boolean alreadyViewedStock = false;
 			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
@@ -187,15 +193,16 @@ public class DatabaseClient {
 				alreadyViewedStock = (rs.getInt(1) != 0);
 			}
 			if (!alreadyViewedStock) {
-				String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?,?);";
+				String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+										 + "VALUES(?,?,?,?,?,?,?);";
 				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
 				createStock.setString(1, name);
 				createStock.setString(2, tickerSymbol);
-				createStock.setInt(3, quantity);
-				createStock.setInt(4, datePurchased);
-				createStock.setInt(5, dateSold);
-				createStock.setInt(6, userID);
+				createStock.setString(3, color);
+				createStock.setInt(4, quantity);
+				createStock.setLong(5, datePurchased);
+				createStock.setLong(6, dateSold);
+				createStock.setInt(7, userID);
 				createStock.executeUpdate();
 				return true;
 			} else {
@@ -211,7 +218,7 @@ public class DatabaseClient {
 	
 	public Portfolio getViewedStocks(Integer userID) {
 		Portfolio portfolio = new Portfolio();
-		String query = "SELECT name, tickerSymbol, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
+		String query = "SELECT name, tickerSymbol, color, quantity, datePurchased, dateSold FROM ViewedStocks WHERE userID=?";
 		PreparedStatement getViewedStocks;
 		try {
 			getViewedStocks = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -220,10 +227,11 @@ public class DatabaseClient {
 			while (rs.next()) {
 				String name = rs.getString("name"); 
 				String tickerSymbol = rs.getString("tickerSymbol");
+				String color = rs.getString("color");
 				int quantity = rs.getInt("quantity");
-				int datePurchased = rs.getInt("datePurchased");
-				int dateSold = rs.getInt("dateSold");
-				portfolio.addStock(new Stock(name, tickerSymbol, quantity, datePurchased, dateSold));
+				long datePurchased = rs.getLong("datePurchased");
+				long dateSold = rs.getLong("dateSold");
+				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -292,6 +300,62 @@ public class DatabaseClient {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean removeStockFromPortfolio(Integer userID, String tickerSymbol) {
+		try {
+			boolean inPortfolio = false;
+			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			checkContainsStock.setInt(1, userID);
+			checkContainsStock.setString(2, tickerSymbol);
+			ResultSet rs = checkContainsStock.executeQuery();
+			while (rs.next()) {
+				// check if user actually owns stock
+				inPortfolio = (rs.getInt(1) != 0);
+			}
+			if (inPortfolio) {
+				String deleteStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				deleteStock.setInt(1, userID);
+				deleteStock.setString(2, tickerSymbol);
+				deleteStock.executeUpdate();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException from removeStockFromPortfolio()");
+			return false;
+		}
+	}
+	
+	public boolean removeStockFromViewed(Integer userID, String tickerSymbol) {
+		try {
+			boolean inPortfolio = false;
+			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			checkContainsStock.setInt(1, userID);
+			checkContainsStock.setString(2, tickerSymbol);
+			ResultSet rs = checkContainsStock.executeQuery();
+			while (rs.next()) {
+				// check if user actually owns stock
+				inPortfolio = (rs.getInt(1) != 0);
+			}
+			if (inPortfolio) {
+				String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				deleteStock.setInt(1, userID);
+				deleteStock.setString(2, tickerSymbol);
+				deleteStock.executeUpdate();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException from removeStockFromViewed()");
+			return false;
+		}
 	}
 	
 }
