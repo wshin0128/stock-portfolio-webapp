@@ -13,13 +13,13 @@ public class GraphJSONhelperTest {
 	@Test
 	public void testStockGraphInfo() {
 		GraphJSONhelper G = new GraphJSONhelper();
-		assertTrue(G.StockGraphInfo("AAPL", Resolution.Weekly, 1572566400, 1601942400)!=null);
+		assertTrue(G.StockGraphInfo("AAPL", 1,Resolution.Weekly, 1572566400, 1601942400)!=null);
 	}
 	
 	@Test
 	public void testStockGraphInfoWrongInput() {
 		GraphJSONhelper G = new GraphJSONhelper();
-		assertTrue(G.StockGraphInfo("AAMBALA", Resolution.Weekly, 1572566400, 1601942400)==null);
+		assertTrue(G.StockGraphInfo("AAMBALA", 1,Resolution.Weekly, 1572566400, 1601942400)==null);
 	}
 	
 	@Test
