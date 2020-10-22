@@ -26,21 +26,20 @@ public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-HttpSession session = request.getSession();
-		
-		String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		
-		JSONObject jo = new JSONObject(requestBody);
-		System.out.println(jo);
-		System.out.println("test");
-
-		String uname = jo.getString("username");
-		String pass =jo.getString("password");
-		System.out.println(uname);
-		PasswordAuthentication passAuth = new PasswordAuthentication();
-		int result = -1;
-		
 		try {
+			HttpSession session = request.getSession();
+			
+			String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+			
+			JSONObject jo = new JSONObject(requestBody);
+			
+			
+			String uname = jo.getString("username");
+			String pass =jo.getString("password");
+			System.out.println(uname);
+			PasswordAuthentication passAuth = new PasswordAuthentication();
+			int result = -1;
+			
 			String hashedPass = passAuth.hash(pass, null, null);
 			DatabaseClient database = new DatabaseClient();
 			boolean validUser = database.createUser(uname, hashedPass);
