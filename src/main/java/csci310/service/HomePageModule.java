@@ -19,6 +19,7 @@ import csci310.model.User;
  */
 public class HomePageModule {
 	private User user;
+	public Double todayTotalDouble;
 	
 	public HomePageModule(User user) {
 		this.user = user;
@@ -32,7 +33,7 @@ public class HomePageModule {
     	Portfolio portfolio = user.getPortfolio();
     	List<Stock> stockList = portfolio.getPortfolio();
     	FinnhubClient finnhubClient = new FinnhubClient();
-		Double todayTotalDouble = 0.0;
+		todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
 		for (Stock stock : stockList) {
 			Calendar cal = Calendar.getInstance();
@@ -58,8 +59,10 @@ public class HomePageModule {
 				Double yesterdayPrice = priceMap.get(yesterdayDate);
 				
 				// add to total
+
 				todayTotalDouble += todayPrice * stock.getQuantity();
 				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
+
 			} catch (Exception e) {
 				// Could not fetch the info of this stock, just pass
 				// e.printStackTrace();
