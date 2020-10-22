@@ -28,8 +28,8 @@ public class LoginServlet extends HttpServlet {
 		try {
 			DatabaseClient db = new DatabaseClient();
 			PasswordAuthentication passAuth = new PasswordAuthentication();
-			String hashedPass = passAuth.hash("test2test", null, null);
-			db.createUser("test2", hashedPass);//Here atm for testing purposes as no way to create user
+			//String hashedPass = passAuth.hash("test2test", null, null);
+			//db.createUser("test2", hashedPass);//Here atm for testing purposes as no way to create user
 			int result = 0;
 			
 			//Takes POST parameters and parses them into JSON String

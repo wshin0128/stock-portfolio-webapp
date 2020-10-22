@@ -84,8 +84,27 @@ input[type=password], input[type=text] {
 	transition: 0.1s;
 	background: #fff;
 }
+
+.sign-in-button-error{
+	text-transform: uppercase;
+	border: 2px solid #FF0033;
+	color: #FF0033;
+	border-radius: 4px;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px 14px;;
+	transition: 0.1s;
+	background: #fff;
+}
+
 .sign-in-button:hover {
 	background-color: #51C58E;
+	color: white;
+}
+
+.sign-in-button-error:hover {
+	background-color: #FF0033;
 	color: white;
 }
 
@@ -104,7 +123,6 @@ input[type=password], input[type=text] {
 	max-width: 75%;
 	color: #444;
 	width: 300px;
-	height: 350px;
 	margin-left: auto;
 	margin-right: auto;
 	background: #fff;
@@ -114,12 +132,35 @@ input[type=password], input[type=text] {
     
 }
 
+.signup{
+	margin-top: 5%;
+	max-width: 75%;
+	color: #444;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+#register{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
 #subButton{
 	padding-top: 15px;
 	text-align: center;
 }
 
 #errorMessage{
+	text-align: center;
+	color: #ff0033;
+}
+
+#eMess{
 	text-align: center;
 	color: #ff0033;
 }

@@ -31,16 +31,19 @@ HttpSession session = request.getSession();
 		String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		
 		JSONObject jo = new JSONObject(requestBody);
+		System.out.println(jo);
+		System.out.println("test");
+
 		String uname = jo.getString("username");
 		String pass =jo.getString("password");
-		
+		System.out.println(uname);
 		PasswordAuthentication passAuth = new PasswordAuthentication();
 		int result = -1;
 		
 		try {
 			String hashedPass = passAuth.hash(pass, null, null);
 			DatabaseClient database = new DatabaseClient();
-			boolean validUser = database.createUser(uname, pass);
+			boolean validUser = database.createUser(uname, hashedPass);
 			if (!validUser) {
 				result = 0;
 				session.setAttribute("registered", false);
