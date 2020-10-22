@@ -1,3 +1,4 @@
+<%@page import="csci310.service.HomePageModule"%>
 <%@ page import="csci310.*" isELIgnored="false"%>
 
     
@@ -146,7 +147,16 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
+	    		
 	    		<table id="stock-list">
+	    		     <% 
+	    		     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+	    		     %>
+	    		     <% for(int i = 0; i < allFestivals.size(); i+=1) { %>
+				        <tr>      
+				            <td><%=allFestivals.get(i).getFestivalName()%></td>
+				        </tr>
+				    <% } %>
 	    			<tr>
 	    				<td>Apple</td>
 	    				<td>AAPL</td>
