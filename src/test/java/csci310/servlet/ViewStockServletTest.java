@@ -77,7 +77,7 @@ public class ViewStockServletTest extends Mockito {
 		
 		// Check if stock was added to the portfolio
 		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
-		Portfolio port2 = dbc.getViewedStocks(1);
+		Portfolio port2 = dbc.getViewedStocks(2);
 		ArrayList<Stock> p2 = port2.getPortfolio();
 		assertTrue(p2.contains(s));
 		
