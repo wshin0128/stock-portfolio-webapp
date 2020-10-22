@@ -116,5 +116,10 @@ public class HomePageModuleTest extends Mockito{
 		
 		// test updates to database
 	}
+	
+	@Test
+	public void testGetStockList() {
+		assertEquals(portfolio.getSize(), homePageModule.getStockList().size());
+	}
 
 }
