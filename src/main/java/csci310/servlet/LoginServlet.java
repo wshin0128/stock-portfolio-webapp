@@ -142,9 +142,9 @@ public class LoginServlet extends HttpServlet {
 					
 					System.out.println("here");
 					
-					Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", 2, (int)start_time, (int)curr_time);
-					Stock TEST_STOCK_2 = new Stock("Tesla Inc", "TSLA", 2, (int)start_time, (int)curr_time);
-					Stock TEST_STOCK_3 = new Stock("IBM Inc", "IBM", 2, (int)start_time, (int)curr_time);
+					Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null ,2, (int)start_time, (int)curr_time);
+					Stock TEST_STOCK_2 = new Stock("Tesla Inc", "TSLA", null,2, (int)start_time, (int)curr_time);
+					Stock TEST_STOCK_3 = new Stock("IBM Inc", "IBM", null ,2, (int)start_time, (int)curr_time);
 					
 					Portfolio test_portfolio = new Portfolio();
 					test_portfolio.addStock(TEST_STOCK_1);
