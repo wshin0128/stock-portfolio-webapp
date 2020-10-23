@@ -224,31 +224,31 @@ public class StepDefinitions {
 
 	@When("I enter a valid Ticker symbol in the Add Stocks popup")
 	public void i_enter_a_valid_Ticker_symbol_in_the_Add_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stocks-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
 	    addStockTicker.sendKeys("AMZN");
 	}
 
 	@When("I enter a valid number of shares in the Add Stocks popup")
 	public void i_enter_a_valid_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stocks-modal #ticker"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter a valid purchase date in the Add Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[3]/input"));
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
 		addStockBuyDate.sendKeys("2020-10-11");
 	}
 
 	@When("I enter a valid sell date in the Add Stocks popup")
 	public void i_enter_a_valid_sell_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[4]/input"));
+		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
 		addStockSellDate.sendKeys("2020-10-15");
 	}
 
 	@When("I click Add Stock")
 	public void i_click_Add_Stock() {
-		WebElement addStockSubmit = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/button"));
+		WebElement addStockSubmit = driver.findElement(By.cssSelector("#add-stock-submit"));
 		addStockSubmit.click();
 	}
 
@@ -261,81 +261,81 @@ public class StepDefinitions {
 
 	@When("I enter an invalid Ticker symbol in the Add Stocks popup")
 	public void i_enter_an_invalid_Ticker_symbol_in_the_Add_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stocks-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
 	    addStockTicker.sendKeys("ADSFSWDZFD");
 	}
 
 	@When("I enter any number of shares in the Add Stocks popup")
 	public void i_enter_any_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[2]/input"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #shares"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter any valid purchase date in the Add Stocks popup")
 	public void i_enter_any_valid_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[3]/input"));
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
 		addStockBuyDate.sendKeys("2020-10-11");
 	}
 
 	@When("I enter any valid sell date in the Add Stocks popup")
 	public void i_enter_any_valid_sell_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[4]/input"));
+		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
 		addStockSellDate.sendKeys("2020-10-15");
 	}
 
 	@Then("I should see the error {string} in the Add Stocks popup")
 	public void i_should_see_the_error_in_the_Add_Stocks_popup(String string) throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[5]/span"));
+		WebElement errorMessage = driver.findElement(By.cssSelector("#add-stock-modal .error-msg"));
 		assertTrue(string.equalsIgnoreCase(errorMessage.getText()));
 	}
 
 	@When("I enter an invalid number of shares in the Add Stocks popup")
 	public void i_enter_an_invalid_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[2]/input"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
 		addStockShares.sendKeys("-2");
 	}
 
 	@When("I enter a sell date before the purchase date in the Add Stocks popup")
 	public void i_enter_a_sell_date_before_the_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[1]/div/div[2]/form/div[4]/input"));
+		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
 		addStockSellDate.sendKeys("2020-10-09");
 	}
 
 	@When("I click Add Stock in the Viewed Stocks box")
 	public void i_click_Add_Stock_in_the_Viewed_Stocks_box() throws InterruptedException {
-		WebElement addStockButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/button"));
+		WebElement addStockButton = driver.findElement(By.cssSelector("#view-stock-submit"));
 		addStockButton.click();
 		Thread.sleep(1000);
 	}
 
 	@When("I enter a valid Ticker symbol in the View Stocks popup")
 	public void i_enter_a_valid_Ticker_symbol_in_the_View_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stocks-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-modal #ticker"));
 	    addStockTicker.sendKeys("AMZN");
 	}
 
 	@When("I enter a valid number of shares in the View Stocks popup")
 	public void i_enter_a_valid_number_of_shares_in_the_View_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[2]/input"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-modal #shares"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter a valid purchase date in the View Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[3]/input"));
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#view-stock-modal #date-purchased"));
 		addStockBuyDate.sendKeys("2020-10-11");
 	}
 
 	@When("I enter a valid sell date in the View Stocks popup")
 	public void i_enter_a_valid_sell_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[4]/input"));
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#view-stock-modal #date-sold"));
 		addStockBuyDate.sendKeys("2020-10-15");
 	}
 
 	@When("I click View Stock")
 	public void i_click_View_Stock() {
-		WebElement viewStockSubmit = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form"));
+		WebElement viewStockSubmit = driver.findElement(By.cssSelector("view-stock-submit"));
 		viewStockSubmit.click();
 	}
 
