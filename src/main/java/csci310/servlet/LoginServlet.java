@@ -80,6 +80,7 @@ public class LoginServlet extends HttpServlet {
 				
 				// Will use this later to find change %
 				HomePageModule Current_user_module = new HomePageModule(u);
+				request.getSession().setAttribute("module", Current_user_module);
 				
 				// This is the portfolio of the user's view stocks
 				Portfolio Current_user_view_portfolio = db.getViewedStocks(result);
@@ -101,7 +102,7 @@ public class LoginServlet extends HttpServlet {
 				}
 				else
 				{
-				user_view_stocks_graph_info.add(main_portfolio_json);
+				    user_view_stocks_graph_info.add(main_portfolio_json);
 				}
 				
 				

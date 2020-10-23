@@ -155,8 +155,6 @@ public class DatabaseClientTest extends Mockito {
 	public void testAddStockToPortfolio() {
 		Stock testStock = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
 		assertTrue(db.addStockToPortfolio(3, testStock));
-		
-		assertFalse(db.addStockToPortfolio(3, testStock));
 	}
 	
 	@Test

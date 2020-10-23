@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import csci310.model.Stock;
 import csci310.service.DatabaseClient;
 import csci310.service.FinnhubClient;
+import csci310.service.HomePageModule;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,7 +19,10 @@ public class AddStockServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		try {		
+		try {
+			// Get homepage module from session
+			HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
+			
 			DatabaseClient dbc = new DatabaseClient();
 			FinnhubClient fc = new FinnhubClient();
 
@@ -67,12 +72,13 @@ public class AddStockServlet extends HttpServlet {
 				if(request.getAttribute("colorOverride") != null) {
 					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
 					dbc.addStockToPortfolio(userID, s);
+					homePageModule.addStock(s);
 				} else {
 					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
 					dbc.addStockToPortfolio(userID, s);
+					homePageModule.addStock(s);
 				}
 			}
-			
 			// Go back to homepage
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
