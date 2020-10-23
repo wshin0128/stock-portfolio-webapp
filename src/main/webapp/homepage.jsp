@@ -370,7 +370,7 @@
 	<script>
 	
 	// Graph variables
-	var isGraph = <%= (String) session.getAttribute("noGraph") %>
+	var isGraph = '<%= (String) session.getAttribute("noGraph") %>'
 	var graphdata = <%= (String) session.getAttribute("GraphData") %>
 	var labels = <%= (String) session.getAttribute("GraphLabels") %>
 	var change_per = <%= (Double) session.getAttribute("ChangePercent") %> 
@@ -396,7 +396,7 @@
     	document.getElementById("arrow2").innerHTML = "\u25BC" + change_per + "% Today"  
     }
     
-    if(isGraph==null || isGraph=="") {}
+    if(isGraph==null || isGraph=="" || isGraph=="null") {}
     else {
     	document.getElementById("arrow").style.display = "none";
     	document.getElementById("arrow2").style.display = "none";
