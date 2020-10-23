@@ -17,6 +17,7 @@ import org.junit.Test;
 import csci310.model.Portfolio;
 import csci310.model.Stock;
 import csci310.model.User;
+import io.cucumber.java.en.Then;
 
 import org.mockito.Mockito;
 
@@ -44,7 +45,7 @@ public class HomePageModuleTest extends Mockito{
 		
 		user = new User("jdoe",1);
 		user.setPortfolio(portfolio);
-		homePageModule = new HomePageModule(user);
+		homePageModule = new HomePageModule(user, new FinnhubClient());
 		
 		try {
 			databaseClient = new DatabaseClient();
@@ -58,11 +59,11 @@ public class HomePageModuleTest extends Mockito{
 	@Test
 	public void testHomePageModule() {
 		@SuppressWarnings("unused")
-		HomePageModule homePageModuleTemp = new HomePageModule(user);
+		HomePageModule homePageModuleTemp = new HomePageModule(user, new FinnhubClient());
 	}
 
 	@Test
-	public void testGetChangePercentDouble() {
+	public void testGetChangePercentDouble() throws Exception {
 		FinnhubClient finnhubClient = new FinnhubClient();
 		Double todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
@@ -92,13 +93,22 @@ public class HomePageModuleTest extends Mockito{
 				// add to total
 				todayTotalDouble += todayPrice * stock.getQuantity();
 				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
-			} catch (Exception e) {			
+			} catch (Exception e) {	
+				
 			}
 		}
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
-		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		if (homePageModule.getChangePercentDouble() != null) assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		
+		// mock exception 
+		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
+		when(mockFinnhubClient.getStockPrice(anyString(), any(Resolution.class), anyLong(), anyLong()))
+			.thenThrow(new Exception ());
+		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient);
+		
+		assertNotNull(homePageModule2.getChangePercentDouble());
 	}
 	
 	@Test
@@ -122,6 +132,11 @@ public class HomePageModuleTest extends Mockito{
 	@Test
 	public void testGetStockList() {
 		assertEquals(portfolio.getSize(), homePageModule.getStockList().size());
+	}
+	
+	@Test
+	public void testGetPortfolioValue() {
+		assertNotNull(homePageModule.getPortfolioValue());
 	}
 
 }
