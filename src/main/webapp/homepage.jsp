@@ -1,3 +1,5 @@
+<%@page import="csci310.model.Stock"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="csci310.service.HomePageModule"%>
 <%@ page import="csci310.*" isELIgnored="false"%>
 
@@ -151,11 +153,23 @@
 	    		<table id="stock-list">
 	    		     <% 
 	    		     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+	    	            ArrayList<Stock> stockList = homePageModule.getStockList();
+	    				System.out.print("homepage: ");
+	    				System.out.println(stockList);
 	    		     %>
-	    		     <% for(int i = 0; i < allFestivals.size(); i+=1) { %>
+	    		     <% for(Stock stock : stockList) { %>
 				        <tr>      
-				            <td><%=allFestivals.get(i).getFestivalName()%></td>
+				            <td><%=stock.getName()%></td>
+				            <td><%=stock.getTicker()%></td>
+				            <td>
+	    					<label class="switch">
+	    						<input type="checkbox" checked>
+							  	<span class="slider round"></span>
+							</label>
+						</td>
+	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
 				        </tr>
+				        
 				    <% } %>
 	    			<tr>
 	    				<td>Apple</td>
