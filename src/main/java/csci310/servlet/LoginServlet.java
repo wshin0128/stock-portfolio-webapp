@@ -92,9 +92,11 @@ public class LoginServlet extends HttpServlet {
 				// I parse the map and create a properly formatted JSON
 				GraphJSONhelper GJH = new GraphJSONhelper();
 				String main_portfolio_json = GJH.Total_portfolio_Info(portfolio_info);
-				
 				// This array list stores all the JSONs that need to be drawn on the graph
 				ArrayList<String> user_view_stocks_graph_info = new ArrayList<String>();	
+				
+				String Labels = "";
+				boolean DidPortfolioHandleLabels = false;
 				if(db.getPortfolio(result).getSize() <=0) //if the user has no portfolio, then dont append portfolio info into graph
 				{
 					System.out.println("empty portfolio");
@@ -103,10 +105,12 @@ public class LoginServlet extends HttpServlet {
 				else
 				{
 				    user_view_stocks_graph_info.add(main_portfolio_json);
+				    Labels = "[\"11/2/2019\",\"12/2/2019\",\"1/2/2020\",\"2/2/2020\",\"3/2/2020\",\"4/2/2020\",\"5/2/2020\",\"6/2/2020\",\"7/2/2020\",\"8/2/2020\",\"9/2/2020\",\"10/2/2020\"]";
+				    DidPortfolioHandleLabels = true;
 				}
 				
 				
-				String Labels = "";
+				
 				boolean first_time = true; //need to set labels only once. The helper function returns a pair of Data points JSON and Labels JSON.
 				
 				//Fills the formatted JSON of Graphing point array list with all Data points of all viewed stocks
