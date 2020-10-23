@@ -93,7 +93,7 @@ public class StepDefinitions {
 	
 	@When("I click submit on login")
 	public void i_click_submit_on_login() throws InterruptedException {
-		WebElement searchButton = driver.findElement(By.className("sign-in-button"));
+		WebElement searchButton = driver.findElement(By.id("b"));
 	    searchButton.click();
 	    Thread.sleep(1000);
 	}
@@ -115,6 +115,30 @@ public class StepDefinitions {
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase("http://localhost:8080/signIn.jsp"));
 	}
 	
+	@When("I redirect to sign in")
+	public void i_redirect_to_sign_in() {
+		driver.get(ROOT_URL+"signIn.jsp");
+	}
+
+	@When("I redirect to sign up")
+	public void i_redirect_to_sign_up() {
+		driver.get(ROOT_URL+"signup.jsp");
+	}
+
+	@When("I click on the sign up link")
+	public void i_click_on_the_sign_up_link() throws InterruptedException {
+		WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"signUpLink\"]/a"));
+	    searchButton.click();
+	    Thread.sleep(1000);
+	}
+
+	@Then("I should be taken to sign up")
+	public void i_should_be_taken_to_sign_up() throws InterruptedException {
+		Thread.sleep(3000);
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signup.jsp"));
+		Thread.sleep(3000);
+	}
+	
 /*************************************************************************/
 	
 	@Given("I am on the sign up page")
@@ -122,33 +146,71 @@ public class StepDefinitions {
 		driver.get(ROOT_URL+"signup.jsp");
 	}
 	
-	@When("I enter an invalid username {string} that already exists")
-	public void i_enter_an_invalid_username_that_already_exists(String string) {
-	    
+	@When("I enter an already used username in SU")
+	public void i_enter_an_already_used_username_in_SU() {
+		WebElement queryBox = driver.findElement(By.id("username"));
+		queryBox.sendKeys("test2");
 	}
-	@When("I enter a password")
-	public void i_enter_a_password() {
-	    
+
+	@When("I enter a password in SU")
+	public void i_enter_a_password_in_SU() {
+		WebElement queryBox = driver.findElement(By.id("password"));
+		queryBox.sendKeys("test2test");
 	}
-	@Then("I should see the invalid username error {string}")
-	public void i_should_see_the_invalid_username_error(String string) {
-	    
+
+	@When("I enter a confirm password in SU")
+	public void i_enter_a_confirm_password_in_SU() {
+		WebElement queryBox = driver.findElement(By.id("confirmpassword"));
+		queryBox.sendKeys("test2test");
 	}
+
+	@When("I click submit in SU")
+	public void i_click_submit_in_SU() throws InterruptedException {
+		WebElement searchButton = driver.findElement(By.className("sign-in-button"));
+	    searchButton.click();
+	    Thread.sleep(1000);
+	}
+
+	@Then("I should see the SU error {string}")
+	public void i_should_see_the_SU_error(String string) throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement errorBox = driver.findElement(By.id("Merror"));
+		assertTrue(string.equalsIgnoreCase(errorBox.getText()));
+	}
+
+	@When("I enter a valid username that does not exist in SU")
+	public void i_enter_a_valid_username_that_does_not_exist_in_SU() {
+		int random = (int)(Math.random() * 10001) + 10000;
+		WebElement queryBox = driver.findElement(By.id("username"));
+		queryBox.sendKeys(""+ random);
+	}
+
+
+	@Then("I should land on the sign in page")
+	public void i_should_land_on_the_sign_in_page() throws InterruptedException {
+		Thread.sleep(3000);
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signIn.jsp"));
+		Thread.sleep(3000);
+	}
+
+	@When("I enter a valid username in SU")
+	public void i_enter_a_valid_username_in_SU() {
+		WebElement queryBox = driver.findElement(By.id("username"));
+		queryBox.sendKeys("test");
+	}
+
+
+	@When("I enter a non-matching password in confirm password in SU")
+	public void i_enter_a_non_matching_password_in_confirm_password_in_SU() {
+		WebElement queryBox = driver.findElement(By.id("confirmpassword"));
+		queryBox.sendKeys("test2test222");
+	}
+
+
+
   
 	/*************************************************************************/
 
-	@When("I enter a valid username {string} that does not exist")
-	public void i_enter_a_valid_username_that_does_not_exist(String string) {
-	   
-	}
-	@When("I enter a valid password {string}")
-	public void i_enter_a_valid_password(String string) {
-	    
-	}
-	@Then("I should land on the homepage")
-	public void i_should_land_on_the_homepage() {
-	    
-	}
 
 	
 	@When("I click Add Stock in the Portfolio box")
