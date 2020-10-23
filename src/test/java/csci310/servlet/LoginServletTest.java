@@ -121,5 +121,50 @@ public class LoginServletTest extends Mockito {
 		}
 
 	}
+	
+	//empty path coverage
+	@Test
+	public void testDoPost5() throws ServletException, IOException {
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		when(request.getSession()).thenReturn(mock(HttpSession.class));
+		BufferedReader reader = new BufferedReader(new StringReader("{\"username\":\"empty\",\"password\":\"12345678\"}"));
+		when(request.getReader()).thenReturn(reader);
+
+		StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+		
+        LoginServlet ls = new LoginServlet();
+		ls.doPost(request, response);
+		
+		writer.flush();
+		
+		int s = Integer.parseInt(stringWriter.toString());
+		assertTrue(s >= 1);
+	}
+	
+	//multiple view stock coverage
+	@Test
+	public void testDoPost6() throws ServletException, IOException {
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		when(request.getSession()).thenReturn(mock(HttpSession.class));
+		BufferedReader reader = new BufferedReader(new StringReader("{\"username\":\"DemoAcc\",\"password\":\"12345678\"}"));
+		when(request.getReader()).thenReturn(reader);
+
+		StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+		
+        LoginServlet ls = new LoginServlet();
+		ls.doPost(request, response);
+		
+		writer.flush();
+		
+		int s = Integer.parseInt(stringWriter.toString());
+		assertTrue(s >= 1);
+	}
+	
 
 }

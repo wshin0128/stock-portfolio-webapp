@@ -124,6 +124,7 @@ public class LoginServlet extends HttpServlet {
 					if(first_time)
 					{
 						Labels = DnL.Labels;
+						first_time = false;
 					}
 					
 				}
@@ -142,12 +143,13 @@ public class LoginServlet extends HttpServlet {
 				System.out.println("Graph data has: " + GraphData);
 				System.out.println("Graph labsls has: " + Labels);
 				
+				
 
 				//I created this for testing purpose when viewstock and portfolio tables were empty. Previously this is what it had:
 				// This will only trigger when the user has no portfolio and new viewed stock
 				//This will add 2 Tesla, Apple and IBM stocks to the view_list and portfolio
 				// Right now: if the user has nothing it makes sure to not graph anything
-				if(user_view_stocks_graph_info.size() <=0 && Labels.equals(""))
+				if(Labels.equals(""))
 				{
 					session.setAttribute("noGraph", "nograph");				
 				}

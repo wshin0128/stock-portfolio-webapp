@@ -391,6 +391,8 @@
 		config.data.datasets.push(JSON.parse(graphdata[i]));	
 	}
 	
+	config.data.labels = labels
+	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);
 			
