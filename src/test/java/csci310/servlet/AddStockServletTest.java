@@ -58,22 +58,22 @@ public class AddStockServletTest extends Mockito{
 		assertTrue(p.get(0).getName().equals("Apple Inc"));
 		assertTrue(p.get(0).getTicker().equals("AAPL"));
 		assertTrue(p.get(0).getQuantity() == 14);
-		//assertTrue(p.get(0).getBuyDate() == datePurchasedUnix);
-//		assertTrue(p.get(0).getSellDate() == dateSoldUnix);
-//		
-//		// Run again with color override
-//		when(session.getAttribute("userID")).thenReturn(1234);
-//		when(request.getAttribute("colorOverride")).thenReturn("#000000");
-//		as.doPost(request, response);
-//		
-//		// Make sure there is no error message
-//		assertTrue(request.getAttribute("errorMessage") == null);
-//		
-//		// Check if stock was added to the portfolio
-//		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
-//		Portfolio port2 = dbc.getPortfolio(1234);
-//		ArrayList<Stock> p2 = port2.getPortfolio();
-//		assertTrue(p2.contains(s));
+		assertTrue(p.get(0).getBuyDate() == datePurchasedUnix);
+		assertTrue(p.get(0).getSellDate() == dateSoldUnix);
+		
+		// Run again with color override
+		when(session.getAttribute("userID")).thenReturn(1234);
+		when(request.getAttribute("colorOverride")).thenReturn("#000000");
+		as.doPost(request, response);
+		
+		// Make sure there is no error message
+		assertTrue(request.getAttribute("errorMessage") == null);
+		
+		// Check if stock was added to the portfolio
+		Stock s = new Stock("Apple Inc", "AAPL", "#000000", 14, datePurchasedUnix, dateSoldUnix);
+		Portfolio port2 = dbc.getPortfolio(1234);
+		ArrayList<Stock> p2 = port2.getPortfolio();
+		assertTrue(p2.contains(s));
 	}
 	
 	@Test
