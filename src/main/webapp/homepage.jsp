@@ -51,6 +51,12 @@
 	
 </head>
 <body>
+    <% 
+    	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+        ArrayList<Stock> stockList = homePageModule.getStockList();
+        double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
+        double portfolioValue = homePageModule.getPortfolioValue();
+    %>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
@@ -62,10 +68,14 @@
     	
 	    	<div class="homepage-container" id="graph-container">
 	    		<div class="graph-header">
-	    			<span id="portfolio-value">$1,349.32</span>
+	    			<span id="portfolio-value">$<%=portfolioValue%></span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-    					<span id="arrow">&#9650 +3.25% Today</span>
-    					<span id="arrow2">&#128315 -3.25% Today</span>
+	    			    <% if (percent > 0) {%>
+				            <span id="arrow">&#9650 +<%=percent %>% Today</span>
+				    	<% } %>
+    					<% if (percent <= 0) {%>
+				            <span id="arrow2">&#128315 <%=percent %>% Today</span>
+				    	<% } %>
 	    			</div>
 	    		</div>
 
@@ -153,12 +163,7 @@
 	    		
 	    		
 	    		<table id="stock-list">
-	    		     <% 
-	    		     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
-	    	            ArrayList<Stock> stockList = homePageModule.getStockList();
-	    				System.out.print("homepage: ");
-	    				System.out.println(stockList);
-	    		     %>
+	    		     
 	    		     <% for(Stock stock : stockList) { %>
 				        <tr>      
 				            <td><%=stock.getName()%></td>
@@ -173,39 +178,7 @@
 				        </tr>
 				        
 				    <% } %>
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+	    		
 	    		</table>
 	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
@@ -381,20 +354,6 @@
 		console.log(labels);
      	console.log(change_per);
      	console.log(Today_val);
-   
-	// Display portfolio value
-	document.getElementById('portfolio-value').innerHTML = "$" + Today_val;  	
-    
-	// If portfolio has positive change, show up triangle
-    if(change_per>=0) {
-    	document.getElementById("arrow2").style.display = "none";
-    	document.getElementById("arrow").innerHTML = "\u25B2" + change_per + "% Today"  
-    }
-	// If portfolio has negative change, show down triangle
-    else {
-    	document.getElementById("arrow").style.display = "none";
-    	document.getElementById("arrow2").innerHTML = "\u25BC" + change_per + "% Today"  
-    }
     
     if(isGraph==null || isGraph=="" || isGraph=="null") {}
     else {
@@ -431,8 +390,6 @@
 	for(var i=0; i<graphdata.length; i++) {
 		config.data.datasets.push(JSON.parse(graphdata[i]));	
 	}
-
-	config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);

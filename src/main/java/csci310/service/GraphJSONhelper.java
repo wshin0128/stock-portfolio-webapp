@@ -10,14 +10,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Random; 
 public class GraphJSONhelper {
-	
+	//Classes to easily hold data elsewhere in class
+	//One string for a JSON string of data
+	//One string for data
 	public class Data_and_Labels{
 		public String Data_Json;
 		public String Labels;
 	}
-
+	// Function that provides a data_and_labels object for a stock
+	// Used when trying to display our graph to homepage.jsp
 	public Data_and_Labels StockGraphInfo(String symbol, int quantity, Resolution resolution, long startTime, long endTime) // need to have another class that passes the x-axis labels to the jsp
 	{
+		//Utilizes finnhub API to get stock info
 		FinnhubClient FC = new FinnhubClient();
 		Random rand = new Random();
 		try {
@@ -58,8 +62,8 @@ public class GraphJSONhelper {
 			 int r = rand.nextInt(256);
 			 int g = rand.nextInt(256);
 			 int b = rand.nextInt(256);
-			 
-			 ArrayList<String> rgb = new ArrayList<String>(); //need to do this because it is the required format in chart.js
+			 // This needs to be done because it is the required format in chart.js
+			 ArrayList<String> rgb = new ArrayList<String>(); 
 			 String rgb_val = "rgba(" + Integer.toString(r) + ',' + Integer.toString(g) + ',' + Integer.toString(b) + ", 1)";
 			 rgb.add(rgb_val);
 			 json.put("borderColor", rgb);
@@ -72,7 +76,7 @@ public class GraphJSONhelper {
 			 DnL.Labels = new JSONArray(dates).toString();
 			 
 			 System.out.println(DnL.Labels);
-			 
+			 //Provides
 			 return DnL;
 			 //return json.toString();
 		} catch (Exception e) {
@@ -81,7 +85,9 @@ public class GraphJSONhelper {
 		}
 			
 	}
-	
+	// This provides total profolio info given a map of stock info
+	// Used when displaying the graph in homepage.jsp
+	// Very similar to function above with some changes
 	public String Total_portfolio_Info(Map<Date, Double> StockInfo)
 	{
 		

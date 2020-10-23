@@ -71,15 +71,19 @@ public class AddStockServlet extends HttpServlet {
 				// Color override (Admin feature, not visible to user)
 				if(request.getAttribute("colorOverride") != null) {
 					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
+					// add stock to database
 					dbc.addStockToPortfolio(userID, s);
+					// add stock to front end
 					homePageModule.addStock(s);
 				} else {
 					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
+					// add stock to database
 					dbc.addStockToPortfolio(userID, s);
+					// add stock to front end
 					homePageModule.addStock(s);
 				}
 			}
-			// Go back to homepage
+			// Go back to homepage page
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
 		} catch (Exception e) {
