@@ -59,11 +59,13 @@ public class ViewStockServletTest extends Mockito {
 		// Check if stock was added to the portfolio
 		Portfolio port = dbc.getViewedStocks(1);
 		ArrayList<Stock> p = port.getPortfolio();
+
 		assertTrue(p.get(0).getName().equals("Apple Inc"));
 		assertTrue(p.get(0).getTicker().equals("AAPL"));
 		assertTrue(p.get(0).getQuantity() == 14);
 		//assertTrue(p.get(0).getBuyDate() == datePurchasedUnix);
 		//assertTrue(p.get(0).getSellDate() == dateSoldUnix);
+
 		
 		// Run again with color override
 		when(session.getAttribute("userID")).thenReturn(2);

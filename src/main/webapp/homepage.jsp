@@ -54,8 +54,10 @@
     <% 
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         ArrayList<Stock> stockList = homePageModule.getStockList();
+        // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
-        double portfolioValue = homePageModule.getPortfolioValue();
+        // chaneg format to xxx.xx
+        double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
     %>
 	<div class="navbar">
 		<div class="wrap">
@@ -346,14 +348,7 @@
 	var isGraph = '<%= (String) session.getAttribute("noGraph") %>'
 	var graphdata = <%= (String) session.getAttribute("GraphData") %>
 	var labels = <%= (String) session.getAttribute("GraphLabels") %>
-	var change_per = <%= (Double) session.getAttribute("ChangePercent") %> 
-	var Today_val = <%= (Double) session.getAttribute("TodaysVal") %> 
-	Today_val = Today_val.toFixed(2);
-	change_per = change_per.toFixed(2);
 	
-		console.log(labels);
-     	console.log(change_per);
-     	console.log(Today_val);
     
     if(isGraph==null || isGraph=="" || isGraph=="null") {}
     else {
