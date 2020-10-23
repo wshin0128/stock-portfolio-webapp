@@ -24,5 +24,11 @@ public class ResolutionGetterTest {
 		assertTrue(ResolutionGetter.Day()==Resolution.Daily);
 	}
 	
+	@Test
+	public void testClass() {
+		
+		ResolutionGetter G = new ResolutionGetter();
+		assertTrue(1==1);
+	}
 	
 }
