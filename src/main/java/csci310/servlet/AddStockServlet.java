@@ -83,8 +83,8 @@ public class AddStockServlet extends HttpServlet {
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
 		} catch (Exception e) {
+			System.out.println("Exception from AddStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
 		}
 	}
 }
