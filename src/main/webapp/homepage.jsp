@@ -88,7 +88,9 @@
 				</div>
 				</form>
 	    		<div class = "graph-main">
-	    		<canvas id="myChart" width="1800" height="210"></canvas>
+	    		<div class="canvas-container">
+	    			<canvas id="myChart" width="300" height="200"></canvas>
+	    		</div>
 
 	    		</div>
 	    	</div> <!-- #graph-container -->
@@ -315,7 +317,6 @@
 	
 	<!-- View stocks popup box -->
 	<script>
-	
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
 		var viewStockCancelButton = document.getElementById("view-stock-cancel");
@@ -341,8 +342,7 @@
 	<!-- graph script, main idea and getting data from session done -->
 	<script>
 	
-
-	
+	// Graph variables
 	var isGraph = <%= (String) session.getAttribute("noGraph") %>
 	var graphdata = <%= (String) session.getAttribute("GraphData") %>
 	var labels = <%= (String) session.getAttribute("GraphLabels") %>
@@ -354,70 +354,46 @@
 		console.log(labels);
      	console.log(change_per);
      	console.log(Today_val);
-   
-   
-   document.getElementById('portfolio-value').innerHTML = "$" + Today_val;  	
     
-    if(change_per>=0)
-    {
-    	document.getElementById("arrow2").style.display = "none";
-    	document.getElementById("arrow").innerHTML = "&#9650" + change_per + "% Today"  
-    }
-    else
-    {
-    	document.getElementById("arrow").style.display = "none";
-    	document.getElementById("arrow2").innerHTML = "&#128315" + change_per + "% Today"  
-    }
-    
-    if(isGraph==null || isGraph=="")
-    {
-    	
-    }
-    else
-    {
+    if(isGraph==null || isGraph=="") {}
+    else {
     	document.getElementById("arrow").style.display = "none";
     	document.getElementById("arrow2").style.display = "none";
     	document.getElementById('portfolio-value').innerHTML = "";
     }
     
-   var tester = JSON.parse(graphdata[0]);            
-   var apple_from_javafile_output = {"borderColor":["rgba(120,0,114, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242,79.480003356934,91.199996948242,106.26000213623,129.03999328613,115.80999755859,117.51000213623],"borderWidth":1,"label":"Apple Inc value in $","fill":"false"}
-   console.log(tester)
-   console.log (apple_from_javafile_output)
+	var tester = JSON.parse(graphdata[0]);            
+	var apple_from_javafile_output = {"borderColor":["rgba(120,0,114, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242,79.480003356934,91.199996948242,106.26000213623,129.03999328613,115.80999755859,117.51000213623],"borderWidth":1,"label":"Apple Inc value in $","fill":"false"}
+	console.log(tester)
+	console.log (apple_from_javafile_output)
    
-   var config = {
-    type: 'line',
-    data: {
-        labels: [],
-        datasets: []
-    },
-    options: {
-    	responsive: false,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: false
-                }
-            }]
-        }
-        
-    }
-  }
+	// Graph options
+	var config = {
+		type: 'line',
+	    data: {
+	        labels: [],
+	        datasets: []
+	    },
+	    options: {
+	    	responsive: true,
+	    	maintainAspectRatio: false,
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero: false
+	                }
+	            }]
+	        }
+	    }
+  	}
   
-	for(var i=0; i<graphdata.length; i++)
-	{
-		
-		
-	config.data.datasets.push(JSON.parse(graphdata[i]));	
-		
+	for(var i=0; i<graphdata.length; i++) {
+		config.data.datasets.push(JSON.parse(graphdata[i]));	
 	}
-
-    config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);
-		
-		
+			
 	</script>
 	
 </body>
