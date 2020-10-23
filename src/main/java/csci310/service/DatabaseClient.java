@@ -124,24 +124,19 @@ public class DatabaseClient {
 				// if this stock already exists in the portfolio of this user
 				inPortfolio = (rs.getInt(1) != 0);
 			}
-			if (!inPortfolio) {
-				String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?,?,?);";
-				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
-				createStock.setString(1, name);
-				createStock.setString(2, tickerSymbol);
-				createStock.setString(3, color);
-				createStock.setInt(4, quantity);
-				createStock.setLong(5, datePurchased);
-				createStock.setLong(6, dateSold);
-				createStock.setInt(7, userID);
-				createStock.executeUpdate();
-				return true;
-			} else {
-				// Can users add stock that already exists in their Portfolio?
-				// should we just overwrite the previous values?
-				return false;
-			}
+			
+			String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+									 + "VALUES(?,?,?,?,?,?,?);";
+			PreparedStatement createStock = connection.prepareStatement(createStockQuery);
+			createStock.setString(1, name);
+			createStock.setString(2, tickerSymbol);
+			createStock.setString(3, color);
+			createStock.setInt(4, quantity);
+			createStock.setLong(5, datePurchased);
+			createStock.setLong(6, dateSold);
+			createStock.setInt(7, userID);
+			createStock.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

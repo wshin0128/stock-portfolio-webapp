@@ -80,6 +80,7 @@ public class HomePageModule {
     	// add stock to database.
     	
         // deal with the case where stock is already in portfolio
+    	user.getPortfolio().getPortfolio().add(stock);
     }
     
     
