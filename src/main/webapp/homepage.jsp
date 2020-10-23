@@ -51,6 +51,12 @@
 	
 </head>
 <body>
+    <% 
+    	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+        ArrayList<Stock> stockList = homePageModule.getStockList();
+        double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
+        double portfolioValue = homePageModule.getPortfolioValue();
+    %>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
@@ -62,10 +68,14 @@
     	
 	    	<div class="homepage-container" id="graph-container">
 	    		<div class="graph-header">
-	    			<span id="portfolio-value">$1,349.32</span>
+	    			<span id="portfolio-value">$<%=portfolioValue%></span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-    					<span id="arrow">&#9650 +3.25% Today</span>
-    					<span id="arrow2">&#128315 -3.25% Today</span>
+	    			    <% if (percent > 0) {%>
+				            <span id="arrow">&#9650 +<%=percent %>% Today</span>
+				    	<% } %>
+    					<% if (percent <= 0) {%>
+				            <span id="arrow2">&#128315 <%=percent %>% Today</span>
+				    	<% } %>
 	    			</div>
 	    		</div>
 
@@ -151,12 +161,7 @@
 	    		
 	    		
 	    		<table id="stock-list">
-	    		     <% 
-	    		     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
-	    	            ArrayList<Stock> stockList = homePageModule.getStockList();
-	    				System.out.print("homepage: ");
-	    				System.out.println(stockList);
-	    		     %>
+	    		     
 	    		     <% for(Stock stock : stockList) { %>
 				        <tr>      
 				            <td><%=stock.getName()%></td>
@@ -171,39 +176,7 @@
 				        </tr>
 				        
 				    <% } %>
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+	    		
 	    		</table>
 	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
@@ -342,9 +315,6 @@
 	
 	<!-- View stocks popup box -->
 	<script>
-		
-		
-	
 	
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
@@ -442,7 +412,7 @@
 		
 	}
 
-  config.data.labels = labels
+    config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config);
