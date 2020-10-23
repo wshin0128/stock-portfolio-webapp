@@ -19,6 +19,9 @@ import csci310.model.User;
  */
 public class HomePageModule {
 	private User user;
+	
+	double portfolioValue = 0;
+	
 	public Double todayTotalDouble;
 	
 	public HomePageModule(User user) {
@@ -38,8 +41,14 @@ public class HomePageModule {
 		for (Stock stock : stockList) {
 			Calendar cal = Calendar.getInstance();
 			long currentTime = cal.getTimeInMillis() / 1000;
+
 			cal.add(Calendar.DAY_OF_YEAR, -7);
 			long yesterdayTime = cal.getTimeInMillis() / 1000;
+			
+            if (yesterdayTime > stock.getSellDate()) {
+            	// if the stock is sold before yesterday, do not calculate that
+            	continue;
+            }
 			try {
 				// Get the whole week's data 
 				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily,yesterdayTime, currentTime);
@@ -71,15 +80,13 @@ public class HomePageModule {
 		}
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
+		portfolioValue = todayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
 		return changePercentageDouble;
     }
     
     public void addStock(Stock stock) {
-    	// add stock to portfolio in page module
-    	// add stock to database.
-    	
-        // deal with the case where stock is already in portfolio
+    	// add stock to portfolio in homepage module
     	user.getPortfolio().getPortfolio().add(stock);
     }
     
@@ -93,5 +100,9 @@ public class HomePageModule {
     
     public ArrayList<Stock> getStockList(){
     	return user.getPortfolio().getPortfolio();
+    }
+    
+    public double getPortfolioValue() {
+		return portfolioValue;
     }
 }
