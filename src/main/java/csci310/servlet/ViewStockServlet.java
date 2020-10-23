@@ -83,8 +83,8 @@ public class ViewStockServlet extends HttpServlet {
 			return;
 			
 		} catch (Exception e) {
+			System.out.println("Exception from ViewStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
 		}
 	}
 }

@@ -66,7 +66,7 @@ public class DatabaseClient {
         	createTableStatement.executeUpdate(createViewedStockTable);
         	return true;
         } catch(SQLException e) {
-        	e.printStackTrace();
+        	System.out.println("SQLException from DatabaseClient.createTable()");
         	return false;
         }
 	}
@@ -95,7 +95,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.createUser()");
 			return false;
 		}
 	}
@@ -138,7 +138,7 @@ public class DatabaseClient {
 			createStock.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.addStockToPortfolio()");
 			return false;
 		}
 	}
@@ -161,8 +161,7 @@ public class DatabaseClient {
 				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.getPortfolio()");
 		}
 		return portfolio; 
 	}
@@ -206,7 +205,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.addStockToViewed()");
 			return false;
 		}
 	}
@@ -229,8 +228,7 @@ public class DatabaseClient {
 				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.getViewedStocks()");
 		}
 		return portfolio; 
 	}
@@ -272,11 +270,10 @@ public class DatabaseClient {
 				return 0;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			// SQLException (return -1)
+			System.out.println("SQLException from DatabaseClient.getUser()");
 			return -1;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			System.out.println("NoSuchAlgorithmException from DatabaseClient.getUser()");
 			return -1;
 		}
 	}
@@ -291,7 +288,7 @@ public class DatabaseClient {
 			clearDatabase.executeUpdate(clearPortfolioCommand);
 			clearDatabase.executeUpdate(clearViewedStocksCommand);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.clearDatabase()");
 			return false;
 		}
 		return true;
@@ -320,7 +317,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException from removeStockFromPortfolio()");
+			System.out.println("SQLException from DatabaseClient.removeStockFromPortfolio()");
 			return false;
 		}
 	}
@@ -348,7 +345,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException from removeStockFromViewed()");
+			System.out.println("SQLException from DatabaseClient.removeStockFromViewed()");
 			return false;
 		}
 	}

@@ -76,8 +76,7 @@ public class GraphJSONhelper {
 			 return DnL;
 			 //return json.toString();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception from GraphJSONhelper.Data_and_Labels StockGraphInfo()");
 			return null;
 		}
 			

@@ -65,9 +65,8 @@ public class RegisterServlet extends HttpServlet {
 			}
 			
 		} catch (Exception e) {
+			System.out.println("Exception from RegisterServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
-			System.out.println("Error");
 		}
 	}
 
