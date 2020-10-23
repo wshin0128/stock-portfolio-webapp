@@ -23,9 +23,11 @@ public class HomePageModule {
 	double portfolioValue = 0;
 	
 	public Double todayTotalDouble;
+	private final FinnhubClient finnhubClient;
 	
-	public HomePageModule(User user) {
+	public HomePageModule(User user, FinnhubClient finnhubClient) {
 		this.user = user;
+		this.finnhubClient = finnhubClient;
 	}
 	
 	/**
@@ -35,7 +37,7 @@ public class HomePageModule {
     public Double getChangePercentDouble() {
     	Portfolio portfolio = user.getPortfolio();
     	List<Stock> stockList = portfolio.getPortfolio();
-    	FinnhubClient finnhubClient = new FinnhubClient();
+    	
 		todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
 		for (Stock stock : stockList) {
