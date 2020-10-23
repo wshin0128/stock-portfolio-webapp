@@ -8,8 +8,32 @@
 	  <servlet-name>login</servlet-name>
 	  <servlet-class>csci310.servlet.LoginServlet</servlet-class>
   </servlet>
+  <servlet>
+	  <servlet-name>register</servlet-name>
+	  <servlet-class>csci310.servlet.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet>
+	<servlet-name>addStock</servlet-name>
+	<servlet-class>csci310.servlet.AddStockServlet</servlet-class>
+  </servlet>
+  <servlet>
+	<servlet-name>viewStock</servlet-name>
+	<servlet-class>csci310.servlet.ViewStockServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   <servlet-name>login</servlet-name>
   <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  <servlet-name>register</servlet-name>
+  <url-pattern>/api/reg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>addStock</servlet-name>
+  	<url-pattern>/api/addstock</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>viewStock</servlet-name>
+  	<url-pattern>/api/viewstock</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -25,9 +25,9 @@ import org.mockito.Mockito;
 public class HomePageModuleTest extends Mockito{
 	
 
-	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", 21, 946368000, 1609142400);
-	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", 0, 100, 100);
-	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value", "some dummy value", 1, 100, 100);
+	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
+	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 100, 100);
+	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value", "some dummy value", null, 1, 100, 100);
 	
 	private static Portfolio portfolio;
 	
@@ -90,8 +90,8 @@ public class HomePageModuleTest extends Mockito{
 				Double yesterdayPrice = priceMap.get(yesterdayDate);
 				
 				// add to total
-				todayTotalDouble += todayPrice;
-				yesterdayTotalDouble += yesterdayPrice;
+				todayTotalDouble += todayPrice * stock.getQuantity();
+				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
 			} catch (Exception e) {			
 			}
 		}
@@ -117,6 +117,11 @@ public class HomePageModuleTest extends Mockito{
 		// assertFalse(portfolio.contains(TEST_STOCK_1));
 		
 		// test updates to database
+	}
+	
+	@Test
+	public void testGetStockList() {
+		assertEquals(portfolio.getSize(), homePageModule.getStockList().size());
 	}
 
 }
