@@ -1,0 +1,7 @@
+Best Practice ContinuousIntegration Report
+Owner: TeamZ
+Grade: 9/10
+Comments: 
+Develop branch check build failed: https://github.com/CSCI310/project-20203b-groupz-20203/commit/f7327cb8d5942f32c575471cbd0940cc29ecbe7f
+Total successful commits: 29
+Total failing commits: 1
