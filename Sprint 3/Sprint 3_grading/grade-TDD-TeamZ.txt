@@ -1,0 +1,11 @@
+Best Practice TDD Report
+Owner: TeamZ
+Grade: 8.7/10
+Comments: 
+	No test method found for: graphjsonhelper.total_portfolio_info
+		Commit: https://github.com/CSCI310/project-20203b-groupz-20203/commit/7dcd04cef65d71ab2d88a0d7e28d59dfea96ca90
+	No test method found for: graphjsonhelper.main
+		Commit: https://github.com/CSCI310/project-20203b-groupz-20203/commit/5f71bce4372705fc593c3f9eb0a8f2737c1d0861
+Correct TDD methods: 13
+Incorrect TDD methods: 2
+Total methods evaluated for TDD: 15
