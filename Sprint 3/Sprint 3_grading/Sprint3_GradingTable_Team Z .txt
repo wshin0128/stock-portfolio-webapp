@@ -1,0 +1,21 @@
+			Grading Table - Team Z 
+
+| Section                  | Grade               | Note                          |
+|--------------------------|---------------------|-------------------------------|
+| Sprint Planning          | 9.0/9               | Really good work. Keep it up! |
+| Scrums                   | 25.0/25             | Scrum 1:Good job!             |
+|                          |                     | Scrum 2:Good job !!           |
+|                          |                     | Scrum 3:Really good charts    |
+|                          |                     | Scrum 4:Good work             |
+|                          |                     | Scrum 5:Overall great work!   |
+| Retrospective            | TBD                 |                               |
+| TDD                      | 8.7/10              |                               |
+| Sustainable Pace         | 8/10                |                               |
+| GitFlow                  | 10/10               |                               |
+| Continuous Integration   | 9/10                |                               |
+| Refactor                 | 10/10               |                               |
+| Coverage                 | 9.9/10              |                               |
+| ------------------------ | ------------------- |                               |
+| Total                    | 42.7                |                               |
+| ------------------------ | ------------------- |                               |
+| Implementation Score     | 83/250              |                               |
