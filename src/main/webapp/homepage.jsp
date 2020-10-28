@@ -1,3 +1,13 @@
+<%@page import="org.json.JSONArray"%>
+<%@page import="csci310.service.GraphJSONhelper.Data_and_Labels"%>
+<%@page import="csci310.service.GraphJSONhelper"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="csci310.service.Resolution"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Map"%>
+<%@page import="csci310.service.GraphingModule"%>
+<%@page import="csci310.service.DatabaseClient"%>
+<%@page import="csci310.model.Portfolio"%>
 <%@page import="csci310.model.Stock"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="csci310.service.HomePageModule"%>
@@ -53,11 +63,65 @@
 <body>
     <% 
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+        DatabaseClient db = new DatabaseClient();
         ArrayList<Stock> stockList = homePageModule.getStockList();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         // chaneg format to xxx.xx
         double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
+        
+        // Calculate graph data
+        // Calculate start time and current time
+        long curr_time = System.currentTimeMillis() / 1000L;
+		Calendar date= Calendar.getInstance();
+	    date.add(Calendar.MONTH, -12); 
+	    //12 months before now
+	    long start_time =  date.getTimeInMillis() / 1000L;
+	    
+        int userID = (int) session.getAttribute("userID");
+        Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
+        GraphingModule GMM = new GraphingModule();
+		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), Resolution.Monthly, start_time,curr_time);
+		
+		// Parse owned stock portfolio info into string
+		GraphJSONhelper GJH = new GraphJSONhelper();
+		String main_portfolio_json = GJH.Total_portfolio_Info(portfolio_info);
+		
+		ArrayList<String> userGraphInfo = new ArrayList<String>();	
+		String Labels = "";
+		if(db.getPortfolio(userID).getSize() <=0) //if the user has no portfolio, then dont append portfolio info into graph
+		{
+			System.out.println("empty portfolio");
+			
+		}
+		else
+		{
+		    userGraphInfo.add(main_portfolio_json);
+		    // Initialize labels
+		    Labels = "[\"11/2/2019\",\"12/2/2019\",\"1/2/2020\",\"2/2/2020\",\"3/2/2020\",\"4/2/2020\",\"5/2/2020\",\"6/2/2020\",\"7/2/2020\",\"8/2/2020\",\"9/2/2020\",\"10/2/2020\"]";
+		}
+        // Calculate labels
+        boolean first_time = true; //need to set labels only once. The helper function returns a pair of Data points JSON and Labels JSON.
+				
+		//Fills the formatted JSON of Graphing point array list with all Data points of all viewed stocks
+		for(Stock stock: Current_user_view_portfolio.getPortfolio())
+		{
+			
+			GraphJSONhelper G = new GraphJSONhelper();
+			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), Resolution.Monthly, start_time, curr_time); //hard coded dates and resolution rn, need to change
+			userGraphInfo.add(DnL.Data_Json);
+			
+			if(first_time)
+			{
+				Labels = DnL.Labels;
+				first_time = false;
+			}
+			
+		}
+		String GraphData = new JSONArray(userGraphInfo).toString();
+		
+        // Calculate isgraph
+        boolean isGraph = Labels.equals("") ? false : true;
     %>
 	<div class="navbar">
 		<div class="wrap">
@@ -345,17 +409,9 @@
 	<script>
 	
 	// Graph variables
-	var isGraph = '<%= (String) session.getAttribute("noGraph") %>'
-	var graphdata = <%= (String) session.getAttribute("GraphData") %>
-	var labels = <%= (String) session.getAttribute("GraphLabels") %>
-	
-    
-    if(isGraph==null || isGraph=="" || isGraph=="null") {}
-    else {
-    	document.getElementById("arrow").style.display = "none";
-    	document.getElementById("arrow2").style.display = "none";
-    	document.getElementById('portfolio-value').innerHTML = "";
-    }
+	var isGraph = '<%= isGraph %>'
+	var graphdata = <%= GraphData %>
+	var labels = <%= Labels %>
     
 	var tester = JSON.parse(graphdata[0]);            
 	var apple_from_javafile_output = {"borderColor":["rgba(120,0,114, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242,79.480003356934,91.199996948242,106.26000213623,129.03999328613,115.80999755859,117.51000213623],"borderWidth":1,"label":"Apple Inc value in $","fill":"false"}

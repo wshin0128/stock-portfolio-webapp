@@ -26,6 +26,8 @@ public class GraphJSONhelper {
 		Random rand = new Random();
 		try {
 			Map<Date, Double> stock_info_temp = FC.getStockPrice(symbol, resolution, startTime, endTime); //unsorted
+			System.out.print("StockGraphInfo: The data of " + symbol + ": " + Long.toString(startTime) + ' ' +  Long.toString(endTime));
+			System.out.println(stock_info_temp);
 			
 			Map<Date, Double> stock_info = new TreeMap<Date, Double>(stock_info_temp);
 			
