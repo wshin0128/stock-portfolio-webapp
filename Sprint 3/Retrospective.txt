@@ -19,7 +19,7 @@ What tasks will be added to the product backlog as a result of review feedback?
   d. Add functionality to the graph 1D, 1W, 1M, 1Y buttons.
   e. Add calendar selector buttons to select the start date and end date. Display proper error messages
   f. Add acceptance tests for all of the above.
-4. Works on the Chrome web browser and mobile devices
+5. Works on the Chrome web browser and mobile devices
   a. Add acceptance tests for mobile device functionality
 6. The application must be secure and protect confidentiality of users’ data.
   a. Add 1 minute lock timer to after failing to sign in three times
