@@ -1,0 +1,30 @@
+List of meeting participants 
+Mark Zhan
+Nandhakumar Saravana
+Woody Shin
+Manav Kaushik
+Chunyang Mou
+
+What process aspects will be changed? 
+ - Make sure we’re creating appropriate test methods with the proper naming scheme.
+ - Do a better job keeping sustainable pace, especially near the end of the sprint when we have last-minute changes/fixes
+ - Writing better acceptance tests and completely cover all our features with acceptance tests
+ - Work closer together to get various aspects of the project to work together
+
+What tasks will be added to the product backlog as a result of review feedback?
+3. Track and visualize changes in value over time of user’s portfolio 
+  a. Add functionality to the toggle button, toggling a stock off in the user’s portfolio should remove it from the portfolio graph line value but still keep it in the users portfolio.
+  b. Add zoom-in and zoom-out button to the graph.
+  c. Add a toggle button that displays the SNP 500 index line on the graph.
+  d. Add functionality to the graph 1D, 1W, 1M, 1Y buttons.
+  e. Add calendar selector buttons to select the start date and end date. Display proper error messages
+  f. Add acceptance tests for all of the above.
+4. Works on the Chrome web browser and mobile devices
+  a. Add acceptance tests for mobile device functionality
+6. The application must be secure and protect confidentiality of users’ data.
+  a. Add 1 minute lock timer to after failing to sign in three times
+7. Users must be able to create an account in the system
+  a. Create sign out servlet and connect it to sign out
+  b. Add cancel button, as well as rename submit form button in signup
+8. User interfaces must look modern and be attractive.
+  a. Change background color of homepage to something more colorful
