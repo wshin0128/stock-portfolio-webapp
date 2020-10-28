@@ -1,0 +1,39 @@
+Sprint Backlog:
+1. SignUp integration:
+  a. Add cancel button and rename submit button
+  b. Add mobile friendly version of page
+2. SignIn:
+  a. Add 1 minute lock when failing to sign in three times
+  b. Add mobile friendly version of page
+3. SignOut:
+  a. Create servlet for signout
+  b. Connect to signout button
+4. Add stock(s):
+  a. Fix error messages on add stock popup
+  b. Overwrite when adding the same stock ticker (database) - for add and csv
+5. Removing stock(s):
+  a. Implement removing stock from database back-end
+  b. Link front-end for removing stocks from portfolio and viewed stocks list to database
+  c. Update front end when stock is removed
+6. Graph Display:
+  a. Add zoom-in and zoom-out button to the graph.
+  b. Add a toggle button that displays the SNP 500 index line on the graph.
+  c. Add functionality to the graph 1D, 1W, 1M, 1Y buttons.
+  d. Add calendar selector buttons to select the start date and end date. Display proper error messages
+  e. Add acceptance tests for graph
+7. Importing CSV File
+  a. Connect front-end to back-end for uploading CSV file
+  b. Show correct error messages when file format is incorrect
+8. Home Page module:
+  a. Remove portfolio stock function
+  b. Remove viewed stock function
+  c. Add functionality to the toggle button, toggling a stock off in the user’s portfolio should remove it from the portfolio graph line value but still keep it in the users portfolio.
+9. Research feasibility of stock portfolio value prediction and submit feasibility report
+10. Front-end
+  a. Change background color of homepage to something more colorful
+  b. Write acceptance tests for mobile device functionality
+
+Paragraph Explanation:
+As this is the last full-length sprint we have (sprint 5 is shorter), we felt it was important to have almost all of our product backlog on our sprint backlog. Major aspects left that we wish to prioritize are adding (by both dialog and csv) and removing stock functionality as well as graph functionality with robust working acceptance tests as key. We also want to focus on creating a feasibility report for the first feature requirement. We also are prioritizing security by completing the SSL requirement as well as timed lockout of login after failing to log in three times. Based on feedback from the Sprint 3 review, we added changing the background color of homepage as an aesthetic update.
+
+Meeting Participants: Woody Shin, Mark Zhan, Manav Kaushik, Chunyang Mou, Nandhakumar Saravana
