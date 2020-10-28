@@ -1,0 +1,24 @@
+1. Prediction of future values of the portfolio 
+  a. Research feasibility of this feature and potentially submit a feasibility study.
+2. Ability to add or remove stocks from the portfolio 
+  a. Add stock using a CSV file 
+3. Track and visualize changes in value over time of user’s portfolio 
+  a. Add functionality to the toggle button, toggling a stock off in the user’s portfolio should remove it from the portfolio graph line value but still keep it in the users portfolio.
+  b. Add zoom-in and zoom-out button to the graph.
+  c. Add a toggle button that displays the SNP 500 index line on the graph.
+  d. Add functionality to the graph 1D, 1W, 1M, 1Y buttons.
+  e. Add calendar selector buttons to select the start date and end date. Display proper error messages
+  f. Add acceptance tests for all of the above.
+4. View and compare the historical performance of a stock 
+  a. Only want stocks listed on NASDAQ or NYSE
+5. Works on the Chrome web browser and mobile devices
+  a. Add acceptance tests for mobile device functionality
+6. The application must be secure and protect confidentiality of users’ data. 
+  a. All pages must only be accessible via SSL (https)
+  b. A button present on the UI must log out user and return to login screen
+  c. Add 1 minute lock timer to after failing to sign in three times
+7. Users must be able to create an account in the system 
+  a. Create sign out servlet and connect it to sign out
+  b. Add cancel button, as well as rename submit form button in signup
+8. User interfaces must look modern and be attractive. 
+  a. Change background color of homepage to something more colorful
