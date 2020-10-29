@@ -100,8 +100,14 @@ public class StepDefinitions {
 	
 	@Given("I am on the home page")
 	public void i_am_on_the_home_page() throws InterruptedException {
-	    driver.get(ROOT_URL+"homepage.jsp");
-	    Thread.sleep(1000);
+	    driver.get(ROOT_URL+"signIn.jsp");
+	    WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys("test2");
+		WebElement password = driver.findElement(By.id("pass"));
+		password.sendKeys("test2test");
+		WebElement searchButton = driver.findElement(By.id("b"));
+	    searchButton.click();
+	    Thread.sleep(8000);
 	}
 	
 	@When("I click on the sign out button")
@@ -217,20 +223,20 @@ public class StepDefinitions {
 
 	@When("I click Add Stock in the Portfolio box")
 	public void i_click_Add_Stock_in_the_Portfolio_box() throws InterruptedException {
-		WebElement addStockButton = driver.findElement(By.cssSelector(".add-stocks-container > .button"));
+		WebElement addStockButton = driver.findElement(By.id("add-stock-button"));
 		addStockButton.click();
 		Thread.sleep(1000);
 	}
 
 	@When("I enter a valid Ticker symbol in the Add Stocks popup")
 	public void i_enter_a_valid_Ticker_symbol_in_the_Add_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-form #ticker"));
 	    addStockTicker.sendKeys("AMZN");
 	}
 
 	@When("I enter a valid number of shares in the Add Stocks popup")
 	public void i_enter_a_valid_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
 		addStockShares.sendKeys("2");
 	}
 
@@ -261,7 +267,7 @@ public class StepDefinitions {
 
 	@When("I enter an invalid Ticker symbol in the Add Stocks popup")
 	public void i_enter_an_invalid_Ticker_symbol_in_the_Add_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-form #ticker"));
 	    addStockTicker.sendKeys("ADSFSWDZFD");
 	}
 
@@ -292,7 +298,7 @@ public class StepDefinitions {
 
 	@When("I enter an invalid number of shares in the Add Stocks popup")
 	public void i_enter_an_invalid_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #ticker"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
 		addStockShares.sendKeys("-2");
 	}
 
@@ -304,7 +310,7 @@ public class StepDefinitions {
 
 	@When("I click Add Stock in the Viewed Stocks box")
 	public void i_click_Add_Stock_in_the_Viewed_Stocks_box() throws InterruptedException {
-		WebElement addStockButton = driver.findElement(By.cssSelector("#view-stock-submit"));
+		WebElement addStockButton = driver.findElement(By.id("view-stock-button"));
 		addStockButton.click();
 		Thread.sleep(1000);
 	}
@@ -335,7 +341,7 @@ public class StepDefinitions {
 
 	@When("I click View Stock")
 	public void i_click_View_Stock() {
-		WebElement viewStockSubmit = driver.findElement(By.cssSelector("view-stock-submit"));
+		WebElement viewStockSubmit = driver.findElement(By.id("view-stock-submit"));
 		viewStockSubmit.click();
 	}
 
@@ -348,7 +354,7 @@ public class StepDefinitions {
 
 	@When("I enter an invalid Ticker symbol in the View Stocks popup")
 	public void i_enter_an_invalid_Ticker_symbol_in_the_View_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stocks-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-modal #ticker"));
 	    addStockTicker.sendKeys("ADSFSWDZFD");
 	}
 
