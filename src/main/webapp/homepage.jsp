@@ -29,8 +29,13 @@
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.5/dist/chartjs-plugin-zoom.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<script>
 		// Log out user after 120 seconds of inactivity
@@ -142,6 +147,10 @@
     					<% if (percent <= 0) {%>
 				            <span id="arrow2">&#128315 <%=percent %>% Today</span>
 				    	<% } %>
+	    			</div>
+	    			<div>
+	    			<button class="btn" id="zoomin"><i class="fas fa-search-plus"></i></button>
+	    			<button class="btn" id = "zoomout"><i class="fas fa-search-minus"></i></button>
 	    			</div>
 	    		</div>
 
@@ -434,9 +443,32 @@
 	                    beginAtZero: false
 	                }
 	            }]
-	        }
-	    }
+	        },
+	    plugins: {
+            zoom: {
+                // Container for pan options
+                pan: {
+                    // Boolean to enable panning
+                    enabled: true,
+
+                    // Panning directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow panning in the y direction
+                    mode: 'xy'
+                },
+
+                // Container for zoom options
+                zoom: {
+                    // Boolean to enable zooming
+                    enabled: true,
+
+                    // Zooming directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow zooming in the y direction
+                    mode: 'xy',
+                }
+            }
+        }
   	}
+	}
   
 	for(var i=0; i<graphdata.length; i++) {
 		config.data.datasets.push(JSON.parse(graphdata[i]));	
@@ -445,7 +477,29 @@
 	config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
-	var myChart = new Chart(ctx, config);
+	var myChart = new Chart(ctx, config); 
+	
+	$('#zoomin').click(function(){
+	    
+		console.log("Zoom in bois")
+		
+	    var evt = document.createEvent('MouseEvents');
+	    evt.initEvent('wheel', true, true); evt.deltaY = -1000; 
+	    document.getElementById("myChart").dispatchEvent(evt);
+	    document.getElementById("myChart").dispatchEvent(evt);
+
+	});
+	
+$('#zoomout').click(function(){
+	    
+	console.log("Zoom out bois")
+	
+	    var evt = document.createEvent('MouseEvents');
+	    evt.initEvent('wheel', true, true); evt.deltaY = 1000; 
+	    document.getElementById("myChart").dispatchEvent(evt);
+	    document.getElementById("myChart").dispatchEvent(evt);
+
+	});
 			
 	</script>
 	
