@@ -105,8 +105,36 @@ public class DatabaseClient {
 	// Reference: https://stackoverflow.com/questions/3371326/java-date-from-unix-timestamp
 	// Reference: https://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
 	public boolean addStockToPortfolio(Integer userID, Stock stock) {
-		// shell
-		return false;
+		try {
+			String name = stock.getName();
+			String tickerSymbol = stock.getTicker();
+			String color = stock.getColor();
+			int quantity = stock.getQuantity();
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
+
+			String deleteStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
+			deleteStock.setInt(1, userID);
+			deleteStock.setString(2, tickerSymbol);
+			deleteStock.executeUpdate();
+
+			String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+					+ "VALUES(?,?,?,?,?,?,?);";
+			PreparedStatement createStock = connection.prepareStatement(createStockQuery, Statement.RETURN_GENERATED_KEYS);
+			createStock.setString(1, name);
+			createStock.setString(2, tickerSymbol);
+			createStock.setString(3, color);
+			createStock.setInt(4, quantity);
+			createStock.setLong(5, datePurchased);
+			createStock.setLong(6, dateSold);
+			createStock.setInt(7, userID);
+			createStock.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQLException from DatabaseClient.addStockToPortfolio()");
+			return false;
+		}
 	}
 	
 	public Portfolio getPortfolio(Integer userID) {
@@ -133,8 +161,36 @@ public class DatabaseClient {
 	}
 	
 	public boolean addStockToViewed(Integer userID, Stock stock) {
-		// shell
-		return false;
+		try {
+			String name = stock.getName();
+			String tickerSymbol = stock.getTicker();
+			String color = stock.getColor();
+			int quantity = stock.getQuantity();
+			long datePurchased = stock.getBuyDate();
+			long dateSold = stock.getSellDate();
+
+			String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
+			deleteStock.setInt(1, userID);
+			deleteStock.setString(2, tickerSymbol);
+			deleteStock.executeUpdate();
+
+			String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+					+ "VALUES(?,?,?,?,?,?,?);";
+			PreparedStatement createStock = connection.prepareStatement(createStockQuery, Statement.RETURN_GENERATED_KEYS);
+			createStock.setString(1, name);
+			createStock.setString(2, tickerSymbol);
+			createStock.setString(3, color);
+			createStock.setInt(4, quantity);
+			createStock.setLong(5, datePurchased);
+			createStock.setLong(6, dateSold);
+			createStock.setInt(7, userID);
+			createStock.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQLException from DatabaseClient.addStockToViewed()");
+			return false;
+		}
 	}
 	
 	public Portfolio getViewedStocks(Integer userID) {
