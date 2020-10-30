@@ -108,6 +108,10 @@ public class HomePageModule {
     	
     }
     
+    public void addViewedStock(Stock stock) {
+    	
+    }
+    
     public ArrayList<Stock> getStockList(){
     	return user.getPortfolio().getPortfolio();
     }
@@ -115,6 +119,8 @@ public class HomePageModule {
     public ArrayList<Stock> getViewedStockList(){
     	return viewedStockPortfolio.getPortfolio();
     }
+    
+
     
     public double getPortfolioValue() {
 		return portfolioValue;

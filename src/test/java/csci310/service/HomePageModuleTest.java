@@ -143,5 +143,10 @@ public class HomePageModuleTest extends Mockito{
 	public void testGetViewedStockList() {
 		assertNotNull(homePageModule.getViewedStockList());
 	}
+	
+	@Test
+	public void testAddViewedStockList() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
+	}
 
 }
