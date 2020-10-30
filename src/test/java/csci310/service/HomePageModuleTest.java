@@ -38,14 +38,14 @@ public class HomePageModuleTest extends Mockito{
 	private static DatabaseClient databaseClient;
 	
 	@BeforeClass 
-	public static void setUp() {
+	public static void setUp() throws SQLException {
 		portfolio = new Portfolio();
 		portfolio.addStock(TEST_STOCK_1);
 		portfolio.addStock(TEST_STOCK_2);
 		
 		user = new User("jdoe",1);
 		user.setPortfolio(portfolio);
-		homePageModule = new HomePageModule(user, new FinnhubClient());
+		homePageModule = new HomePageModule(user, new FinnhubClient(), new DatabaseClient());
 		
 		try {
 			databaseClient = new DatabaseClient();
@@ -57,9 +57,9 @@ public class HomePageModuleTest extends Mockito{
 	
 	
 	@Test
-	public void testHomePageModule() {
+	public void testHomePageModule() throws SQLException {
 		@SuppressWarnings("unused")
-		HomePageModule homePageModuleTemp = new HomePageModule(user, new FinnhubClient());
+		HomePageModule homePageModuleTemp = new HomePageModule(user, new FinnhubClient(), new DatabaseClient());
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class HomePageModuleTest extends Mockito{
 		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
 		when(mockFinnhubClient.getStockPrice(anyString(), any(Resolution.class), anyLong(), anyLong()))
 			.thenThrow(new Exception ());
-		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient);
+		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient, new DatabaseClient());
 		
 		assertNotNull(homePageModule2.getChangePercentDouble());
 	}
@@ -137,6 +137,11 @@ public class HomePageModuleTest extends Mockito{
 	@Test
 	public void testGetPortfolioValue() {
 		assertNotNull(homePageModule.getPortfolioValue());
+	}
+	
+	@Test
+	public void testGetViewedStockList() {
+		assertNotNull(homePageModule.getViewedStockList());
 	}
 
 }

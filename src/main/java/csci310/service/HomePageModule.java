@@ -24,10 +24,17 @@ public class HomePageModule {
 	
 	public Double todayTotalDouble;
 	private final FinnhubClient finnhubClient;
+	private final DatabaseClient databaseClient;
 	
-	public HomePageModule(User user, FinnhubClient finnhubClient) {
+	private Portfolio viewedStockPortfolio;
+	
+	public HomePageModule(User user, FinnhubClient finnhubClient, DatabaseClient databaseClient) {
 		this.user = user;
 		this.finnhubClient = finnhubClient;
+		this.databaseClient = databaseClient;
+		
+		// Initialize viewed stocks when module is created
+		viewedStockPortfolio = databaseClient.getViewedStocks(user.getUserID());
 	}
 	
 	/**
@@ -97,11 +104,16 @@ public class HomePageModule {
     	// remove stock portfolio in page module
     	// remove stock from database.
     	
-    	// deal with the case where stock is not already in portfolio
+    	// deal with the case where stock is not already in portfolio_info
+    	
     }
     
     public ArrayList<Stock> getStockList(){
     	return user.getPortfolio().getPortfolio();
+    }
+    
+    public ArrayList<Stock> getViewedStockList(){
+    	return viewedStockPortfolio.getPortfolio();
     }
     
     public double getPortfolioValue() {
