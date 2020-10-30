@@ -69,7 +69,8 @@
     <% 
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         DatabaseClient db = new DatabaseClient();
-        ArrayList<Stock> stockList = homePageModule.getStockList();
+        ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
+        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         // chaneg format to xxx.xx
@@ -298,41 +299,25 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
+	    		<!-- table for view stock -->
 	    		<table id="stock-list">
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
+	    		    <% for(Stock stock : viewedStocks) { %>
+				        <tr>      
+				            <td><%=stock.getName()%></td>
+				            <td><%=stock.getTicker()%></td>
+				            <td>
 	    					<label class="switch">
 	    						<input type="checkbox" checked>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
 	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+				        </tr>
+				        
+				    <% } %>
+	    			
 	    		</table>
+	    			
 	    		
 	    	</div>  <!-- .homepage-container -->
     	</div>

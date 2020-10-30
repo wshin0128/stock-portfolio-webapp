@@ -9,6 +9,7 @@ import java.util.Date;
 import csci310.model.Stock;
 import csci310.service.DatabaseClient;
 import csci310.service.FinnhubClient;
+import csci310.service.HomePageModule;
 
 public class ViewStockServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -68,11 +69,14 @@ public class ViewStockServlet extends HttpServlet {
 			// No errors, add stock to database
 			else {
 				// Color override (Admin feature, not visible to user)
+				HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
 				if(request.getAttribute("colorOverride") != null) {
 					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
+					homePageModule.addViewedStock(s);
 					dbc.addStockToViewed(userID, s);
 				} else {
 					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
+					homePageModule.addViewedStock(s);
 					dbc.addStockToViewed(userID, s);
 				}
 			}

@@ -109,7 +109,7 @@ public class HomePageModule {
     }
     
     public void addViewedStock(Stock stock) {
-    	
+    	viewedStockPortfolio.addStock(stock);
     }
     
     public ArrayList<Stock> getStockList(){
