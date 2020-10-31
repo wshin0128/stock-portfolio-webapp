@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -522,8 +523,41 @@ public class StepDefinitions {
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signIn.jsp"));
 		Thread.sleep(3000);
 	}
-
 	
+	
+	
+	
+	
+	
+	
+	
+
+	@When("I resize to mobile dimensions")
+	public void i_resize_to_mobile_dimensions() throws InterruptedException {
+		Dimension mobile = new Dimension(480,800);
+		driver.manage().window().setSize(mobile);
+		Thread.sleep(3000);
+	}
+	@Then("the navbar should still be visible")
+	public void the_navbar_should_still_be_visible() throws InterruptedException {
+		assertTrue(driver.findElements( By.className("navbar") ).size() != 0);
+	}
+	@Then("the signout button should still be visible")
+	public void the_signout_button_should_still_be_visible(){
+		assertTrue(driver.findElements( By.cssSelector(".navbar .button") ).size() != 0);
+	}
+	@Then("the graph container should still be visible")
+	public void the_graph_container_should_still_be_visible() {
+		assertTrue(driver.findElements( By.id("graph-container") ).size() != 0);
+	}
+	@Then("the portfolio list should still be visible")
+	public void the_portfolio_list_should_still_be_visible() {
+		assertTrue(driver.findElements( By.id("portfolio-container") ).size() != 0);
+	}
+	@Then("the viewed stocks list should still be visible")
+	public void the_viewed_stocks_list_should_still_be_visible() {
+		assertTrue(driver.findElements( By.id("viewed-container") ).size() != 0);
+	}
 
 	@After()
 	public void after() {

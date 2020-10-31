@@ -1,20 +1,25 @@
-Feature: Mobile resize
-  Scenario: Making sure navbar is still visible on homepage
+Feature: The webapp resizes responsively
+  Scenario: Navbar still visible on homepage
     Given I am on the home page
     When I resize to mobile dimensions
     Then the navbar should still be visible
+    
+  Scenario: Sign out button still visible on homepage
+    Given I am on the home page
+    When I resize to mobile dimensions
+    Then the signout button should still be visible
  
-   Scenario: Making sure graph container is still visible on homepage
+  Scenario: Graph container still visible on homepage
     Given I am on the home page
     When I resize to mobile dimensions
     Then the graph container should still be visible
 
-   Scenario: Making sure portfolio list is still visible on homepage
+  Scenario: Portfolio list still visible on homepage
     Given I am on the home page
     When I resize to mobile dimensions
     Then the portfolio list should still be visible
     
-   Scenario: Making sure viewed stocks list is still visible on homepage
+  Scenario: Viewed stocks list still visible on homepage
     Given I am on the home page
     When I resize to mobile dimensions
     Then the viewed stocks list should still be visible
