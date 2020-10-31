@@ -170,6 +170,7 @@
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
+	    	<div class="grid-helper">
 	    	<div class="homepage-container" id="portfolio-container">
 	    		<div class="container-header">
 	    			Your Portfolio
@@ -249,13 +250,16 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
 				        </tr>
-				        
+						
 				    <% } %>
 	    		
 	    		</table>
 	    	</div>  <!-- .homepage-container -->
+	    	</div> <!-- .grid-helper -->
+	    	
+	    	<div class="grid-helper">
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
 	    			Viewed Stocks
@@ -335,6 +339,7 @@
 	    		</table>
 	    		
 	    	</div>  <!-- .homepage-container -->
+	    	</div> <!-- .grid-helper -->  	
     	</div>
     </div>
     
