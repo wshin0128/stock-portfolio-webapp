@@ -20,6 +20,10 @@
 	<servlet-name>viewStock</servlet-name>
 	<servlet-class>csci310.servlet.ViewStockServlet</servlet-class>
   </servlet>
+  <servlet>
+	<servlet-name>GraphButtons</servlet-name>
+	<servlet-class>csci310.servlet.GraphButtonsServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   <servlet-name>login</servlet-name>
   <url-pattern>/api/login</url-pattern>
@@ -35,5 +39,9 @@
   <servlet-mapping>
   	<servlet-name>viewStock</servlet-name>
   	<url-pattern>/api/viewstock</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GraphButtons</servlet-name>
+  	<url-pattern>/api/GraphButtons</url-pattern>
   </servlet-mapping>
 </web-app>

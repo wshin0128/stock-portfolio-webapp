@@ -78,22 +78,52 @@
         // Calculate graph data
         // Calculate start time and current time
         long curr_time = System.currentTimeMillis() / 1000L;
+        String tp =(String) session.getAttribute("tp");
 		Calendar date= Calendar.getInstance();
-	    date.add(Calendar.MONTH, -12); 
-	    //12 months before now
+		Resolution r = Resolution.Weekly;
+		
+		if(tp==null)
+	    {
+			date.add(Calendar.MONTH, -3); 
+	    }
+	    else if(tp.equals("1"))
+	    {
+	    	date.add(Calendar.DATE, -4); 
+	    	r = Resolution.Daily;
+	    }
+	    else if(tp.equals("2"))
+	    {
+	    	date.add(Calendar.DATE, -9); 
+	    	r = Resolution.Daily;
+	    }
+	    else if(tp.equals("3"))
+	    {
+	    	date.add(Calendar.MONTH, -1); 
+	    	r = Resolution.Weekly;
+	    }
+	    else if(tp.equals("4"))
+	    {
+	    	date.add(Calendar.MONTH, -12); 
+	    	r = Resolution.Monthly;
+	    }
+	    
 	    long start_time =  date.getTimeInMillis() / 1000L;
+	    
+	    System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
         Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
         GraphingModule GMM = new GraphingModule();
-		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), Resolution.Monthly, start_time,curr_time);
+		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), r, start_time,curr_time);
 		
 		// Parse owned stock portfolio info into string
 		GraphJSONhelper GJH = new GraphJSONhelper();
-		String main_portfolio_json = GJH.Total_portfolio_Info(portfolio_info);
+		Data_and_Labels Dn_L = GJH.Total_portfolio_Info(portfolio_info);
+		String main_portfolio_json = Dn_L.Data_Json;
 		
 		ArrayList<String> userGraphInfo = new ArrayList<String>();	
 		String Labels = "";
+		Labels = Dn_L.Labels;
 		if(db.getPortfolio(userID).getSize() <=0) //if the user has no portfolio, then dont append portfolio info into graph
 		{
 			System.out.println("empty portfolio");
@@ -103,7 +133,6 @@
 		{
 		    userGraphInfo.add(main_portfolio_json);
 		    // Initialize labels
-		    Labels = "[\"11/2/2019\",\"12/2/2019\",\"1/2/2020\",\"2/2/2020\",\"3/2/2020\",\"4/2/2020\",\"5/2/2020\",\"6/2/2020\",\"7/2/2020\",\"8/2/2020\",\"9/2/2020\",\"10/2/2020\"]";
 		}
         // Calculate labels
         boolean first_time = true; //need to set labels only once. The helper function returns a pair of Data points JSON and Labels JSON.
@@ -113,16 +142,21 @@
 		{
 			
 			GraphJSONhelper G = new GraphJSONhelper();
-			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), Resolution.Monthly, start_time, curr_time); //hard coded dates and resolution rn, need to change
+			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), r, start_time, curr_time); //hard coded dates and resolution rn, need to change
 			userGraphInfo.add(DnL.Data_Json);
 			
 			if(first_time)
 			{
 				Labels = DnL.Labels;
 				first_time = false;
+				
+				
 			}
 			
 		}
+        
+        
+        
 		String GraphData = new JSONArray(userGraphInfo).toString();
 		
         // Calculate isgraph
@@ -154,12 +188,16 @@
 	    			</div>
 	    		</div>
 
-	    		<form name="getdata" action="/stockperformance" method="post">
+	    		<form name="GraphButtons" method="post" action="/api/GraphButtons">
 	     		<div class="row justify-content-center" role="group" aria-label="Basic example">
 				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>
 				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>
 				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>
 				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>
+				</div>
+				<div>
+				SNP500 
+				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1"/>
 				</div>
 				</form>
 	    		<div class = "graph-main">
