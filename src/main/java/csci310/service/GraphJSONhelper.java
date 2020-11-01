@@ -94,9 +94,11 @@ public class GraphJSONhelper {
 	public Data_and_Labels Total_portfolio_Info(Map<Date, Double> StockInfo)
 	{
 		
+		try {
 		if(StockInfo==null)
 		{
-			return null;
+			Data_and_Labels Dns = null;
+			return Dns;
 		}
 		
 		Map<Date, Double> stock_info = new TreeMap<Date, Double>(StockInfo);
@@ -150,6 +152,10 @@ public class GraphJSONhelper {
 		 System.out.println(DnL.Labels);
 		 //Provides
 		 return DnL;
+		}catch(Exception e)
+		{
+			return null;
+		}
 	}
 	
 //	public static void main(String [] args) {

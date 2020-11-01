@@ -25,7 +25,7 @@ public class GraphJSONhelperTest {
 	@Test
 	public void testPortfolioInfo() {
 		GraphJSONhelper G = new GraphJSONhelper();
-		assertTrue(G.Total_portfolio_Info(null).equals(null));
+		assertTrue(G.Total_portfolio_Info(null)==null);
 	}
 
 	@Test
