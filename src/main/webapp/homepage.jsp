@@ -154,7 +154,7 @@
 	    			</div>
 	    		</div>
 
-	    		<form name="getdata" action="/stockperformance" method="post">
+	    		<form name="getdata" action="/GraphButtons" method="post">
 	     		<div class="row justify-content-center" role="group" aria-label="Basic example">
 				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>
 				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>
