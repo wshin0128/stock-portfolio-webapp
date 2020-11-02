@@ -25,7 +25,7 @@ public class GraphJSONhelperTest {
 	@Test
 	public void testPortfolioInfo() {
 		GraphJSONhelper G = new GraphJSONhelper();
-		assertTrue(G.Total_portfolio_Info(null).equals(""));
+		assertTrue(G.Total_portfolio_Info(null)==null);
 	}
 
 	@Test
@@ -35,6 +35,6 @@ public class GraphJSONhelperTest {
 		Date D = new Date();
 		Double val = (double) 100;
 		stock_info.put(D, val);
-		assertTrue(!G.Total_portfolio_Info(stock_info).equals(""));
+		assertTrue(!G.Total_portfolio_Info(stock_info).equals(null));
 	}
 }
