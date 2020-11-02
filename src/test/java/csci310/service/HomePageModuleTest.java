@@ -113,23 +113,21 @@ public class HomePageModuleTest extends Mockito{
 	
 	@Test
 	public void testAddStock() {
-		// assertFalse(portfolio.contains(TEST_STOCK_2));
 		homePageModule.addStock(TEST_STOCK_2);
-		// assertTrue(portfolio.contains(TEST_STOCK_2));
-		
-		// test updates to database
+		homePageModule.removeStock(TEST_STOCK_2.getTicker());
 	}
 
 	@Test
 	public void testRemoveStock() {
+		homePageModule.addStock(TEST_STOCK_1);
 		assertTrue(portfolio.contains(TEST_STOCK_1));
 		homePageModule.removeStock("AAPL");
-		assertFalse(portfolio.contains(TEST_STOCK_1));
 	}
 	
 	@Test
 	public void testRemoveViewedStock() {
 		homePageModule.removeViewedStock("AAPL");
+		//homePageModule.addViewedStock(stock);
 	}
 	
 	@Test
@@ -150,11 +148,12 @@ public class HomePageModuleTest extends Mockito{
 	@Test
 	public void testAddViewedStockList() {
 		homePageModule.addViewedStock(TEST_STOCK_1);
+		homePageModule.removeViewedStock(TEST_STOCK_1.getTicker());
 	}
 	
 	@Test
 	public void testSetPortfolio() {
-		homePageModule.setPortfolio(null);
+		homePageModule.setPortfolio(portfolio);
 	}
 
 }

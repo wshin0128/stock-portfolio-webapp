@@ -4,8 +4,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import csci310.service.DatabaseClient;
-import csci310.service.FinnhubClient;
 import csci310.service.HomePageModule;
 
 public class RemoveStockServlet extends HttpServlet {
@@ -20,25 +18,22 @@ public class RemoveStockServlet extends HttpServlet {
 			// Get ticker
 			String ticker = request.getParameter("ticker");
 			
-			// Get userID from session
-			int userID = (Integer) request.getSession().getAttribute("userID");
-			
 			// Get whether removing from portfolio or viewed stocks
 			String selector = request.getParameter("selector");
 			
 			// Remove stock from either portfolio or viewed stocks
 			if(selector.equalsIgnoreCase("portfolio")) {
 				// TODO: Remove stock from portfolio
-				
+				homePageModule.removeStock(ticker);
 			} else if(selector.equalsIgnoreCase("viewed")) {
 				// TODO: Remove stock from viewed stock list
+				homePageModule.removeViewedStock(ticker);
 			}
-			
 			// Go back to homepage page
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
 		} catch (Exception e) {
-			System.out.println("Exception from RemoveStockServlet.doPost()");
+			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}

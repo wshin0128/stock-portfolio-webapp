@@ -16,16 +16,23 @@ import org.mockito.Mockito;
 
 import csci310.model.Portfolio;
 import csci310.model.Stock;
+import csci310.model.User;
 import csci310.service.DatabaseClient;
+import csci310.service.FinnhubClient;
+import csci310.service.HomePageModule;
 
 public class RemoveStockServletTest extends Mockito {
 
 	@Test
 	public void testDoGet() throws Exception {
-		// Test Correct input behavior for removing from portfolio
-		
 		DatabaseClient dbc = new DatabaseClient();
 		dbc.createTable();
+		
+		// Mock Homepage module
+		User user = new User("some dummy value", 123);
+		Portfolio portfolio = dbc.getPortfolio(123);
+		user.setPortfolio(portfolio);
+		HomePageModule homePageModule = new HomePageModule(user, new FinnhubClient(), dbc);
 		
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		HttpServletResponse response = mock(HttpServletResponse.class);
@@ -35,7 +42,7 @@ public class RemoveStockServletTest extends Mockito {
 		// Mock request parameters
 		when(request.getParameter("ticker")).thenReturn("AAPL");
 		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("userID")).thenReturn(123);
+		when(session.getAttribute("module")).thenReturn(homePageModule);
 		when(request.getParameter("selector")).thenReturn("portfolio");
 		
 		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
@@ -48,7 +55,8 @@ public class RemoveStockServletTest extends Mockito {
 		Portfolio port = dbc.getPortfolio(123);
 		ArrayList<Stock> p = port.getPortfolio();
 		for(int i = 0; i < p.size(); i++) {
-			assertTrue(!p.get(i).getTicker().equalsIgnoreCase("AAPL"));
+			Stock stock = p.get(i);
+			assertFalse(stock.getTicker().equalsIgnoreCase("AAPL"));
 		}
 		
 		// Test Correct input behavior for removing from viewed stocks

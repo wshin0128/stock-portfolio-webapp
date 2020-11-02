@@ -54,8 +54,8 @@ public class HomePageModule {
 			cal.add(Calendar.DAY_OF_YEAR, -7);
 			long yesterdayTime = cal.getTimeInMillis() / 1000;
 			
-            if (yesterdayTime > stock.getSellDate()) {
-            	// if the stock is sold before yesterday, do not calculate that
+            if (yesterdayTime > stock.getSellDate() || currentTime < stock.getBuyDate()) {
+            	// if the stock is sold before yesterday or buy after today, do not calculate that
             	continue;
             }
 			try {
@@ -96,7 +96,7 @@ public class HomePageModule {
     
     public void addStock(Stock stock) {
     	// add stock to portfolio in homepage module
-    	user.getPortfolio().getPortfolio().add(stock);
+    	user.getPortfolio().addStock(stock);
     }
     
     
@@ -115,15 +115,15 @@ public class HomePageModule {
     }
     
     public void removeViewedStock(String tickerString) {
-//    	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
-//    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
-//    			// remove stock portfolio in page module
-//    			viewedStockPortfolio.removeStock(stock);
-//    			// remove stock from database
-//    			databaseClient.removeStockFromViewed(user.getUserID(), tickerString);
-//    			break;
-//    		}
-//    	}
+    	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
+    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
+    			// remove stock portfolio in page module
+    			viewedStockPortfolio.removeStock(stock);
+    			// remove stock from database
+    			databaseClient.removeStockFromViewed(user.getUserID(), tickerString);
+    			break;
+    		}
+    	}
     	return; // Do not do anything if tickerString is not found
     }
     
@@ -142,7 +142,10 @@ public class HomePageModule {
     public double getPortfolioValue() {
 		return portfolioValue;
     }
-    
+    /**
+     * Used for CSV file
+     * @param portfolio
+     */
     public void setPortfolio(Portfolio portfolio) {
     	// only set this portfolio; do not touch the database;
     	user.setPortfolio(portfolio);

@@ -311,7 +311,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=viewed" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete viewed stock: <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>
