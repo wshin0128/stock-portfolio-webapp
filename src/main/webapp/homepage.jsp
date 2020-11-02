@@ -69,7 +69,8 @@
     <% 
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         DatabaseClient db = new DatabaseClient();
-        ArrayList<Stock> stockList = homePageModule.getStockList();
+        ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
+        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         // chaneg format to xxx.xx
@@ -287,7 +288,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>
@@ -336,41 +337,25 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
+	    		<!-- table for view stock -->
 	    		<table id="stock-list">
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
+	    		    <% for(Stock stock : viewedStocks) { %>
+				        <tr>      
+				            <td><%=stock.getName()%></td>
+				            <td><%=stock.getTicker()%></td>
+				            <td>
 	    					<label class="switch">
 	    						<input type="checkbox" checked>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=viewed" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete viewed stock: <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+				        </tr>
+				        
+				    <% } %>
+	    			
 	    		</table>
+	    			
 	    		
 	    	</div>  <!-- .homepage-container -->
     	</div>
