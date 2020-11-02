@@ -28,6 +28,10 @@
 	<servlet-name>GraphButtons</servlet-name>
 	<servlet-class>csci310.servlet.GraphButtonsServlet</servlet-class>
   </servlet>
+  <servlet>
+	<servlet-name>csvImport</servlet-name>
+	<servlet-class>csci310.servlet.CSVServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   <servlet-name>login</servlet-name>
   <url-pattern>/api/login</url-pattern>
@@ -51,5 +55,9 @@
   <servlet-mapping>
   	<servlet-name>GraphButtons</servlet-name>
   	<url-pattern>/api/GraphButtons</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>csvImport</servlet-name>
+  	<url-pattern>/api/csvimport</url-pattern>
   </servlet-mapping>
 </web-app>

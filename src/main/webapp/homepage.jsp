@@ -255,10 +255,10 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Import Stocks</div>
 	    						<div class="popup-section">
-	    							<form id="import-stock-form">
+	    							<form action="/api/csvimport" method="post" id="import-stock-form" enctype="multipart/form-data">
 	    								<div class="form-row">
 	    									<label for=""csvImport"">Upload a .csv file</label>
-	    									<input type="file" id="csvImport" accept=".csv">
+	    									<input type="file" name="file" id="csvImport" accept=".csv">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
