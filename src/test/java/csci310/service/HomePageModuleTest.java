@@ -148,5 +148,10 @@ public class HomePageModuleTest extends Mockito{
 	public void testAddViewedStockList() {
 		homePageModule.addViewedStock(TEST_STOCK_1);
 	}
+	
+	@Test
+	public void testSetPortfolio() {
+		homePageModule.setPortfolio(null);
+	}
 
 }

@@ -120,9 +120,11 @@ public class HomePageModule {
     	return viewedStockPortfolio.getPortfolio();
     }
     
-
-    
     public double getPortfolioValue() {
 		return portfolioValue;
+    }
+    
+    public void setPortfolio(Portfolio portfolio) {
+    	
     }
 }
