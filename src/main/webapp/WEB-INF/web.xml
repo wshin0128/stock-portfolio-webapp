@@ -40,4 +40,8 @@
   	<servlet-name>viewStock</servlet-name>
   	<url-pattern>/api/viewstock</url-pattern>
   </servlet-mapping>
+    <servlet-mapping>
+  	<servlet-name>removeStock</servlet-name>
+  	<url-pattern>/api/removestock</url-pattern>
+  </servlet-mapping>
 </web-app>

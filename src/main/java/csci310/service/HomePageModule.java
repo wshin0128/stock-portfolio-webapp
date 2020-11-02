@@ -54,8 +54,9 @@ public class HomePageModule {
 			cal.add(Calendar.DAY_OF_YEAR, -7);
 			long yesterdayTime = cal.getTimeInMillis() / 1000;
 			
-            if (yesterdayTime > stock.getSellDate() || currentTime < stock.getBuyDate()) {
+            if (yesterdayTime > stock.getSellDate() / 1000 || currentTime < stock.getBuyDate() / 1000) {
             	// if the stock is sold before yesterday or buy after today, do not calculate that
+            	// System.out.println(yesterdayTime + " " + stock.getSellDate());
             	continue;
             }
 			try {
@@ -93,13 +94,23 @@ public class HomePageModule {
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
 		return changePercentageDouble;
     }
-    
+    /**
+     * Add stock to owned stock portfolio and db
+     * @param stock
+     */
     public void addStock(Stock stock) {
-    	// add stock to portfolio in homepage module
+    	// Check if stock with the same ticker exists. if so, overwrite 
+    	removeStock(stock.getTicker());
+    	// add stock to data model
     	user.getPortfolio().addStock(stock);
+    	// add stock to database
+    	databaseClient.addStockToPortfolio(user.getUserID(), stock);
     }
     
-    
+    /**
+     * remove stock from owned stock portfolio and db
+     * @param tickerString
+     */
     public void removeStock(String tickerString) {
     	Portfolio ownedStocksPortfolio = user.getPortfolio();
     	for (Stock stock : ownedStocksPortfolio.getPortfolio()) {
@@ -114,6 +125,10 @@ public class HomePageModule {
     	return; // Do not do anything if tickerString is not found
     }
     
+    /**
+     * remove stock from viewed stock portfolio and db
+     * @param tickerString
+     */
     public void removeViewedStock(String tickerString) {
     	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
     		if (stock.getTicker().equalsIgnoreCase(tickerString)){
@@ -127,8 +142,14 @@ public class HomePageModule {
     	return; // Do not do anything if tickerString is not found
     }
     
+    /**
+     * remove stock from viewed stock portfolio and db
+     * @param stock
+     */
     public void addViewedStock(Stock stock) {
+    	removeViewedStock(stock.getTicker());
     	viewedStockPortfolio.addStock(stock);
+    	databaseClient.addStockToViewed(user.getUserID(), stock);
     }
     
     public ArrayList<Stock> getStockList(){
@@ -143,7 +164,7 @@ public class HomePageModule {
 		return portfolioValue;
     }
     /**
-     * Used for CSV file
+     * Used for CSV file module
      * @param portfolio
      */
     public void setPortfolio(Portfolio portfolio) {

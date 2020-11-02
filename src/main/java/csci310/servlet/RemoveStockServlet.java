@@ -25,7 +25,7 @@ public class RemoveStockServlet extends HttpServlet {
 			if(selector.equalsIgnoreCase("portfolio")) {
 				// TODO: Remove stock from portfolio
 				homePageModule.removeStock(ticker);
-			} else if(selector.equalsIgnoreCase("viewed")) {
+			} else {
 				// TODO: Remove stock from viewed stock list
 				homePageModule.removeViewedStock(ticker);
 			}

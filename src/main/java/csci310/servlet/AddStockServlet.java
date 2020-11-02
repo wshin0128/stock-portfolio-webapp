@@ -72,13 +72,13 @@ public class AddStockServlet extends HttpServlet {
 				if(request.getAttribute("colorOverride") != null) {
 					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
 					// add stock to database
-					dbc.addStockToPortfolio(userID, s);
+					// dbc.addStockToPortfolio(userID, s);
 					// add stock to front end
 					homePageModule.addStock(s);
 				} else {
 					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
 					// add stock to database
-					dbc.addStockToPortfolio(userID, s);
+					// dbc.addStockToPortfolio(userID, s);
 					// add stock to front end
 					homePageModule.addStock(s);
 				}

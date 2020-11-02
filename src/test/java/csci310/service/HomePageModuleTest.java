@@ -26,9 +26,9 @@ import org.mockito.Mockito;
 public class HomePageModuleTest extends Mockito{
 	
 
-	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
-	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 100, 100);
-	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value", "some dummy value", null, 1, 100, 100);
+	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 0, 0);
+	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 999999998, 999999999);
+	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value2", "some dummy value", null, 1, 100, 100);
 	
 	private static Portfolio portfolio;
 	
@@ -67,14 +67,32 @@ public class HomePageModuleTest extends Mockito{
 		FinnhubClient finnhubClient = new FinnhubClient();
 		Double todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
+		
+		homePageModule.addStock(TEST_STOCK_1);
+		homePageModule.addStock(TEST_STOCK_2);
+		
+		Calendar cal = Calendar.getInstance();
+		long currentTime = cal.getTimeInMillis() / 1000;
+
+		cal.add(Calendar.DAY_OF_YEAR, -7);
+		long yesterdayTime = cal.getTimeInMillis() / 1000;
+		
+		portfolio.addStock(new Stock("some dummy value2", "AAPL", "abc", 10, 0 , yesterdayTime * 2000L));
+		portfolio.addStock(new Stock("some dummy value3", "AAPL", "abc", 10, currentTime * 2000L , yesterdayTime * 900L));
+		portfolio.addStock(new Stock("some dummy value4", "AAPL", "abc", 10, 0, yesterdayTime * 900L));
+		portfolio.addStock(new Stock("some dummy value5", "AAPL", "abc", 10, currentTime * 2000L, yesterdayTime * 2000L));
+		
 		for (Stock stock : portfolio.getPortfolio()) {
-			Calendar cal = Calendar.getInstance();
-			long currentTime = cal.getTimeInMillis() / 1000;
-			cal.add(Calendar.DAY_OF_YEAR, -7);
-			long lastWeekTime = cal.getTimeInMillis() / 1000;
+			
+            if (yesterdayTime > stock.getSellDate() / 1000 || currentTime < stock.getBuyDate() / 1000) {
+            	// if the stock is sold before yesterday or buy after today, do not calculate that
+            	System.out.println(yesterdayTime + " " + stock.getSellDate() + " " + currentTime + " " + stock.getBuyDate());
+            	continue;
+            }
+            
 			try {
 				// Get the whole week's data 
-				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily,lastWeekTime, currentTime);
+				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily, yesterdayTime, currentTime);
 				// System.out.println(priceMap);
 				
 				// Fetch the most recent two dates, and their prices
@@ -94,13 +112,14 @@ public class HomePageModuleTest extends Mockito{
 				todayTotalDouble += todayPrice * stock.getQuantity();
 				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
 			} catch (Exception e) {	
-				
+				// Finnhub client error, do nothing
+				e.printStackTrace();
 			}
 		}
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
-		if (homePageModule.getChangePercentDouble() != null) assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
 		
 		// mock exception 
 		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
