@@ -119,14 +119,17 @@ public class HomePageModuleTest extends Mockito{
 		
 		// test updates to database
 	}
-	
+
 	@Test
 	public void testRemoveStock() {
-		// assertTrue(portfolio.contains(TEST_STOCK_1));
+		assertTrue(portfolio.contains(TEST_STOCK_1));
 		homePageModule.removeStock("AAPL");
-		// assertFalse(portfolio.contains(TEST_STOCK_1));
-		
-		// test updates to database
+		assertFalse(portfolio.contains(TEST_STOCK_1));
+	}
+	
+	@Test
+	public void testRemoveViewedStock() {
+		homePageModule.removeViewedStock("AAPL");
 	}
 	
 	@Test

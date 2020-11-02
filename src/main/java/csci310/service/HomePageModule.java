@@ -101,11 +101,30 @@ public class HomePageModule {
     
     
     public void removeStock(String tickerString) {
-    	// remove stock portfolio in page module
-    	// remove stock from database.
-    	
-    	// deal with the case where stock is not already in portfolio_info
-    	
+    	Portfolio ownedStocksPortfolio = user.getPortfolio();
+    	for (Stock stock : ownedStocksPortfolio.getPortfolio()) {
+    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
+    			// remove stock portfolio in page module
+    			ownedStocksPortfolio.removeStock(stock);
+    			// remove stock from database
+    			databaseClient.removeStockFromPortfolio(user.getUserID(), tickerString);
+    			break;
+    		}
+    	}
+    	return; // Do not do anything if tickerString is not found
+    }
+    
+    public void removeViewedStock(String tickerString) {
+//    	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
+//    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
+//    			// remove stock portfolio in page module
+//    			viewedStockPortfolio.removeStock(stock);
+//    			// remove stock from database
+//    			databaseClient.removeStockFromViewed(user.getUserID(), tickerString);
+//    			break;
+//    		}
+//    	}
+    	return; // Do not do anything if tickerString is not found
     }
     
     public void addViewedStock(Stock stock) {
@@ -125,6 +144,7 @@ public class HomePageModule {
     }
     
     public void setPortfolio(Portfolio portfolio) {
-    	
+    	// only set this portfolio; do not touch the database;
+    	user.setPortfolio(portfolio);
     }
 }
