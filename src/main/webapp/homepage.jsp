@@ -40,13 +40,13 @@
   	<link href="https://bootstrap-confirmation.js.org/assets/css/style.css" rel="stylesheet">
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="/resources/demos/style.css">
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
-	<script src="https://bootstrap-confirmation.js.org/assets/js/docs.min.js"></script>
-	<script src="https://bootstrap-confirmation.js.org/assets/js/script.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js"></script>
 	
 	<script>
 	$( function() {
@@ -236,7 +236,7 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Add Stock</div>
 	    						<div class="popup-section">
-	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock">
+	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock" autocomplete="off">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
 	    									<input type="text" id="ticker" name="ticker">
@@ -304,7 +304,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" data-btn-cancel-label="Cancel"><i class="fas fa-trash"></i></a></td>
+	    				<td><a class="btn" data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" datta-btn-ok-class="btn-danger" data-btn-cancel-label="Cancel" href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>
@@ -541,6 +541,13 @@ $('#zoomout').click(function(){
 	});
 			
 	</script>
+	
+		<script>
+		$('[data-toggle=confirmation]').confirmation({
+		  rootSelector: '[data-toggle=confirmation]',
+		  // other options
+		});
+		</script>
 	
 </body>
 </html>
