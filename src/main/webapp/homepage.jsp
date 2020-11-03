@@ -217,12 +217,19 @@
 				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
 				<input  type="hidden" name="SNP500" value="0"/>
 				</div>
-				</form>
+				
 	    		<div class = "graph-main">
 	    		<div class="canvas-container">
 	    			<canvas id="myChart" width="300" height="200"></canvas>
 	    		</div>
-
+	    		<div>
+	    		<i>      Start Date:</i>      
+	    		<input type="date" id="start_date" name="start_date">
+	    		<i>  End Date:</i>    
+	    		<input type="date" id="end_date" name="end_date">
+  				<input type="submit">
+	    		</div>
+				</form>
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
