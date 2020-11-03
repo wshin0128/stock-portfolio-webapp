@@ -73,8 +73,14 @@
         ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
+        
+        System.out.println("percent is = " + percent);
+        
+        
         // chaneg format to xxx.xx
         double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
+        
+        System.out.println("portfolio is = " + portfolioValue);
         
         // Calculate graph data
         // Calculate start time and current time
@@ -122,6 +128,8 @@
 		Data_and_Labels Dn_L = GJH.Total_portfolio_Info(portfolio_info);
 		String main_portfolio_json = Dn_L.Data_Json;
 		
+		
+		
 		ArrayList<String> userGraphInfo = new ArrayList<String>();	
 		String Labels = "";
 		Labels = Dn_L.Labels;
@@ -143,7 +151,7 @@
 		{
 			
 			GraphJSONhelper G = new GraphJSONhelper();
-			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), r, start_time, curr_time); //hard coded dates and resolution rn, need to change
+			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), r, start_time, curr_time); 
 			userGraphInfo.add(DnL.Data_Json);
 			
 			if(first_time)
@@ -156,7 +164,15 @@
 			
 		}
         
-        
+		String snp = (String)session.getAttribute("snp");
+		
+		if(snp!=null)
+		{
+			GraphJSONhelper GG = new GraphJSONhelper();
+			Data_and_Labels DnL = GG.StockGraphInfo("SPY", 1, r, start_time, curr_time); 
+			userGraphInfo.add(DnL.Data_Json);
+			Labels = DnL.Labels;
+		}
         
 		String GraphData = new JSONArray(userGraphInfo).toString();
 		
@@ -198,7 +214,8 @@
 				</div>
 				<div>
 				SNP500 
-				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1"/>
+				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
+				<input  type="hidden" name="SNP500" value="0"/>
 				</div>
 				</form>
 	    		<div class = "graph-main">
@@ -504,7 +521,7 @@
 	
 	$('#zoomin').click(function(){
 	    
-		console.log("Zoom in bois")
+		console.log("Zoom in ")
 		
 	    var evt = document.createEvent('MouseEvents');
 	    evt.initEvent('wheel', true, true); evt.deltaY = -1000; 
@@ -515,7 +532,7 @@
 	
 $('#zoomout').click(function(){
 	    
-	console.log("Zoom out bois")
+	console.log("Zoom out ")
 	
 	    var evt = document.createEvent('MouseEvents');
 	    evt.initEvent('wheel', true, true); evt.deltaY = 1000; 

@@ -56,8 +56,17 @@ public class GraphJSONhelper {
 			}
 			
 			JSONObject json = new JSONObject(); // Make a helper that gets the Stock name
-			String company_name = FC.getCompanyNameString(symbol);
-			company_name = company_name + " value in $";
+			String company_name = "";
+			if(!symbol.equals("SPY"))
+			{
+				company_name = FC.getCompanyNameString(symbol);
+			}
+			else
+			{
+				company_name = " SPDR S&P 500 ETF Trust";
+			}
+			
+			 company_name = company_name + " value in $";
 			 json.put("label", company_name);
 			 json.put("data", values);
 			 json.put("fill", "false");
@@ -94,7 +103,6 @@ public class GraphJSONhelper {
 	public Data_and_Labels Total_portfolio_Info(Map<Date, Double> StockInfo)
 	{
 		
-		try {
 		if(StockInfo==null)
 		{
 			Data_and_Labels Dns = null;
@@ -152,10 +160,7 @@ public class GraphJSONhelper {
 		 System.out.println(DnL.Labels);
 		 //Provides
 		 return DnL;
-		}catch(Exception e)
-		{
-			return null;
-		}
+		
 	}
 	
 //	public static void main(String [] args) {
