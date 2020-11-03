@@ -36,6 +36,23 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://bootstrap-confirmation.js.org/assets/css/docs.min.css" rel="stylesheet">
+  	<link href="https://bootstrap-confirmation.js.org/assets/css/style.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
+	<script src="https://bootstrap-confirmation.js.org/assets/js/docs.min.js"></script>
+	<script src="https://bootstrap-confirmation.js.org/assets/js/script.js"></script>
+	
+	<script>
+	$( function() {
+	  $( ".datepicker" ).datepicker();
+	} );
+	</script>
 	
 	<script>
 		// Log out user after 120 seconds of inactivity
@@ -222,25 +239,24 @@
 	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker" name="ticker" required>
+	    									<input type="text" id="ticker" name="ticker">
 	    								</div>
+	    								<span class="error-msg">${errorMessageTicker}</span>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares" name="shares" required>
-	    									
+	    									<input type="number" id="shares" name="shares">
 	    								</div>
+	    								<span class="error-msg">${errorMessageShares}</span>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
+	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased">
 	    								</div>
+	    								<span class="error-msg">${errorMessageDatePurchased}</span>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
+	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
-	    								<div class="form-row">
-	    									<span class="error-msg">${errorMessage}</span>
-	    								</div>
-	    								
+	    								<span class="error-msg">${errorMessageDateSold}</span>
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
 	    							</form>
 	    						</div>
@@ -288,7 +304,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" data-btn-cancel-label="Cancel"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>
@@ -316,11 +332,11 @@
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
+	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
+	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">${viewStockErrorMessage}</span>
