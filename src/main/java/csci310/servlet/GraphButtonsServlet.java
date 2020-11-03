@@ -35,18 +35,22 @@ try {
 		
 		String tp = (String)request.getParameter("timePeriod");
 		String snp = (String)request.getParameter("SNP500");
-		
-//		if(snp!=null)
-//		{
-//			
-//			session.setAttribute("snp", 1);
-//			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
-//		}
-//		else
-//		{
-//			session.setAttribute("snp", null);
-//		}
-		
+	
+	if(snp!=null) {	
+		if(snp.equals("1"))
+		{
+			
+			session.setAttribute("snp", "1");
+			//request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+			//return;
+		}
+		else
+		{
+			session.setAttribute("snp", null);
+		}
+	}
+	
+	
 		if(tp.equals("1D"))
 		{
 			session.setAttribute("tp", "1");
@@ -67,13 +71,15 @@ try {
 			session.setAttribute("tp", "4");
 			System.out.println("set tp to 4");
 		}
-		
+
 		
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);	
 		}
 		catch (Exception e) {
 			System.out.println("Exception from GraphButtons.doPost()");
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			System.out.println(e);
+			request.getRequestDispatcher("/homepage.jsp").forward(request, response);	
+			//response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 			
 	}
