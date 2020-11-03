@@ -66,7 +66,7 @@ public class DatabaseClient {
         	createTableStatement.executeUpdate(createViewedStockTable);
         	return true;
         } catch(SQLException e) {
-        	e.printStackTrace();
+        	System.out.println("SQLException from DatabaseClient.createTable()");
         	return false;
         }
 	}
@@ -86,7 +86,7 @@ public class DatabaseClient {
 			if (uniqueUsername) {
 				String createUserQuery = "INSERT INTO User(username, password)"
 										 + "VALUES(?,?);";
-				PreparedStatement createUser = connection.prepareStatement(createUserQuery);
+				PreparedStatement createUser = connection.prepareStatement(createUserQuery, Statement.RETURN_GENERATED_KEYS);
 				createUser.setString(1, username);
 				createUser.setString(2, password);
 				createUser.executeUpdate();
@@ -95,7 +95,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.createUser()");
 			return false;
 		}
 	}
@@ -106,44 +106,33 @@ public class DatabaseClient {
 	// Reference: https://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
 	public boolean addStockToPortfolio(Integer userID, Stock stock) {
 		try {
-			// Get stock parameters from Stock object
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
 			String color = stock.getColor();
 			int quantity = stock.getQuantity();
 			long datePurchased = stock.getBuyDate();
 			long dateSold = stock.getSellDate();
-						
-			boolean inPortfolio = false;
-			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
-			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			checkContainsStock.setInt(1, userID);
-			checkContainsStock.setString(2, tickerSymbol);
-			ResultSet rs = checkContainsStock.executeQuery();
-			while (rs.next()) {
-				// if this stock already exists in the portfolio of this user
-				inPortfolio = (rs.getInt(1) != 0);
-			}
-			if (!inPortfolio) {
-				String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?,?,?);";
-				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
-				createStock.setString(1, name);
-				createStock.setString(2, tickerSymbol);
-				createStock.setString(3, color);
-				createStock.setInt(4, quantity);
-				createStock.setLong(5, datePurchased);
-				createStock.setLong(6, dateSold);
-				createStock.setInt(7, userID);
-				createStock.executeUpdate();
-				return true;
-			} else {
-				// Can users add stock that already exists in their Portfolio?
-				// should we just overwrite the previous values?
-				return false;
-			}
+
+			String deleteStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
+			deleteStock.setInt(1, userID);
+			deleteStock.setString(2, tickerSymbol);
+			deleteStock.executeUpdate();
+
+			String createStockQuery = "INSERT INTO Portfolio(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+					+ "VALUES(?,?,?,?,?,?,?);";
+			PreparedStatement createStock = connection.prepareStatement(createStockQuery, Statement.RETURN_GENERATED_KEYS);
+			createStock.setString(1, name);
+			createStock.setString(2, tickerSymbol);
+			createStock.setString(3, color);
+			createStock.setInt(4, quantity);
+			createStock.setLong(5, datePurchased);
+			createStock.setLong(6, dateSold);
+			createStock.setInt(7, userID);
+			createStock.executeUpdate();
+			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.addStockToPortfolio()");
 			return false;
 		}
 	}
@@ -166,52 +155,40 @@ public class DatabaseClient {
 				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.getPortfolio()");
 		}
 		return portfolio; 
 	}
 	
 	public boolean addStockToViewed(Integer userID, Stock stock) {
 		try {
-			// Get stock parameters from Stock object
 			String name = stock.getName();
 			String tickerSymbol = stock.getTicker();
 			String color = stock.getColor();
 			int quantity = stock.getQuantity();
 			long datePurchased = stock.getBuyDate();
 			long dateSold = stock.getSellDate();
-						
-			boolean alreadyViewedStock = false;
-			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
-			PreparedStatement checkContainsStock = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			checkContainsStock.setInt(1, userID);
-			checkContainsStock.setString(2, tickerSymbol);
-			ResultSet rs = checkContainsStock.executeQuery();
-			while (rs.next()) {
-				// if this stock already exists in the viewed stock list of this user
-				alreadyViewedStock = (rs.getInt(1) != 0);
-			}
-			if (!alreadyViewedStock) {
-				String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
-										 + "VALUES(?,?,?,?,?,?,?);";
-				PreparedStatement createStock = connection.prepareStatement(createStockQuery);
-				createStock.setString(1, name);
-				createStock.setString(2, tickerSymbol);
-				createStock.setString(3, color);
-				createStock.setInt(4, quantity);
-				createStock.setLong(5, datePurchased);
-				createStock.setLong(6, dateSold);
-				createStock.setInt(7, userID);
-				createStock.executeUpdate();
-				return true;
-			} else {
-				// Can users add stock that they've already viewed?
-				// should we just overwrite the previous values?
-				return false;
-			}
+
+			String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
+			PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
+			deleteStock.setInt(1, userID);
+			deleteStock.setString(2, tickerSymbol);
+			deleteStock.executeUpdate();
+
+			String createStockQuery = "INSERT INTO ViewedStocks(name, tickerSymbol, color, quantity, datePurchased, dateSold, userID)"
+					+ "VALUES(?,?,?,?,?,?,?);";
+			PreparedStatement createStock = connection.prepareStatement(createStockQuery, Statement.RETURN_GENERATED_KEYS);
+			createStock.setString(1, name);
+			createStock.setString(2, tickerSymbol);
+			createStock.setString(3, color);
+			createStock.setInt(4, quantity);
+			createStock.setLong(5, datePurchased);
+			createStock.setLong(6, dateSold);
+			createStock.setInt(7, userID);
+			createStock.executeUpdate();
+			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.addStockToViewed()");
 			return false;
 		}
 	}
@@ -229,13 +206,12 @@ public class DatabaseClient {
 				String tickerSymbol = rs.getString("tickerSymbol");
 				String color = rs.getString("color");
 				int quantity = rs.getInt("quantity");
-				int datePurchased = rs.getInt("datePurchased");
-				int dateSold = rs.getInt("dateSold");
+				long datePurchased = rs.getLong("datePurchased");
+				long dateSold = rs.getLong("dateSold");
 				portfolio.addStock(new Stock(name, tickerSymbol, color, quantity, datePurchased, dateSold));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.getViewedStocks()");
 		}
 		return portfolio; 
 	}
@@ -256,7 +232,7 @@ public class DatabaseClient {
 			
 			if(usernameExists) {
 				String passwordCheckQuery = "SELECT id, password FROM User WHERE username=?";
-				PreparedStatement passwordCheck = connection.prepareStatement(passwordCheckQuery);
+				PreparedStatement passwordCheck = connection.prepareStatement(passwordCheckQuery, Statement.RETURN_GENERATED_KEYS);
 				passwordCheck.setString(1, username);
 				rs = passwordCheck.executeQuery();
 				int userID = -1;
@@ -277,11 +253,10 @@ public class DatabaseClient {
 				return 0;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			// SQLException (return -1)
+			System.out.println("SQLException from DatabaseClient.getUser()");
 			return -1;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			System.out.println("NoSuchAlgorithmException from DatabaseClient.getUser()");
 			return -1;
 		}
 	}
@@ -296,7 +271,7 @@ public class DatabaseClient {
 			clearDatabase.executeUpdate(clearPortfolioCommand);
 			clearDatabase.executeUpdate(clearViewedStocksCommand);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQLException from DatabaseClient.clearDatabase()");
 			return false;
 		}
 		return true;
@@ -316,7 +291,7 @@ public class DatabaseClient {
 			}
 			if (inPortfolio) {
 				String deleteStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
-				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
 				deleteStock.setInt(1, userID);
 				deleteStock.setString(2, tickerSymbol);
 				deleteStock.executeUpdate();
@@ -325,7 +300,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException from removeStockFromPortfolio()");
+			System.out.println("SQLException from DatabaseClient.removeStockFromPortfolio()");
 			return false;
 		}
 	}
@@ -344,7 +319,7 @@ public class DatabaseClient {
 			}
 			if (inPortfolio) {
 				String deleteStockQuery = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
-				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery);
+				PreparedStatement deleteStock = connection.prepareStatement(deleteStockQuery, Statement.RETURN_GENERATED_KEYS);
 				deleteStock.setInt(1, userID);
 				deleteStock.setString(2, tickerSymbol);
 				deleteStock.executeUpdate();
@@ -353,7 +328,7 @@ public class DatabaseClient {
 				return false;
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException from removeStockFromViewed()");
+			System.out.println("SQLException from DatabaseClient.removeStockFromViewed()");
 			return false;
 		}
 	}

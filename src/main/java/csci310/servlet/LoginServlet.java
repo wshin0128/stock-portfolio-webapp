@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -14,11 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import csci310.model.Portfolio;
+import csci310.model.Stock;
+import csci310.model.User;
 import csci310.service.DatabaseClient;
-import csci310.service.PasswordAuthentication;
+import csci310.service.GraphJSONhelper;
+import csci310.service.GraphJSONhelper.Data_and_Labels;
+import csci310.service.HomePageModule;
+import csci310.service.*;
 
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -53,6 +65,14 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("login", true);
 				session.setAttribute("username", uname);
 				session.setAttribute("userID", result);
+				
+				//creating new user object and setting respective portfolio
+				User u = new User(uname,result);
+				u.setPortfolio(db.getPortfolio(result));
+				
+				// Will use this later to find change %
+				HomePageModule Current_user_module = new HomePageModule(u, new FinnhubClient(), db);
+				request.getSession().setAttribute("module", Current_user_module);
 			}
 			//Password is incorrect for user
 			else{

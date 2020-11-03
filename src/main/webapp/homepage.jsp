@@ -1,3 +1,16 @@
+<%@page import="org.json.JSONArray"%>
+<%@page import="csci310.service.GraphJSONhelper.Data_and_Labels"%>
+<%@page import="csci310.service.GraphJSONhelper"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="csci310.service.Resolution"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Map"%>
+<%@page import="csci310.service.GraphingModule"%>
+<%@page import="csci310.service.DatabaseClient"%>
+<%@page import="csci310.model.Portfolio"%>
+<%@page import="csci310.model.Stock"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="csci310.service.HomePageModule"%>
 <%@ page import="csci310.*" isELIgnored="false"%>
 
     
@@ -5,6 +18,7 @@
 	HttpSession s = request.getSession();
 	if(s.getAttribute("login") == "false" || s.getAttribute("login") == null) {
 		response.sendRedirect("signIn.jsp");
+
 	}
 %>
 
@@ -15,6 +29,13 @@
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.5/dist/chartjs-plugin-zoom.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<script>
 		// Log out user after 120 seconds of inactivity
@@ -45,10 +66,107 @@
 	
 </head>
 <body>
+    <% 
+    	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
+        DatabaseClient db = new DatabaseClient();
+        ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
+        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
+        // change format to xxx.xx
+        double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
+        // chaneg format to xxx.xx
+        double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
+        
+        // Calculate graph data
+        // Calculate start time and current time
+        long curr_time = System.currentTimeMillis() / 1000L;
+        String tp =(String) session.getAttribute("tp");
+		Calendar date= Calendar.getInstance();
+		Resolution r = Resolution.Weekly;
+		
+		if(tp==null)
+	    {
+			date.add(Calendar.MONTH, -3); 
+	    }
+	    else if(tp.equals("1"))
+	    {
+	    	date.add(Calendar.DATE, -4); 
+	    	r = Resolution.Daily;
+	    }
+	    else if(tp.equals("2"))
+	    {
+	    	date.add(Calendar.DATE, -9); 
+	    	r = Resolution.Daily;
+	    }
+	    else if(tp.equals("3"))
+	    {
+	    	date.add(Calendar.MONTH, -1); 
+	    	r = Resolution.Weekly;
+	    }
+	    else if(tp.equals("4"))
+	    {
+	    	date.add(Calendar.MONTH, -12); 
+	    	r = Resolution.Monthly;
+	    }
+	    
+	    long start_time =  date.getTimeInMillis() / 1000L;
+	    
+	    System.out.println("start time = " + start_time);
+	    
+        int userID = (int) session.getAttribute("userID");
+        Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
+        GraphingModule GMM = new GraphingModule();
+		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), r, start_time,curr_time);
+		
+		// Parse owned stock portfolio info into string
+		GraphJSONhelper GJH = new GraphJSONhelper();
+		Data_and_Labels Dn_L = GJH.Total_portfolio_Info(portfolio_info);
+		String main_portfolio_json = Dn_L.Data_Json;
+		
+		ArrayList<String> userGraphInfo = new ArrayList<String>();	
+		String Labels = "";
+		Labels = Dn_L.Labels;
+		if(db.getPortfolio(userID).getSize() <=0) //if the user has no portfolio, then dont append portfolio info into graph
+		{
+			System.out.println("empty portfolio");
+			
+		}
+		else
+		{
+		    userGraphInfo.add(main_portfolio_json);
+		    // Initialize labels
+		}
+        // Calculate labels
+        boolean first_time = true; //need to set labels only once. The helper function returns a pair of Data points JSON and Labels JSON.
+				
+		//Fills the formatted JSON of Graphing point array list with all Data points of all viewed stocks
+		for(Stock stock: Current_user_view_portfolio.getPortfolio())
+		{
+			
+			GraphJSONhelper G = new GraphJSONhelper();
+			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), r, start_time, curr_time); //hard coded dates and resolution rn, need to change
+			userGraphInfo.add(DnL.Data_Json);
+			
+			if(first_time)
+			{
+				Labels = DnL.Labels;
+				first_time = false;
+				
+				
+			}
+			
+		}
+        
+        
+        
+		String GraphData = new JSONArray(userGraphInfo).toString();
+		
+        // Calculate isgraph
+        boolean isGraph = Labels.equals("") ? false : true;
+    %>
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
-			<a href="signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
+			<a href="http://localhost:8080/signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
 		</div>
 	</div>
     <div class="wrap">
@@ -56,21 +174,38 @@
     	
 	    	<div class="homepage-container" id="graph-container">
 	    		<div class="graph-header">
-	    			<span id="portfolio-value">$1,349.32</span>
+	    			<span id="portfolio-value">$<%=portfolioValue%></span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-    					<span id="arrow">&#9650</span>+3.25% Today
+	    			    <% if (percent > 0) {%>
+				            <span id="arrow">&#9650 +<%=percent %>% Today</span>
+				    	<% } %>
+    					<% if (percent <= 0) {%>
+				            <span id="arrow2">&#128315 <%=percent %>% Today</span>
+				    	<% } %>
+	    			</div>
+	    			<div>
+	    			<button class="btn" id="zoomin"><i class="fas fa-search-plus"></i></button>
+	    			<button class="btn" id = "zoomout"><i class="fas fa-search-minus"></i></button>
 	    			</div>
 	    		</div>
-	    		<form name="getdata" action="/stockperformance" method="post">	
-	     		<div class="row justify-content-center" role="group" aria-label="Basic example">	
-				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>	
-				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>	
-				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>	
-				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>	
-				</div>	
-				</form>	
-	    		<div class = "graph-main">	
-	    		<canvas id="myChart" width="900" height="210"></canvas>	
+
+	    		<form name="GraphButtons" method="post" action="/api/GraphButtons">
+	     		<div class="row justify-content-center" role="group" aria-label="Basic example">
+				  <input type="submit" id="1-day-btn" class="btn btn-secondary" name="timePeriod" value="1D"/>
+				  <input type="submit" id="1-week-btn" class="btn btn-secondary" name="timePeriod" value="1W"/>
+				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>
+				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>
+				</div>
+				<div>
+				SNP500 
+				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1"/>
+				</div>
+				</form>
+	    		<div class = "graph-main">
+	    		<div class="canvas-container">
+	    			<canvas id="myChart" width="300" height="200"></canvas>
+	    		</div>
+
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
@@ -120,10 +255,10 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">Import Stocks</div>
 	    						<div class="popup-section">
-	    							<form id="import-stock-form">
+	    							<form action="/api/csvimport" method="post" id="import-stock-form" enctype="multipart/form-data">
 	    								<div class="form-row">
 	    									<label for=""csvImport"">Upload a .csv file</label>
-	    									<input type="file" id="csvImport" accept=".csv">
+	    									<input type="file" name="file" id="csvImport" accept=".csv">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">Test error message</span>
@@ -140,40 +275,24 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
+	    		
 	    		<table id="stock-list">
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
+	    		     
+	    		     <% for(Stock stock : stockList) { %>
+				        <tr>      
+				            <td><%=stock.getName()%></td>
+				            <td><%=stock.getTicker()%></td>
+				            <td>
 	    					<label class="switch">
 	    						<input type="checkbox" checked>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+				        </tr>
+				        
+				    <% } %>
+	    		
 	    		</table>
 	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
@@ -186,25 +305,25 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">View Stock</div>
 	    						<div class="popup-section">
-	    							<form id="view-stock-form">
+	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker">
+	    									<input type="text" id="ticker" name="ticker" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares">
+	    									<input type="number" id="shares" name="shares" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-purchased" placeholder="yyyy-mm-dd" name="date-purchased" required>
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd">
+	    									<input type="date" id="date-sold" placeholder="yyyy-mm-dd" name="date-sold" required>
 	    								</div>
 	    								<div class="form-row">
-	    									<span class="error-msg">Test error message</span>
+	    									<span class="error-msg">${viewStockErrorMessage}</span>
 	    								</div>
 	    								<button type="submit" class="button" id="view-stock-submit">View Stock</button>
 	    							</form>
@@ -218,41 +337,25 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
+	    		<!-- table for view stock -->
 	    		<table id="stock-list">
-	    			<tr>
-	    				<td>Apple</td>
-	    				<td>AAPL</td>
-	    				<td>
+	    		    <% for(Stock stock : viewedStocks) { %>
+				        <tr>      
+				            <td><%=stock.getName()%></td>
+				            <td><%=stock.getTicker()%></td>
+				            <td>
 	    					<label class="switch">
 	    						<input type="checkbox" checked>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Tesla</td>
-	    				<td>TSLA</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
-	    			<tr>
-	    				<td>Ford Motor</td>
-	    				<td>F</td>
-	    				<td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
-							  	<span class="slider round"></span>
-							</label>
-						</td>
-	    				<td><a href=""><i class="fas fa-trash"></i></a></td>
-	    			</tr>
+	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=viewed" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete viewed stock: <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+				        </tr>
+				        
+				    <% } %>
+	    			
 	    		</table>
+	    			
 	    		
 	    	</div>  <!-- .homepage-container -->
     	</div>
@@ -315,6 +418,7 @@
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
 		var viewStockCancelButton = document.getElementById("view-stock-cancel");
+		var viewStockErrorMessage = '${viewStockErrorMessage}';
 		
 		// When user clicks add stock button
 		viewStockButton.onclick = function() {
@@ -325,66 +429,101 @@
 		viewStockCancelButton.onclick = function() {
 			viewStockModal.style.display = "none";
 		}
+		// If the servlet returns an error message, display popup
+		if(viewStockErrorMessage != "") {
+			console.log("viewStockErrorMessage = " + errorMessage);
+			viewStockModal.style.display = "flex";
+		}
 	</script>
 	
-	<!-- graph script, got the main idea done -->	
-	<script>	
-		
-	var datasetinfo = {	
-            label: ' Portfolio value in $',	
-            data: [120, 190, 300, 500, 200, 300],	
-            fill: false,	
-            borderColor: [	
-                'rgba(255, 99, 132, 1)'  <!-- get a random color here -->	
-            ],	
-            borderWidth: 1	
-        }	
-   	
-	var temp = {	
-            label: 'TSLA value in $',	
-            data: [200, 900, 100, 70, 40, 30],	
-            fill: false,	
-            borderColor: [	
-                'rgba(195, 199, 132, 1)'	
-            ],	
-            borderWidth: 1	
-        }		
-        	
-   var apple_from_javafile_output = {"borderColor":["rgba(90,222,198, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242],"borderWidth":1,"label":"Apple value in $","fill":"false"}	
-		
-   var config = {	
-    type: 'line',	
-    data: {	
-        labels: ['10/14', '10/15', '10/16', '10/17', '10/18', '10/19'],	
-        datasets: []	
-    },	
-    options: {	
-    	responsive: false,	
-        scales: {	
-            yAxes: [{	
-                ticks: {	
-                    beginAtZero: false	
-                }	
-            }]	
-        }	
-        	
-    }	
-  }	
-  	
-	for(var i=0; i<graphdata.length; i++)
-	{
-		
-		
-	config.data.datasets.push(JSON.parse(graphdata[i]));	
-		
+
+	<!-- graph script, main idea and getting data from session done -->
+	<script>
+	
+	// Graph variables
+	var isGraph = '<%= isGraph %>'
+	var graphdata = <%= GraphData %>
+	var labels = <%= Labels %>
+    
+	var tester = JSON.parse(graphdata[0]);            
+	var apple_from_javafile_output = {"borderColor":["rgba(120,0,114, 1)"],"data":[66.809997558594,73.410003662109,77.379997253418,68.339996337891,63.569999694824,73.449996948242,79.480003356934,91.199996948242,106.26000213623,129.03999328613,115.80999755859,117.51000213623],"borderWidth":1,"label":"Apple Inc value in $","fill":"false"}
+	console.log(tester)
+	console.log (apple_from_javafile_output)
+   
+	// Graph options
+	var config = {
+		type: 'line',
+	    data: {
+	        labels: [],
+	        datasets: []
+	    },
+	    options: {
+	    	responsive: true,
+	    	maintainAspectRatio: false,
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero: false
+	                }
+	            }]
+	        },
+	    plugins: {
+            zoom: {
+                // Container for pan options
+                pan: {
+                    // Boolean to enable panning
+                    enabled: true,
+
+                    // Panning directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow panning in the y direction
+                    mode: 'xy'
+                },
+
+                // Container for zoom options
+                zoom: {
+                    // Boolean to enable zooming
+                    enabled: true,
+
+                    // Zooming directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow zooming in the y direction
+                    mode: 'xy',
+                }
+            }
+        }
+  	}
 	}
   
-  config.data.labels = labels
+	for(var i=0; i<graphdata.length; i++) {
+		config.data.datasets.push(JSON.parse(graphdata[i]));	
+	}
+	
+	config.data.labels = labels
 	
 	var ctx = document.getElementById('myChart');
-	var myChart = new Chart(ctx, config);
+	var myChart = new Chart(ctx, config); 
+	
+	$('#zoomin').click(function(){
+	    
+		console.log("Zoom in bois")
 		
-		
+	    var evt = document.createEvent('MouseEvents');
+	    evt.initEvent('wheel', true, true); evt.deltaY = -1000; 
+	    document.getElementById("myChart").dispatchEvent(evt);
+	    document.getElementById("myChart").dispatchEvent(evt);
+
+	});
+	
+$('#zoomout').click(function(){
+	    
+	console.log("Zoom out bois")
+	
+	    var evt = document.createEvent('MouseEvents');
+	    evt.initEvent('wheel', true, true); evt.deltaY = 1000; 
+	    document.getElementById("myChart").dispatchEvent(evt);
+	    document.getElementById("myChart").dispatchEvent(evt);
+
+	});
+			
 	</script>
 	
 </body>

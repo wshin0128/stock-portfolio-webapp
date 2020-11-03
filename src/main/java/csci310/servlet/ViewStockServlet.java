@@ -4,25 +4,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;	
 import csci310.model.Stock;
 import csci310.service.DatabaseClient;
 import csci310.service.FinnhubClient;
 import csci310.service.HomePageModule;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-
-public class AddStockServlet extends HttpServlet {
+public class ViewStockServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		try {
-			// Get homepage module from session
-			HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
-			
+		try {		
 			DatabaseClient dbc = new DatabaseClient();
 			FinnhubClient fc = new FinnhubClient();
 
@@ -53,41 +47,47 @@ public class AddStockServlet extends HttpServlet {
 			
 			// If stock ticker is invalid
 			if(!validTicker) {
-				request.setAttribute("errorMessage", "Your ticker is invalid");
+				System.out.println("Ticker invalid");
+				request.setAttribute("viewStockErrorMessage", "Your ticker is invalid");
 				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+				return;
 			}
 			// If number of shares is 0 or smaller, set error
 			else if(shares <= 0) {
-				request.setAttribute("errorMessage", "You must buy at least one share");
+				System.out.println("Shares invalid");
+				request.setAttribute("viewStockErrorMessage", "You must buy at least one share");
 				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+				return;
 			}
 			// If purchase date is after sold date, set error and go back home
 			else if(datePurchasedUnix >= dateSoldUnix) {
-				request.setAttribute("errorMessage", "Your sell date must be after your buy date");
+				System.out.println("Dates invalid");
+				request.setAttribute("viewStockErrorMessage", "Your sell date must be after your buy date");
 				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+				return;
 			}
 			// No errors, add stock to database
-			else {				
+			else {
 				// Color override (Admin feature, not visible to user)
+				HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
 				if(request.getAttribute("colorOverride") != null) {
 					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
-					// add stock to database
-					// dbc.addStockToPortfolio(userID, s);
-					// add stock to front end
-					homePageModule.addStock(s);
+					homePageModule.addViewedStock(s);
+					dbc.addStockToViewed(userID, s);
 				} else {
 					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
-					// add stock to database
-					// dbc.addStockToPortfolio(userID, s);
-					// add stock to front end
-					homePageModule.addStock(s);
+					homePageModule.addViewedStock(s);
+					dbc.addStockToViewed(userID, s);
 				}
 			}
-			// Go back to homepage page
+			
+			// Go back to homepage
+			System.out.println("No errors");
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+			return;
 			
 		} catch (Exception e) {
-			System.out.println("Exception from AddStockServlet.doPost()");
+			System.out.println("Exception from ViewStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
