@@ -36,27 +36,32 @@ public class AddStockServlet extends HttpServlet {
 			
 			
 			// Check if form was populated
-			if(request.getParameter("ticker") == null || request.getParameter("ticker").equals("")) {
+			if(request.getParameter("ticker").equals("")) {
 				request.setAttribute("errorMessage", "Illegal ticker symbol");
 				request.setAttribute("errorMessageTicker", "Illegal ticker symbol");
 				formError = true;
 			}
-			if(request.getParameter("shares") == null || request.getParameter("shares").equalsIgnoreCase("")) {
-				request.setAttribute("errorMessage", "Negative or zerro values of quantity");
-				request.setAttribute("errorMessageShares", "Negative or zerro values of quantity");
+			if(request.getParameter("shares").equalsIgnoreCase("")) {
+				request.setAttribute("errorMessage", "Negative or zero values of quantity");
+				request.setAttribute("errorMessageShares", "Negative or zero values of quantity");
 				formError = true;
 			}
-			if((request.getParameter("date-sold") != null || !request.getParameter("date-sold").equals("")) && (request.getParameter("date-purchased") == null || request.getParameter("date-purchased").equals(""))) {
+			if((!request.getParameter("date-sold").equals("")) && (request.getParameter("date-purchased").equals(""))) {
 				request.setAttribute("errorMessage", "Sold date with no purchase date");
 				request.setAttribute("errorMessageDateSold", "Sold date with no purchase date");
 				formError = true;
 			}
-			if(request.getParameter("date-purchased") == null || request.getParameter("date-purchased").equals("")) {
+			if((request.getParameter("date-sold").equals("")) && (!request.getParameter("date-purchased").equals(""))) {
+				request.setAttribute("errorMessage", "Purchase date with no sold date");
+				request.setAttribute("errorMessageDatePurchased", "Purchase date with no sold date");
+				formError = true;
+			}
+			if(request.getParameter("date-purchased").equals("")) {
 				request.setAttribute("errorMessage", "Purchase date is required");
 				request.setAttribute("errorMessageDatePurchased", "Purchase date is required");
 				formError = true;
 			}
-			if(request.getParameter("date-sold") == null || request.getParameter("date-sold").equals("")) {
+			if(request.getParameter("date-sold").equals("")) {
 				request.setAttribute("errorMessage", "Sold date is required");
 				request.setAttribute("errorMessageDateSold", "Sold date is required");
 				formError = true;
@@ -115,8 +120,8 @@ public class AddStockServlet extends HttpServlet {
 		        // If purchase date is after sold date, set error and go back home
 		        if(datePurchasedUnix >= dateSoldUnix) {
 		        	request.setAttribute("errorMessage", "Sold date prior to purchase date");
-					request.setAttribute("errorMessageDateSold", "Sold date prior to purchase date");
-					formError = true;
+		        	request.setAttribute("errorMessageDateSold", "Sold date prior to purchase date");
+		        	formError = true;
 				}
 		        
 		        // Make sure no dates are older than one year ago
@@ -124,12 +129,10 @@ public class AddStockServlet extends HttpServlet {
 		        System.out.println("Sold time: " + dateSoldUnix);
 		        System.out.println("One year ago: " + oneYearAgo);
 		        if(datePurchasedUnix < oneYearAgo) {
-		        	request.setAttribute("errorMessage", "Purchase date cannot be older than 1 year ago");
 		        	request.setAttribute("errorMessageDatePurchased", "Purchase date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
 		        if(dateSoldUnix < oneYearAgo) {
-		        	request.setAttribute("errorMessage", "Sold date cannot be older than 1 year ago");
 		        	request.setAttribute("errorMessageDateSold", "Sold date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
@@ -149,8 +152,8 @@ public class AddStockServlet extends HttpServlet {
 				// add stock to database
 				// dbc.addStockToPortfolio(userID, s);
 				// add stock to front end
-				homePageModule.addStock(s);
-			} else {
+				homePageModule.addStock(s); }
+			else {
 				Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
 				// add stock to database
 				// dbc.addStockToPortfolio(userID, s);
@@ -158,9 +161,8 @@ public class AddStockServlet extends HttpServlet {
 				homePageModule.addStock(s);
 			}
 			// Go back to homepage page
-			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
-			
-		} catch (Exception e) {
+			request.getRequestDispatcher("/homepage.jsp").forward(request, response); }
+		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Exception from AddStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
