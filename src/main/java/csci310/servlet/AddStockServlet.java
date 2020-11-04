@@ -68,7 +68,7 @@ public class AddStockServlet extends HttpServlet {
 			}
 			
 			// Lookup stock name using ticker
-			String ticker = request.getParameter("ticker");
+			String ticker = request.getParameter("ticker").toUpperCase();
 			String companyName = "";
 			boolean validTicker = true;
 			try {
