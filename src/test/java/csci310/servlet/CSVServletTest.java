@@ -58,19 +58,19 @@ public class CSVServletTest extends Mockito {
 		servlet.doPost(request2, response2);
 
 		String expected = 
-				"Row 1: requires minimum of 5 parameters.\n" + 
-						"Row 2, Col A: stock name is a required field.\n" + 
-						"Row 2, Col B: stock ticker is a required field.\n" + 
-						"Row 2, Col C: stock quantity must be a Integer.\n" + 
-						"Row 2, Col D: stock buy date must be a Long.\n" + 
-						"Row 3, Col A: stock name is a required field.\n" + 
-						"Row 3, Col B: stock ticker is a required field.\n" + 
-						"Row 4, Col C: stock quantity must be a Integer.\n" + 
-						"Row 4, Col D: stock buy date must be a Long.\n" + 
-						"Row 4, Col E: stock sell date must be a Long.\n" + 
-						"Row 5, Col C: stock quantity must be a Integer.\n" + 
-						"Row 6, Col D: stock buy date must be a Long.\n" + 
-						"Row 6, Col E: stock sell date must be a Long.\n";
+				"Row 1: requires minimum of 5 parameters.<br>" + 
+						"Row 2, Col A: stock name is a required field.<br>" + 
+						"Row 2, Col B: stock ticker is a required field.<br>" + 
+						"Row 2, Col C: stock quantity must be a Integer.<br>" + 
+						"Row 2, Col D: stock buy date must be a Long.<br>" + 
+						"Row 3, Col A: stock name is a required field.<br>" + 
+						"Row 3, Col B: stock ticker is a required field.<br>" + 
+						"Row 4, Col C: stock quantity must be a Integer.<br>" + 
+						"Row 4, Col D: stock buy date must be a Long.<br>" + 
+						"Row 4, Col E: stock sell date must be a Long.<br>" + 
+						"Row 5, Col C: stock quantity must be a Integer.<br>" + 
+						"Row 6, Col D: stock buy date must be a Long.<br>" + 
+						"Row 6, Col E: stock sell date must be a Long.<br>";
 		verify(request2).setAttribute("csvErrorMessage", expected);
 		verify(mockRD2).forward(request2, response2);
 	}

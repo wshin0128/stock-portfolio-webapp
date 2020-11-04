@@ -145,6 +145,18 @@ button {
 	align-items: center;
 	justify-content: space-between;
 }
+.modal-box form .csvError {
+	margin-top: 10px;
+	min-height: 50px;
+	font-size: 14px;
+	font-weight: normal;
+	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	line-height: 13px;
+}
+
 .modal-box form input {
 	text-align: right;
 	height: 40px;
