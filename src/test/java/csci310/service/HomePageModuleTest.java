@@ -174,5 +174,10 @@ public class HomePageModuleTest extends Mockito{
 	public void testSetPortfolio() {
 		homePageModule.setPortfolio(portfolio);
 	}
+	
+	@Test
+	public void testToggleStock() {
+		homePageModule.toggleStock("AAPL");
+	}
 
 }
