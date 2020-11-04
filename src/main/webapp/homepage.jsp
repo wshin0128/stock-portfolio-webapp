@@ -256,7 +256,7 @@
 	    									<label for="date-sold">Date Sold</label>
 	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
-	    								<span class="error-msg">${errorMessageDateSold}</span>
+	    								<span class="error-msg">${errorMessageDateSold}</span>	    								
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
 	    							</form>
 	    						</div>
@@ -304,7 +304,7 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a class="btn" data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" datta-btn-ok-class="btn-danger" data-btn-cancel-label="Cancel" href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio"><i class="fas fa-trash"></i></a></td>
+	    				<td><a data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" datta-btn-ok-class="btn-danger" data-btn-cancel-label="Cancel" href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=portfolio"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>

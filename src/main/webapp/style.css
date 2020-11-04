@@ -145,6 +145,10 @@ button {
 	align-items: center;
 	justify-content: space-between;
 }
+.form-row-error {
+	height: auto;
+	text-align: right;
+}
 .modal-box form input {
 	text-align: right;
 	height: 40px;
@@ -172,6 +176,8 @@ button {
 }
 .error-msg {
 	color: #FF5252;
+	font-weight: 400;
+	font-size: 0.8em;
 }
 .popup-header {
 	padding: 18px;
@@ -281,7 +287,14 @@ input:checked + .slider:before {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
-
+.btn-primary {
+	background: red !important;
+	border: none !important;
+}
+.btn-secondary {
+	background: #787878 !important;
+	border: none !important;
+}
 
 
 
