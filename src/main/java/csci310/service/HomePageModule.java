@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,11 @@ public class HomePageModule {
 	
 	private Portfolio viewedStockPortfolio;
 	
+	/**
+	 * stock to be counted in the graph
+	 */
+	private Map<Stock, Boolean> stockToGraphMap;
+	
 	public HomePageModule(User user, FinnhubClient finnhubClient, DatabaseClient databaseClient) {
 		this.user = user;
 		this.finnhubClient = finnhubClient;
@@ -35,6 +41,13 @@ public class HomePageModule {
 		
 		// Initialize viewed stocks when module is created
 		viewedStockPortfolio = databaseClient.getViewedStocks(user.getUserID());
+		
+		// Initialize graphPortfolio when module is created
+		// Deep copy each elements from user viewed stock to graphPortfolio
+		stockToGraphMap = new HashMap<Stock, Boolean>();
+		for (Stock stock : user.getPortfolio().getPortfolio()) {
+			stockToGraphMap.put(stock, true);
+		}
 	}
 	
 	/**
@@ -103,6 +116,8 @@ public class HomePageModule {
     	removeStock(stock.getTicker());
     	// add stock to data model
     	user.getPortfolio().addStock(stock);
+    	// add stock to stock displayed on graph
+    	stockToGraphMap.put(stock, true);
     	// add stock to database
     	databaseClient.addStockToPortfolio(user.getUserID(), stock);
     }
@@ -117,6 +132,8 @@ public class HomePageModule {
     		if (stock.getTicker().equalsIgnoreCase(tickerString)){
     			// remove stock portfolio in page module
     			ownedStocksPortfolio.removeStock(stock);
+    			// remove stock from stock in the graph
+    			stockToGraphMap.remove(stock);
     			// remove stock from database
     			databaseClient.removeStockFromPortfolio(user.getUserID(), tickerString);
     			break;
@@ -171,4 +188,25 @@ public class HomePageModule {
     	// only set this portfolio; do not touch the database;
     	user.setPortfolio(portfolio);
     }
+    
+    public void toggleStock(String tickerString) {
+    	for (Stock stock : stockToGraphMap.keySet()) {
+    		String stockTickerString = stock.getTicker();
+    		if (stockTickerString.equalsIgnoreCase(tickerString)) {
+    			Boolean current = stockToGraphMap.get(stock);
+    			stockToGraphMap.replace(stock, !current);
+    		}
+    	}
+    }
+
+    
+	public Map<Stock, Boolean> getStockToGraphMap() {
+		return stockToGraphMap;
+	}
+
+	public void setStockToGraphMap(Map<Stock, Boolean> stockToGraphMap) {
+		this.stockToGraphMap = stockToGraphMap;
+	}
+    
+    
 }

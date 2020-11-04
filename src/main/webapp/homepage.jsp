@@ -138,7 +138,15 @@
         int userID = (int) session.getAttribute("userID");
         Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
         GraphingModule GMM = new GraphingModule();
-		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), r, start_time,curr_time);
+        // Get stock to graph map
+        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
+        Portfolio portfolioToGraph = new Portfolio();
+        for (Stock stock : stockToGraphMap.keySet()){
+        	if (stockToGraphMap.get(stock)){
+        		portfolioToGraph.addStock(stock);
+        	}
+        }
+		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(portfolioToGraph, r, start_time,curr_time);
 		
 		// Parse owned stock portfolio info into string
 		GraphJSONhelper GJH = new GraphJSONhelper();
@@ -308,7 +316,6 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
-	    		
 	    		<table id="stock-list">
 	    		     
 	    		     <% for(Stock stock : stockList) { %>
@@ -316,8 +323,13 @@
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>'">
+	    						<% if (stockToGraphMap.get(stock)) { %>
+	    							<input type="checkbox" checked>
+	    						<% } %>
+	    						<% if (!stockToGraphMap.get(stock)) { %>
+	    							<input type="checkbox">
+	    						<% } %>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
@@ -325,8 +337,8 @@
 				        </tr>
 				        
 				    <% } %>
-	    		
 	    		</table>
+	    		
 	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
@@ -394,7 +406,15 @@
     	</div>
     </div>
     
-    
+    <!-- toggle button -->
+    <script>
+    	  toggleInvoke = (event) => {
+    			console.log('go to event');
+    			let arg1 = event.target.getAttribute('data-arg1');
+	        	// let arg1 = event.target.getAttribute('data-arg1');
+	        	window.location='api/toggleStock?ticker' + arg1;
+	      }
+    </script>
     
     <!-- Add stock popup box -->
 	<script>
