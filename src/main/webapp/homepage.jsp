@@ -121,7 +121,15 @@
         int userID = (int) session.getAttribute("userID");
         Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
         GraphingModule GMM = new GraphingModule();
-		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(db.getPortfolio(userID), r, start_time,curr_time);
+        // Get stock to graph map
+        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
+        Portfolio portfolioToGraph = new Portfolio();
+        for (Stock stock : stockToGraphMap.keySet()){
+        	if (stockToGraphMap.get(stock)){
+        		portfolioToGraph.addStock(stock);
+        	}
+        }
+		Map<Date, Double> portfolio_info = GMM.getPortfolioValue(portfolioToGraph, r, start_time,curr_time);
 		
 		// Parse owned stock portfolio info into string
 		GraphJSONhelper GJH = new GraphJSONhelper();
@@ -300,7 +308,12 @@
 				            <td><%=stock.getTicker()%></td>
 				            <td>
 	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>'">
-	    						<input type="checkbox" checked>
+	    						<% if (stockToGraphMap.get(stock)) { %>
+	    							<input type="checkbox" checked>
+	    						<% } %>
+	    						<% if (!stockToGraphMap.get(stock)) { %>
+	    							<input type="checkbox">
+	    						<% } %>
 							  	<span class="slider round"></span>
 							</label>
 						</td>

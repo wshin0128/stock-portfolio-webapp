@@ -40,7 +40,11 @@ public class ToggleStockServletTest extends Mockito{
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("module")).thenReturn(homePageModule);
 		
+		// Mock exception
 		ToggleStockServlet toggleStockServlet = new ToggleStockServlet();
+		toggleStockServlet.doGet(request, response);
+		
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		toggleStockServlet.doGet(request, response);
 		
 	}

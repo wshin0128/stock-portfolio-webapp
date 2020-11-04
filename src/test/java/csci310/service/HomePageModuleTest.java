@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,11 +141,15 @@ public class HomePageModuleTest extends Mockito{
 	public void testRemoveStock() {
 		homePageModule.addStock(TEST_STOCK_1);
 		assertTrue(portfolio.contains(TEST_STOCK_1));
+		homePageModule.removeStock("abcdefg");
 		homePageModule.removeStock("AAPL");
+		homePageModule.removeStock("abcdefg");
 	}
 	
 	@Test
 	public void testRemoveViewedStock() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
+		homePageModule.removeViewedStock("abcdefg");
 		homePageModule.removeViewedStock("AAPL");
 		//homePageModule.addViewedStock(stock);
 	}
@@ -177,7 +182,16 @@ public class HomePageModuleTest extends Mockito{
 	
 	@Test
 	public void testToggleStock() {
+		Map<Stock, Boolean> stockToDisplayMap = new HashMap<Stock, Boolean>();
+		stockToDisplayMap.put(TEST_STOCK_1, true);
+		stockToDisplayMap.put(TEST_STOCK_2, false);
+		homePageModule.setStockToGraphMap(stockToDisplayMap);
 		homePageModule.toggleStock("AAPL");
+		homePageModule.toggleStock("dummy value");
+		homePageModule.toggleStock("AAPL");
+		
+		assertEquals(true, stockToDisplayMap.get(TEST_STOCK_1));
+		assertEquals(homePageModule.getStockToGraphMap(), stockToDisplayMap);
 	}
 
 }

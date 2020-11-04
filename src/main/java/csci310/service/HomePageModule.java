@@ -190,8 +190,23 @@ public class HomePageModule {
     }
     
     public void toggleStock(String tickerString) {
-    	
+    	for (Stock stock : stockToGraphMap.keySet()) {
+    		String stockTickerString = stock.getTicker();
+    		if (stockTickerString.equalsIgnoreCase(tickerString)) {
+    			Boolean current = stockToGraphMap.get(stock);
+    			stockToGraphMap.replace(stock, !current);
+    		}
+    	}
     }
+
+    
+	public Map<Stock, Boolean> getStockToGraphMap() {
+		return stockToGraphMap;
+	}
+
+	public void setStockToGraphMap(Map<Stock, Boolean> stockToGraphMap) {
+		this.stockToGraphMap = stockToGraphMap;
+	}
     
     
 }
