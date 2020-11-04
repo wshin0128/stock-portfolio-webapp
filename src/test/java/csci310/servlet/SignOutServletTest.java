@@ -24,8 +24,7 @@ public class SignOutServletTest extends Mockito {
 	public void testDoPostHttpServletRequestHttpServletResponse() throws ServletException, IOException {
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		HttpServletResponse response = mock(HttpServletResponse.class);
-		when(request.getParameter("username")).thenReturn("Test");
-		when(request.getParameter("password")).thenReturn("Test2");
+		when(request.getSession()).thenReturn(mock(HttpSession.class));
 		StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
@@ -34,7 +33,7 @@ public class SignOutServletTest extends Mockito {
 		sos.doPost(request, response);
 
 		writer.flush();
-		assertTrue(stringWriter.toString().contains("0"));
+		assertTrue(stringWriter.toString().equals("complete"));
 	}
 
 }
