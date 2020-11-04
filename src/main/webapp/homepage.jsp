@@ -292,7 +292,6 @@
 	    			</div>
 	    		</div> <!-- .container-header -->
 	    		
-	    		
 	    		<table id="stock-list">
 	    		     
 	    		     <% for(Stock stock : stockList) { %>
@@ -300,7 +299,7 @@
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch">
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>'">
 	    						<input type="checkbox" checked>
 							  	<span class="slider round"></span>
 							</label>
@@ -309,8 +308,8 @@
 				        </tr>
 				        
 				    <% } %>
-	    		
 	    		</table>
+	    		
 	    	</div>  <!-- .homepage-container -->
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
@@ -378,7 +377,15 @@
     	</div>
     </div>
     
-    
+    <!-- toggle button -->
+    <script>
+    	  toggleInvoke = (event) => {
+    			console.log('go to event');
+    			let arg1 = event.target.getAttribute('data-arg1');
+	        	// let arg1 = event.target.getAttribute('data-arg1');
+	        	window.location='api/toggleStock?ticker' + arg1;
+	      }
+    </script>
     
     <!-- Add stock popup box -->
 	<script>
