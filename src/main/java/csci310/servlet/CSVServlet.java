@@ -34,29 +34,29 @@ public class CSVServlet extends HttpServlet {
 			String[] parameters = line.split(",");
 			
 			if(parameters.length < 5) {
-				errorMsg += ("Row " + String.valueOf(i) + ": requires minimum of 5 parameters.\n");
+				errorMsg += ("Row " + String.valueOf(i) + ": requires minimum of 5 parameters.<br>");
 			}
 			else {
 				if(parameters[0].trim().length() == 0) {
-					errorMsg += ("Row " + String.valueOf(i) + ", Col A: stock name is a required field.\n");
+					errorMsg += ("Row " + String.valueOf(i) + ", Col A: stock name is a required field.<br>");
 				}
 				if(parameters[1].trim().length() == 0) {
-					errorMsg += ("Row " + String.valueOf(i) + ", Col B: stock ticker is a required field.\n");
+					errorMsg += ("Row " + String.valueOf(i) + ", Col B: stock ticker is a required field.<br>");
 				}
 				try {
 					Integer.valueOf(parameters[2]);
 				}catch(NumberFormatException e) {
-					errorMsg += ("Row " + String.valueOf(i) + ", Col C: stock quantity must be a Integer.\n");
+					errorMsg += ("Row " + String.valueOf(i) + ", Col C: stock quantity must be a Integer.<br>");
 				}
 				try {
 					Long.valueOf(parameters[3]);
 				}catch(NumberFormatException e) {
-					errorMsg += ("Row " + String.valueOf(i) + ", Col D: stock buy date must be a Long.\n");
+					errorMsg += ("Row " + String.valueOf(i) + ", Col D: stock buy date must be a Long.<br>");
 				}
 				try {
 					Long.valueOf(parameters[4]);
 				}catch(NumberFormatException e) {
-					errorMsg += ("Row " + String.valueOf(i) + ", Col E: stock sell date must be a Long.\n");
+					errorMsg += ("Row " + String.valueOf(i) + ", Col E: stock sell date must be a Long.<br>");
 				}
 			}
 			i += 1;
@@ -75,11 +75,6 @@ public class CSVServlet extends HttpServlet {
 		
 		HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
 		for(Stock s : stocks) {
-			System.out.println(s.getName());
-			System.out.println(s.getQuantity());
-			System.out.println(s.getTicker());
-			System.out.println(s.getBuyDate());
-			System.out.println(s.getSellDate());
 			homePageModule.addStock(s);
 		}
 		request.getRequestDispatcher("/homepage.jsp").forward(request, response);

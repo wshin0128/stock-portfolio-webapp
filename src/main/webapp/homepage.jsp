@@ -275,10 +275,10 @@
 	    							<form action="/api/csvimport" method="post" id="import-stock-form" enctype="multipart/form-data">
 	    								<div class="form-row">
 	    									<label for=""csvImport"">Upload a .csv file</label>
-	    									<input type="file" name="file" id="csvImport" accept=".csv">
+	    									<input type="file" name="file" id="csvImport" accept=".csv" required>
 	    								</div>
-	    								<div class="form-row">
-	    									<span class="error-msg">Test error message</span>
+	    								<div class="csvError">
+	    									<span class="error-msg">${csvErrorMessage}</span>
 	    								</div>
 	    								<button type="submit" class="button" id="import-stock-submit">Upload File</button>
 	    							</form>
@@ -418,6 +418,7 @@
 		var importStockModal = document.getElementById("import-stock-modal");
 		var importStockButton = document.getElementById("import-stock-button");
 		var importStockCancelButton = document.getElementById("import-stock-cancel");
+		var csvErrorMessage = '${csvErrorMessage}';
 		
 		// When user clicks add stock button
 		importStockButton.onclick = function() {
@@ -427,6 +428,10 @@
 		// When user cancels adding a stock
 		importStockCancelButton.onclick = function() {
 			importStockModal.style.display = "none";
+		}
+		
+		if(csvErrorMessage != "") {
+			importStockModal.style.display = "flex";
 		}
 	</script>
 	
