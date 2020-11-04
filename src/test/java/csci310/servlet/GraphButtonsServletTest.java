@@ -117,5 +117,71 @@ public class GraphButtonsServletTest extends Mockito {
 		verify(session).setAttribute("tp", "4");
 		
 	}
+	
+	@Test
+	public void testDoPost6() throws Exception {
+		
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+		
+		when(request.getParameter("timePeriod")).thenReturn("1YY");
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+		
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+		
+		 verifyZeroInteractions(session);
+		
+	}
+	
+	@Test
+	public void testDoPost7() throws Exception {
+		
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+		
+		when(request.getParameter("SNP500")).thenReturn("1");
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+		
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+		
+		verify(session).setAttribute("snp", "1");
+		
+	}
+	
+	@Test
+	public void testDoPost8() throws Exception {
+		
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+		
+		when(request.getParameter("SNP500")).thenReturn("0");
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+		
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+		
+		verify(session).setAttribute("snp", null);
+		
+	}
 
 }
