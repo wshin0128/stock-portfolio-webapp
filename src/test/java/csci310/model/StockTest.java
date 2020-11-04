@@ -43,12 +43,31 @@ public class StockTest {
 		assertTrue("Stock colors do not match", color == s.getColor());
 	}
 	
+
 	// Test equals
-	@Test
-	public void testEquals() {
-		Stock s1 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
-		Stock s2 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
-		assertTrue(s1.equals(s2));
-		
-	}
+		@Test
+		public void testEquals() {
+			Stock s1 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
+			Stock s2 = new Stock("Apple Inc", "AAPL", "#000000", 14, 1, 2);
+			assertTrue(s1.equals(s2));
+			
+			Stock s3 = new Stock("Tesla", "TSLA", "#000000", 1, 2, 3);
+			assertFalse(s1.equals(s3));
+			
+			Stock s4 = new Stock("Tesla", "TSLAA", "#000000", 1, 2, 3);
+			assertFalse(s3.equals(s4));
+			
+			Stock s5 = new Stock("Tesla", "TSLA", "#000001", 1, 2, 3);
+			assertFalse(s3.equals(s5));
+			
+			Stock s6 = new Stock("Tesla", "TSLA", "#000000", 2, 2, 3);
+			assertFalse(s3.equals(s6));
+			
+			Stock s7 = new Stock("Tesla", "TSLA", "#000000", 1, 1, 3);
+			assertFalse(s3.equals(s7));
+			
+			Stock s8 = new Stock("Tesla", "TSLA", "#000000", 1, 2, 1);
+			assertFalse(s3.equals(s8));
+		}
+
 }

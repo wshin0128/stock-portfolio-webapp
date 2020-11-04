@@ -1,7 +1,7 @@
 body {
 	margin: 0;
-	background-color: #F5F5F5;
-	font-family: "Cairo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: #F5F5F5 !important;
+	font-family: "Cairo", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .navbar {
 	display: flex;
@@ -18,6 +18,7 @@ body {
 }
 .navbar h1 {
 	font-size: 22px;
+	margin-bottom: 0;
 }
 .button {
 	display: inline-block;
@@ -53,6 +54,7 @@ input:focus {
 	border-color: white;
 	background: none;
 	margin-left: auto;
+	text-decoration: none !important;
 }
 .wrap {
 	max-width: 75%;
@@ -71,7 +73,6 @@ input:focus {
 }
 #graph-container {
 	padding: 40px;
-	height: 400px;
 	grid-column: 1 / 3;
 }
 #graph-container #portfolio-value {
@@ -80,6 +81,10 @@ input:focus {
 }
 #graph-container #portfolio-value-change {
 	margin-top: 8px;
+}
+.canvas-container {
+	position: relative;
+	height: 400px;
 }
 .container-header {
 	height: 68px;
@@ -140,6 +145,19 @@ button {
 	align-items: center;
 	justify-content: space-between;
 }
+
+.modal-box form .csvError {
+	margin-top: 10px;
+	min-height: 50px;
+	font-size: 14px;
+	font-weight: normal;
+	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	line-height: 13px;
+}
+
 .modal-box form input {
 	text-align: right;
 	height: 40px;
@@ -167,6 +185,8 @@ button {
 }
 .error-msg {
 	color: #FF5252;
+	font-weight: 400;
+	font-size: 0.8em;
 }
 .popup-header {
 	padding: 18px;
@@ -276,7 +296,14 @@ input:checked + .slider:before {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
-
+.btn-primary {
+	background: red !important;
+	border: none !important;
+}
+.btn-secondary {
+	background: #787878 !important;
+	border: none !important;
+}
 
 
 

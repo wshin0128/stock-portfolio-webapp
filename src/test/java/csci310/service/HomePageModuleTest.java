@@ -17,6 +17,7 @@ import org.junit.Test;
 import csci310.model.Portfolio;
 import csci310.model.Stock;
 import csci310.model.User;
+import io.cucumber.java.en.Then;
 
 import org.mockito.Mockito;
 
@@ -25,9 +26,9 @@ import org.mockito.Mockito;
 public class HomePageModuleTest extends Mockito{
 	
 
-	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 946368000, 1609142400);
-	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 100, 100);
-	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value", "some dummy value", null, 1, 100, 100);
+	private static final Stock TEST_STOCK_1 = new Stock("Apple Inc", "AAPL", null, 21, 0, 0);
+	private static final Stock TEST_STOCK_2 = new Stock("Some dummy value", "some dummy value", null, 0, 999999998, 999999999);
+	private static final Stock TEST_STOCK_3 = new Stock("Some dummy value2", "some dummy value", null, 1, 100, 100);
 	
 	private static Portfolio portfolio;
 	
@@ -37,14 +38,14 @@ public class HomePageModuleTest extends Mockito{
 	private static DatabaseClient databaseClient;
 	
 	@BeforeClass 
-	public static void setUp() {
+	public static void setUp() throws SQLException {
 		portfolio = new Portfolio();
 		portfolio.addStock(TEST_STOCK_1);
 		portfolio.addStock(TEST_STOCK_2);
 		
 		user = new User("jdoe",1);
 		user.setPortfolio(portfolio);
-		homePageModule = new HomePageModule(user);
+		homePageModule = new HomePageModule(user, new FinnhubClient(), new DatabaseClient());
 		
 		try {
 			databaseClient = new DatabaseClient();
@@ -56,24 +57,42 @@ public class HomePageModuleTest extends Mockito{
 	
 	
 	@Test
-	public void testHomePageModule() {
+	public void testHomePageModule() throws SQLException {
 		@SuppressWarnings("unused")
-		HomePageModule homePageModuleTemp = new HomePageModule(user);
+		HomePageModule homePageModuleTemp = new HomePageModule(user, new FinnhubClient(), new DatabaseClient());
 	}
 
 	@Test
-	public void testGetChangePercentDouble() {
+	public void testGetChangePercentDouble() throws Exception {
 		FinnhubClient finnhubClient = new FinnhubClient();
 		Double todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
+		
+		homePageModule.addStock(TEST_STOCK_1);
+		homePageModule.addStock(TEST_STOCK_2);
+		
+		Calendar cal = Calendar.getInstance();
+		long currentTime = cal.getTimeInMillis() / 1000;
+
+		cal.add(Calendar.DAY_OF_YEAR, -7);
+		long yesterdayTime = cal.getTimeInMillis() / 1000;
+		
+		portfolio.addStock(new Stock("some dummy value2", "AAPL", "abc", 10, 0 , yesterdayTime * 2000L));
+		portfolio.addStock(new Stock("some dummy value3", "AAPL", "abc", 10, currentTime * 2000L , yesterdayTime * 900L));
+		portfolio.addStock(new Stock("some dummy value4", "AAPL", "abc", 10, 0, yesterdayTime * 900L));
+		portfolio.addStock(new Stock("some dummy value5", "AAPL", "abc", 10, currentTime * 2000L, yesterdayTime * 2000L));
+		
 		for (Stock stock : portfolio.getPortfolio()) {
-			Calendar cal = Calendar.getInstance();
-			long currentTime = cal.getTimeInMillis() / 1000;
-			cal.add(Calendar.DAY_OF_YEAR, -7);
-			long lastWeekTime = cal.getTimeInMillis() / 1000;
+			
+            if (yesterdayTime > stock.getSellDate() / 1000 || currentTime < stock.getBuyDate() / 1000) {
+            	// if the stock is sold before yesterday or buy after today, do not calculate that
+            	System.out.println(yesterdayTime + " " + stock.getSellDate() + " " + currentTime + " " + stock.getBuyDate());
+            	continue;
+            }
+            
 			try {
 				// Get the whole week's data 
-				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily,lastWeekTime, currentTime);
+				Map<Date, Double> priceMap = finnhubClient.getStockPrice(stock.getTicker(),Resolution.Daily, yesterdayTime, currentTime);
 				// System.out.println(priceMap);
 				
 				// Fetch the most recent two dates, and their prices
@@ -92,31 +111,68 @@ public class HomePageModuleTest extends Mockito{
 				// add to total
 				todayTotalDouble += todayPrice * stock.getQuantity();
 				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
-			} catch (Exception e) {			
+			} catch (Exception e) {	
+				// Finnhub client error, do nothing
+				e.printStackTrace();
 			}
 		}
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
 		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		
+		// mock exception 
+		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
+		when(mockFinnhubClient.getStockPrice(anyString(), any(Resolution.class), anyLong(), anyLong()))
+			.thenThrow(new Exception ());
+		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient, new DatabaseClient());
+		
+		assertNotNull(homePageModule2.getChangePercentDouble());
 	}
 	
 	@Test
 	public void testAddStock() {
-		// assertFalse(portfolio.contains(TEST_STOCK_2));
 		homePageModule.addStock(TEST_STOCK_2);
-		// assertTrue(portfolio.contains(TEST_STOCK_2));
-		
-		// test updates to database
+		homePageModule.removeStock(TEST_STOCK_2.getTicker());
+	}
+
+	@Test
+	public void testRemoveStock() {
+		homePageModule.addStock(TEST_STOCK_1);
+		assertTrue(portfolio.contains(TEST_STOCK_1));
+		homePageModule.removeStock("AAPL");
 	}
 	
 	@Test
-	public void testRemoveStock() {
-		// assertTrue(portfolio.contains(TEST_STOCK_1));
-		homePageModule.removeStock("AAPL");
-		// assertFalse(portfolio.contains(TEST_STOCK_1));
-		
-		// test updates to database
+	public void testRemoveViewedStock() {
+		homePageModule.removeViewedStock("AAPL");
+		//homePageModule.addViewedStock(stock);
+	}
+	
+	@Test
+	public void testGetStockList() {
+		assertEquals(portfolio.getSize(), homePageModule.getStockList().size());
+	}
+	
+	@Test
+	public void testGetPortfolioValue() {
+		assertNotNull(homePageModule.getPortfolioValue());
+	}
+	
+	@Test
+	public void testGetViewedStockList() {
+		assertNotNull(homePageModule.getViewedStockList());
+	}
+	
+	@Test
+	public void testAddViewedStockList() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
+		homePageModule.removeViewedStock(TEST_STOCK_1.getTicker());
+	}
+	
+	@Test
+	public void testSetPortfolio() {
+		homePageModule.setPortfolio(portfolio);
 	}
 
 }
