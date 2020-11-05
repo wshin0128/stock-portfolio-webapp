@@ -245,7 +245,7 @@
 				</form>
 	    		<div class = "graph-main">
 	    		<div class="canvas-container">
-	    			<canvas id="myChart" width="300" height="200"></canvas>
+	    			<canvas id="myChart" ></canvas>
 	    		</div>
 
 	    		</div>

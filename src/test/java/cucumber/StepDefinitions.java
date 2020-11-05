@@ -20,7 +20,7 @@ import io.cucumber.java.en.When;
  * Step definitions for Cucumber tests.
  */
 public class StepDefinitions {
-	private static final String ROOT_URL = "http://localhost:8080/";
+	private static final String ROOT_URL = "https://localhost:8443/";
 
 	private final WebDriver driver = new ChromeDriver();
 
@@ -104,6 +104,10 @@ public class StepDefinitions {
 	@Given("I am on the home page")
 	public void i_am_on_the_home_page() throws InterruptedException {
 	    driver.get(ROOT_URL+"signIn.jsp");
+	    Thread.sleep(2000);
+	    WebElement currentElement = driver.switchTo().activeElement();
+	    currentElement.sendKeys("thisisunsafe");
+	    Thread.sleep(1000);
 	    WebElement username = driver.findElement(By.id("username"));
 		username.sendKeys("test2");
 		WebElement password = driver.findElement(By.id("pass"));
@@ -245,14 +249,14 @@ public class StepDefinitions {
 
 	@When("I enter a valid purchase date in the Add Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020\t1010");
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-form #date-purchased"));
+		addStockBuyDate.sendKeys("10/10/2020");
 	}
 
 	@When("I enter a valid sell date in the Add Stocks popup")
 	public void i_enter_a_valid_sell_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020\t1015");
+		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-form #date-sold"));
+		addStockSellDate.sendKeys("10/15/2020");
 	}
 
 	@When("I click Add Stock")
@@ -295,20 +299,42 @@ public class StepDefinitions {
 	@Then("I should see the error {string} in the Add Stocks popup")
 	public void i_should_see_the_error_in_the_Add_Stocks_popup(String string) throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement errorMessage = driver.findElement(By.cssSelector("#add-stock-modal .error-msg"));
+		WebElement errorMessage = driver.findElement(By.xpath("//span[.='"+string+"']"));
 		assertTrue(string.equalsIgnoreCase(errorMessage.getText()));
 	}
 
-	@When("I enter an invalid number of shares in the Add Stocks popup")
-	public void i_enter_an_invalid_number_of_shares_in_the_Add_Stocks_popup() {
+	@When("I enter zero shares in the Add Stocks popup")
+	public void i_enter_zero_shares_in_the_Add_Stocks_popup() {
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
+		addStockShares.sendKeys("0");
+	}
+	
+	@When("I enter a negative number of shares in the Add Stocks popup")
+	public void i_enter_a_negative_number_of_shares_in_the_Add_Stocks_popup() {
 		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
 		addStockShares.sendKeys("-2");
+	}
+	
+	@When("I do not enter a purchase date in the Add Stocks popup")
+	public void i_do_not_enter_a_purchase_date_in_the_Add_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
+		addStockBuyDate.sendKeys("");
 	}
 
 	@When("I enter a sell date before the purchase date in the Add Stocks popup")
 	public void i_enter_a_sell_date_before_the_purchase_date_in_the_Add_Stocks_popup() {
 		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
 		addStockSellDate.sendKeys("2020\t1009");
+	}
+	
+	@Then("I should see the Add Stock button in the Add Stocks popup")
+	public void i_should_see_the_add_stock_button_in_the_add_stocks_popup() {
+		
+	}
+	
+	@Then("I should see the Cancel button in the Add Stocks popup")
+	public void i_should_see_the_cancel_button_in_the_add_stocks_popup() {
+		
 	}
 
 	@When("I click Add Stock in the Viewed Stocks box")
@@ -382,7 +408,7 @@ public class StepDefinitions {
 	@Then("I should see the error {string} in the View Stocks popup")
 	public void i_should_see_the_error_in_the_View_Stocks_popup(String string) throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[5]/span"));
+		WebElement errorMessage = driver.findElement(By.xpath("//span[.='"+string+"']"));
 		assertTrue(string.equalsIgnoreCase(errorMessage.getText()));
 	}
 
