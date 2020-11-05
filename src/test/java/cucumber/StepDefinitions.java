@@ -120,7 +120,7 @@ public class StepDefinitions {
 	@When("I click on the sign out button")
 	public void i_click_on_the_sign_out_button() throws InterruptedException {
 	    Thread.sleep(1000);
-	    driver.findElement(By.xpath("/html/body/div[1]/div/a")).click();
+	    driver.findElement(By.id("signOutB")).click();
 	    Thread.sleep(1000);
 	}
 	@Then("I should be signed out and taken back to the sign in page")
@@ -152,6 +152,18 @@ public class StepDefinitions {
 		Thread.sleep(3000);
 	}
 	
+	@When("I wait {int} minute")
+	public void i_wait_minute(Integer int1) throws InterruptedException {
+	    Thread.sleep(60000 * int1 + 1);
+	}
+
+	@Then("I should see the unlock message {string}")
+	public void i_should_see_the_unlock_message(String string) throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement errorBox = driver.findElement(By.id("Munlock"));
+		assertTrue(string.equalsIgnoreCase(errorBox.getText()));
+	}
+	
 /**
  * @throws InterruptedException ***********************************************************************/
 	
@@ -181,7 +193,7 @@ public class StepDefinitions {
 
 	@When("I click submit in SU")
 	public void i_click_submit_in_SU() throws InterruptedException {
-		WebElement searchButton = driver.findElement(By.className("sign-in-button"));
+		WebElement searchButton = driver.findElement(By.id("b"));
 	    searchButton.click();
 	    Thread.sleep(7000);
 	}
@@ -219,6 +231,13 @@ public class StepDefinitions {
 	public void i_enter_a_non_matching_password_in_confirm_password_in_SU() {
 		WebElement queryBox = driver.findElement(By.id("confirmpassword"));
 		queryBox.sendKeys("test2test222");
+	}
+	
+	@When("I click the cancel button in SU")
+	public void i_click_the_cancel_button_in_SU() throws InterruptedException {
+		WebElement searchButton = driver.findElement(By.id("c"));
+	    searchButton.click();
+	    Thread.sleep(7000);
 	}
 
 

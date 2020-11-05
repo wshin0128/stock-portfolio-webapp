@@ -21,6 +21,10 @@
 	<servlet-class>csci310.servlet.ViewStockServlet</servlet-class>
   </servlet>
   <servlet>
+  <servlet-name>signOut</servlet-name>
+	<servlet-class>csci310.servlet.SignOutServlet</servlet-class>
+  </servlet>
+  <servlet>
 	<servlet-name>removeStock</servlet-name>
 	<servlet-class>csci310.servlet.RemoveStockServlet</servlet-class>
   </servlet>
@@ -36,6 +40,11 @@
 	<servlet-name>toggleStock</servlet-name>
 	<servlet-class>csci310.servlet.ToggleStockServlet</servlet-class>
   </servlet>
+
+  <servlet-mapping>
+  <servlet-name>signOut</servlet-name>
+  <url-pattern>/api/sio</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
   <servlet-name>login</servlet-name>
   <url-pattern>/api/login</url-pattern>

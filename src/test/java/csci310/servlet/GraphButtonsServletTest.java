@@ -129,17 +129,40 @@ public class GraphButtonsServletTest extends Mockito {
 		HttpSession session = mock(HttpSession.class);
 		RequestDispatcher rd = mock(RequestDispatcher.class);
 		
-		when(request.getParameter("timePeriod")).thenReturn("1YY");
+		when(request.getParameter("date-purchased")).thenReturn("01/01/2020");
+		when(request.getParameter("date-sold")).thenReturn("02/01/2020");
 		when(request.getSession()).thenReturn(session);
 		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		
 		GraphButtonsServlet g = new GraphButtonsServlet();
 		g.doPost(request, response);
 		
-		 verifyZeroInteractions(session);
-		
+		verify(session).setAttribute("tp", null);
+
 	}
-	
+
+	@Test
+	public void testDoPost6b() throws Exception {
+
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+
+		when(request.getParameter("date-purchased")).thenReturn("03/01/2020");
+		when(request.getParameter("date-sold")).thenReturn("02/01/2020");
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+
+		verify(session).setAttribute("tp", null);
+
+	}
 	@Test
 	public void testDoPost7() throws Exception {
 		
@@ -182,6 +205,27 @@ public class GraphButtonsServletTest extends Mockito {
 		
 		verify(session).setAttribute("snp", null);
 		
+	}
+	
+	@Test
+	public void testDoPost9() throws Exception {
+
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+
+		when(request.getParameter("tp")).thenReturn("0");
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+
+		verify(session).setAttribute("start_date", null);
 	}
 
 }

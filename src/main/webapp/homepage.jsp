@@ -133,6 +133,38 @@
 	    
 	    long start_time =  date.getTimeInMillis() / 1000L;
 	    
+	    String maybe_start = (String) session.getAttribute("start_date");
+	    String maybe_end = (String) session.getAttribute("end_date");
+	    
+	    if(maybe_start!=null && maybe_end!=null)
+	    {
+	    	long start = Long.parseLong(maybe_start);
+	    	long end = Long.parseLong(maybe_end);
+	    	
+	    	start_time = start/1000L;
+	    	curr_time = end/1000L;
+	    	
+	    	long day_diff = (end - start)/(60*60*24*1000);
+	    	
+	    	System.out.println("Day diff is = " + day_diff);
+	    	
+	    	
+	    	if(day_diff <=14)
+	    	{
+	    		r = Resolution.Daily;
+	    	}
+	    	else if(day_diff <=90)
+	    	{
+	    		r = Resolution.Weekly;
+	    	}
+	    	else
+	    	{
+	    		r = Resolution.Monthly;
+	    	}
+	    	
+	    	
+	    }
+	    
 	    System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
@@ -196,7 +228,8 @@
 			GraphJSONhelper GG = new GraphJSONhelper();
 			Data_and_Labels DnL = GG.StockGraphInfo("SPY", 1, r, start_time, curr_time); 
 			userGraphInfo.add(DnL.Data_Json);
-			Labels = DnL.Labels;
+			if(Labels.equals(""))
+				Labels = DnL.Labels;
 		}
         
 		String GraphData = new JSONArray(userGraphInfo).toString();
@@ -207,7 +240,7 @@
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
-			<a href="http://localhost:8080/signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
+			<button id="signOutB" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</button>
 		</div>
 	</div>
     <div class="wrap">
@@ -247,9 +280,39 @@
 	    		<div class="canvas-container">
 	    			<canvas id="myChart" ></canvas>
 	    		</div>
-
+				<div class="container-header">
+	    			<div class="add-stocks-container">
+	    			
+	    				<button class="button" id="customrange-button">Custom Range</button>
+	    				<div class="modal" id="customrange-modal">
+	    					<div class="modal-box">
+	    						<div class="popup-header">Custom Date Range</div>
+	    						<div class="popup-section">
+	    							<form id="customrange-form" name="customrange-form" method="post" action="/api/GraphButtons">
+	    								<div class="form-row">
+	    									<label for="date-purchased">Start Date</label>
+	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
+	    								</div>
+	    								<div class="form-row">
+	    									<label for="date-sold">End Date</label>
+	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
+	    								</div>
+	    								<div class="form-row">
+	    									<span class="error-msg">${customrangeerrorMessage}</span>
+	    								</div>
+	    								<button type="submit" class="button" id="customrange-submit">Submit</button>
+	    							</form>
+	    						</div>
+	    						<div class="popup-section">
+	    							<button class="button" id="customrange-cancel">Cancel</button>
+	    						</div>
+	    					</div>
+	    				</div>
+	    				
+	    			</div>
+	    		</div> <!-- .container-header -->
 	    		</div>
-	    	</div> <!-- #graph-container -->
+	    		</div> <!-- #graph-container -->
 	    	
 	    	<div class="grid-helper">
 	    	<div class="homepage-container" id="portfolio-container">
@@ -409,17 +472,55 @@
 	    	</div> <!-- .grid-helper -->
     	</div>
     </div>
+
     
-    <!-- toggle button -->
-    <script>
-    	  toggleInvoke = (event) => {
-    			console.log('go to event');
-    			let arg1 = event.target.getAttribute('data-arg1');
-	        	// let arg1 = event.target.getAttribute('data-arg1');
-	        	window.location='api/toggleStock?ticker' + arg1;
-	      }
-    </script>
     
+
+    <div id = "hiddendiv" style="display: none;">
+    </div>
+    
+  <!-- toggle button -->
+  <script>
+      toggleInvoke = (event) => {
+        console.log('go to event');
+        let arg1 = event.target.getAttribute('data-arg1');
+          // let arg1 = event.target.getAttribute('data-arg1');
+          window.location='api/toggleStock?ticker' + arg1;
+      }
+  </script>
+
+  <script>
+    document.querySelector("#signOutB").onclick = function() {
+      let httpRequest = new XMLHttpRequest();
+    httpRequest.open("POST", "api/sio" , true);
+
+
+    // We will get alerted when backend gives back some kind of response
+    httpRequest.onreadystatechange = function(){
+      // This function runs when we get some kind of response back from iTunes
+      console.log(httpRequest);
+      // When we get back a DONE state (readyState == 4, let's do something with it)
+      if(httpRequest.readyState == httpRequest.DONE) {
+        // Check for errors - status code 200 means success
+        if(httpRequest.status == 200) {
+          console.log(httpRequest.responseText);
+
+          // Display the results on the browser - a separate function is created for this purpose
+          window.location.href = "signIn.jsp";
+
+        }
+        else {
+          console.log("AJAX Error!!");
+          console.log(httpRequest.status);
+          console.log(httpRequest.statusText);
+        }
+
+      }
+    }
+    httpRequest.send(); 
+
+    }
+  </script>
     <!-- Add stock popup box -->
 	<script>
 		var addStockModal = document.getElementById("add-stock-modal");
@@ -444,6 +545,8 @@
 				importStockModal.style.display = "none";
 			} else if (event.target == viewStockModal) {
 				viewStockModal.style.display = "none";
+			}else if (event.target == Modal) {
+				Modal.style.display = "none";
 			}
 		}
 		// If the servlet returns an error message, display popup
@@ -474,6 +577,32 @@
 			importStockModal.style.display = "flex";
 		}
 	</script>
+	
+	<!-- Custom Range popup box -->
+	<script>
+		var Modal = document.getElementById("customrange-modal");
+		var Button = document.getElementById("customrange-button");
+		var CancelButton = document.getElementById("customrange-cancel");
+		var CusterrorMessage = '${customrangeerrorMessage}';
+		
+		// When user clicks add stock button
+		Button.onclick = function() {
+			document.getElementById("customrange-form").reset();
+			Modal.style.display = "flex";
+		}
+		// When user cancels adding a stock
+		CancelButton.onclick = function() {
+			Modal.style.display = "none";
+		}
+		// When the user clicks anywhere outside of the box, close it
+		
+		// If the servlet returns an error message, display popup
+		if(CusterrorMessage != "") {
+			console.log("errorMessage = " + CusterrorMessage);
+			Modal.style.display = "flex";
+		}
+	</script>
+	
 	
 	<!-- View stocks popup box -->
 	<script>
@@ -566,6 +695,10 @@
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config); 
+	
+	var hdn = JSON.stringify(graphdata);
+	document.getElementById("hiddendiv").innerHTML = hdn;
+	console.log(hdn);
 	
 	$('#zoomin').click(function(){
 	    

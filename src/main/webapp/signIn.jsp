@@ -65,6 +65,10 @@
 		
 	</div>
 	<script>
+	
+	</script>
+	
+	<script>
 		let numFailed = 0;
 		let url = "api/login";
 		
@@ -96,7 +100,15 @@
 				//document.querySelector(".login").style.height = "350px";
 			}
 			
-					
+			if(numFailed > 2){
+				document.querySelector("#b").enabled = false;
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
+				document.querySelector('#b').className = "sign-in-button-error";
+				
+				setTimeout(endLock, 60000);
+
+				//document.querySelector(".login").style.height = "350px";
+			}		
 		}
 		
 		document.querySelector("#logInForm").onsubmit = function(event){
@@ -105,13 +117,8 @@
 			let userName = document.querySelector("#username").value;
 			let pass = document.querySelector("#pass").value;
 			
-			if(numFailed > 2){
-				document.querySelector("#b").enabled = false;
-				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
-				document.querySelector('#b').className = "sign-in-button-error";
-				//document.querySelector(".login").style.height = "350px";
-			}	
-			else if(userName.length < 1){
+			document.querySelector("#errorMessage").style.color = "ff0033";
+			if(userName.length < 1){
 				document.body.id = "errorScreen";
 				numFailed++;
 				document.querySelector("#pass").style.borderColor = "#ff0033";
@@ -168,7 +175,28 @@
 			        "password": pass
 			    })); 
 			}
+			if(numFailed > 2){
+				document.querySelector("#b").enabled = false;
+				document.querySelector("#errorMessage").innerHTML = "<p id = \"Merror\">You have been locked for failing to sign in three times</p>";
+				document.querySelector('#b').className = "sign-in-button-error";
+				
+				setTimeout(endLock, 60000);
+				
+				//document.querySelector(".login").style.height = "350px";
+			}
 		}
+		
+		function endLock() {
+			document.querySelector("#b").enabled = true;
+			document.querySelector("#errorMessage").innerHTML = "<p id = \"Munlock\">The lock has been unlocked</p>";
+			document.querySelector("#errorMessage").style.color = "51C58E";
+			document.querySelector('#b').className = "sign-in-button";
+			document.querySelector("#pass").style.borderColor = "#51C58E";
+			document.querySelector("#username").style.borderColor = "#51C58E";
+			document.body.id = "start";
+			numFailed = 0;
+		}
+		
 	</script>
 </body>
 </html>
