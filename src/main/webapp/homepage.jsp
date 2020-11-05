@@ -240,7 +240,7 @@
 	<div class="navbar">
 		<div class="wrap">
 			<h1>USC CS 310: Stock Portfolio Management</h1>
-			<a href="http://localhost:8080/signIn.jsp" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</a>
+			<button id="signOutB" class="button"><i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign Out</button>
 		</div>
 	</div>
     <div class="wrap">
@@ -472,19 +472,55 @@
 	    	</div> <!-- .grid-helper -->
     	</div>
     </div>
+
+    
+    
+
     <div id = "hiddendiv" style="display: none;">
     </div>
     
-    <!-- toggle button -->
-    <script>
-    	  toggleInvoke = (event) => {
-    			console.log('go to event');
-    			let arg1 = event.target.getAttribute('data-arg1');
-	        	// let arg1 = event.target.getAttribute('data-arg1');
-	        	window.location='api/toggleStock?ticker' + arg1;
-	      }
-    </script>
-    
+  <!-- toggle button -->
+  <script>
+      toggleInvoke = (event) => {
+        console.log('go to event');
+        let arg1 = event.target.getAttribute('data-arg1');
+          // let arg1 = event.target.getAttribute('data-arg1');
+          window.location='api/toggleStock?ticker' + arg1;
+      }
+  </script>
+
+  <script>
+    document.querySelector("#signOutB").onclick = function() {
+      let httpRequest = new XMLHttpRequest();
+    httpRequest.open("POST", "api/sio" , true);
+
+
+    // We will get alerted when backend gives back some kind of response
+    httpRequest.onreadystatechange = function(){
+      // This function runs when we get some kind of response back from iTunes
+      console.log(httpRequest);
+      // When we get back a DONE state (readyState == 4, let's do something with it)
+      if(httpRequest.readyState == httpRequest.DONE) {
+        // Check for errors - status code 200 means success
+        if(httpRequest.status == 200) {
+          console.log(httpRequest.responseText);
+
+          // Display the results on the browser - a separate function is created for this purpose
+          window.location.href = "signIn.jsp";
+
+        }
+        else {
+          console.log("AJAX Error!!");
+          console.log(httpRequest.status);
+          console.log(httpRequest.statusText);
+        }
+
+      }
+    }
+    httpRequest.send(); 
+
+    }
+  </script>
     <!-- Add stock popup box -->
 	<script>
 		var addStockModal = document.getElementById("add-stock-modal");

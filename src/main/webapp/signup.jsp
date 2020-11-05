@@ -50,8 +50,12 @@
 			</div>
 
 			<div id="subButton">
+				<a id = "c"  class="sign-in-button">
+					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspCancel
+				</a>
+				
 				<button type="submit" id = "b" class="sign-in-button">
-					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspSign In
+					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspSubmit
 				</button>
 			</div>
 			 </br>
@@ -62,7 +66,11 @@
 
 	<script>
 		let url = "api/reg";
-
+		
+		document.querySelector("#c").onclick = function(){
+			window.location.href = "signIn.jsp";
+		}
+		
 		function parseResponse(response) {
 			let data = JSON.parse(response);
 			console.log(data);
@@ -74,6 +82,7 @@
 				document.querySelector("#confirmpassword").style.borderColor = "#ff0033";
 				document.querySelector("#eMess").innerHTML = "<p id = \"Merror\">Username is already been chosen</p>";
 				document.querySelector('#b').className = "sign-in-button-error";
+				document.querySelector('#c').className = "sign-in-button-error";
 
 			} else if (num == 1) {
 				window.location.href = "signIn.jsp"
@@ -94,6 +103,8 @@
 				document.querySelector("#password").style.borderColor = "#ff0033";
 				document.querySelector("#confirmpassword").style.borderColor = "#ff0033";
 				document.querySelector('#b').className = "sign-in-button-error";
+				document.querySelector('#c').className = "sign-in-button-error";
+
 				if (password.length < 8) {
 					document.querySelector("#eMess").innerHTML = "<p id = \"Merror\">Please input a username of atleast 1 character as well as a password of atleast 8 characters</p>";
 
@@ -106,6 +117,7 @@
 				document.querySelector("#password").style.borderColor = "#ff0033";
 				document.querySelector("#confirmpassword").style.borderColor = "#ff0033";
 				document.querySelector('#b').className = "sign-in-button-error";
+				document.querySelector('#c').className = "sign-in-button-error";
 				document.querySelector("#eMess").innerHTML = "<p id = \"Merror\">Please input a password of atleast 8 characters</p>";
 
 			} else if (password != password_confirmation) {
@@ -114,6 +126,7 @@
 				document.querySelector("#password").style.borderColor = "#ff0033";
 				document.querySelector("#confirmpassword").style.borderColor = "#ff0033";
 				document.querySelector('#b').className = "sign-in-button-error";
+				document.querySelector('#c').className = "sign-in-button-error";
 				document.querySelector("#eMess").innerHTML = "<p id = \"Merror\">Please make sure the two passwords inputted match each other</p>";
 
 			} else {
