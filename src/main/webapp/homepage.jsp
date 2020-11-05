@@ -133,38 +133,6 @@
 	    
 	    long start_time =  date.getTimeInMillis() / 1000L;
 	    
-	    String maybe_start = (String) session.getAttribute("start_date");
-	    String maybe_end = (String) session.getAttribute("end_date");
-	    
-	    if(maybe_start!=null && maybe_end!=null)
-	    {
-	    	long start = Long.parseLong(maybe_start);
-	    	long end = Long.parseLong(maybe_end);
-	    	
-	    	start_time = start/1000L;
-	    	curr_time = end/1000L;
-	    	
-	    	int day_diff =(int) (end - start)/(60*60*24*1000);
-	    	
-	    	System.out.println("Day diff is = " + day_diff);
-	    	
-	    	
-	    	if(day_diff <=14)
-	    	{
-	    		r = Resolution.Daily;
-	    	}
-	    	else if(day_diff <=90)
-	    	{
-	    		r = Resolution.Weekly;
-	    	}
-	    	else
-	    	{
-	    		r = Resolution.Monthly;
-	    	}
-	    	
-	    	
-	    }
-	    
 	    System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
@@ -228,8 +196,7 @@
 			GraphJSONhelper GG = new GraphJSONhelper();
 			Data_and_Labels DnL = GG.StockGraphInfo("SPY", 1, r, start_time, curr_time); 
 			userGraphInfo.add(DnL.Data_Json);
-			if(Labels.equals(""))
-				Labels = DnL.Labels;
+			Labels = DnL.Labels;
 		}
         
 		String GraphData = new JSONArray(userGraphInfo).toString();
@@ -270,7 +237,6 @@
 				  <input type="submit" id="1-month-btn" class="btn btn-secondary" name="timePeriod" value="1M"/>
 				  <input type="submit" id="1-year-btn" class="btn btn-secondary" name="timePeriod" value="1Y"/>
 				</div>
-				
 				<div>
 				SNP500 
 				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
@@ -281,37 +247,7 @@
 	    		<div class="canvas-container">
 	    			<canvas id="myChart" width="300" height="200"></canvas>
 	    		</div>
-	    		<div class="container-header">
-	    			<div class="add-stocks-container">
-	    			
-	    				<button class="button" id="customrange-button">Custom Range</button>
-	    				<div class="modal" id="customrange-modal">
-	    					<div class="modal-box">
-	    						<div class="popup-header">Custom Date Range</div>
-	    						<div class="popup-section">
-	    							<form id="customrange-form" name="customrange-form" method="post" action="/api/GraphButtons">
-	    								<div class="form-row">
-	    									<label for="date-purchased">Start Date</label>
-	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
-	    								</div>
-	    								<div class="form-row">
-	    									<label for="date-sold">End Date</label>
-	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
-	    								</div>
-	    								<div class="form-row">
-	    									<span class="error-msg">${customrangeerrorMessage}</span>
-	    								</div>
-	    								<button type="submit" class="button" id="customrange-submit">Submit</button>
-	    							</form>
-	    						</div>
-	    						<div class="popup-section">
-	    							<button class="button" id="customrange-cancel">Cancel</button>
-	    						</div>
-	    					</div>
-	    				</div>
-	    				
-	    			</div>
-	    		</div> <!-- .container-header -->
+
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
@@ -473,8 +409,6 @@
 	    	</div> <!-- .grid-helper -->
     	</div>
     </div>
-    <div id = "hiddendiv" style="display: none;">
-    </div>
     
     <!-- toggle button -->
     <script>
@@ -510,8 +444,6 @@
 				importStockModal.style.display = "none";
 			} else if (event.target == viewStockModal) {
 				viewStockModal.style.display = "none";
-			} else if (event.target == Modal) {
-				Modal.style.display = "none";
 			}
 		}
 		// If the servlet returns an error message, display popup
@@ -569,31 +501,6 @@
 		}
 	</script>
 	
-<!-- Custom Range popup box -->
-	<script>
-		var Modal = document.getElementById("customrange-modal");
-		var Button = document.getElementById("customrange-button");
-		var CancelButton = document.getElementById("customrange-cancel");
-		var CusterrorMessage = '${customrangeerrorMessage}';
-		
-		// When user clicks add stock button
-		Button.onclick = function() {
-			document.getElementById("customrange-form").reset();
-			Modal.style.display = "flex";
-		}
-		// When user cancels adding a stock
-		CancelButton.onclick = function() {
-			Modal.style.display = "none";
-		}
-		// When the user clicks anywhere outside of the box, close it
-		
-		// If the servlet returns an error message, display popup
-		if(CusterrorMessage != "") {
-			console.log("errorMessage = " + CusterrorMessage);
-			Modal.style.display = "flex";
-		}
-	</script>
-
 
 	<!-- graph script, main idea and getting data from session done -->
 	<script>
@@ -659,10 +566,6 @@
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, config); 
-	
-	var hdn = JSON.stringify(graphdata);
-	document.getElementById("hiddendiv").innerHTML = hdn;
-	console.log(hdn);
 	
 	$('#zoomin').click(function(){
 	    
