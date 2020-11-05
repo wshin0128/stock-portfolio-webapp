@@ -35,16 +35,8 @@ public class ViewStockServlet extends HttpServlet {
 				request.setAttribute("viewedErrorMessageDateSold", "Sold date with no purchase date");
 				formError = true;
 			}
-			if((request.getParameter("date-sold").equals("")) && (!request.getParameter("date-purchased").equals(""))) {
-				request.setAttribute("viewedErrorMessageDatePurchased", "Purchase date with no sold date");
-				formError = true;
-			}
 			if(request.getParameter("date-purchased").equals("")) {
 				request.setAttribute("viewedErrorMessageDatePurchased", "Purchase date is required");
-				formError = true;
-			}
-			if(request.getParameter("date-sold").equals("")) {
-				request.setAttribute("viewedErrorMessageDateSold", "Sold date is required");
 				formError = true;
 			}
 			
@@ -79,38 +71,45 @@ public class ViewStockServlet extends HttpServlet {
 			String dateSold = "";
 			long datePurchasedUnix = 0;
 			long dateSoldUnix = 0;
-			if(!request.getParameter("date-purchased").equalsIgnoreCase("") && !request.getParameter("date-sold").equalsIgnoreCase("")) {
-				// Get form values
-				datePurchased = request.getParameter("date-purchased");
-				dateSold = request.getParameter("date-sold");
-
-				// Convert dates to UNIX time
-				SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
-				Date datePurchasedObject = dateFormatter.parse(datePurchased);
+			
+			datePurchased = request.getParameter("date-purchased");
+			dateSold = request.getParameter("date-sold");
+			
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
+			Date datePurchasedObject = new Date();
+			Date dateSoldObject = new Date();
+			Date now = new Date();
+	        long currentTimeUnix = now.getTime() / 1000L;
+	        long oneYearAgo = (currentTimeUnix - 31536000) * 1000 - 172800000;
+	        System.out.println("one year ago: " + oneYearAgo);
+			
+	        // If date purchased exists
+			if(!datePurchased.equalsIgnoreCase("")) {
+				datePurchasedObject = dateFormatter.parse(datePurchased);
 				datePurchasedUnix = datePurchasedObject.getTime();
-				Date dateSoldObject = dateFormatter.parse(dateSold);
-				dateSoldUnix = dateSoldObject.getTime();
 				
-				// Validate date
-				Date now = new Date();
-		        long currentTimeUnix = now.getTime() / 1000L;
-		        long oneYearAgo = (currentTimeUnix - 31536000) * 1000;
-		        
-		        // If purchase date is after sold date, set error and go back home
-		        if(datePurchasedUnix >= dateSoldUnix) {
-		        	request.setAttribute("viewedErrorMessageDateSold", "Sold date prior to purchase date");
-		        	formError = true;
-				}
-		        
-		        // Make sure no dates are older than one year ago
-		        if(datePurchasedUnix < oneYearAgo) {
+				if(datePurchasedUnix < oneYearAgo) {
 		        	request.setAttribute("viewedErrorMessageDatePurchased", "Purchase date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
-		        if(dateSoldUnix < oneYearAgo) {
+			}
+			// If date sold exists
+			if(!dateSold.equalsIgnoreCase("")) {
+				dateSoldObject = dateFormatter.parse(dateSold);
+				dateSoldUnix = dateSoldObject.getTime();
+				
+				if(dateSoldUnix < oneYearAgo) {
 		        	request.setAttribute("viewedErrorMessageDateSold", "Sold date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
+			}
+			
+			// Check if sold date is prior to purchase date
+			if(!datePurchased.equalsIgnoreCase("") && !dateSold.equalsIgnoreCase("")) {
+				if(datePurchasedUnix >= dateSoldUnix) {
+		        	request.setAttribute("viewedErrorMessageDateSold", "Sold date prior to purchase date");
+		        	formError = true;
+				}
 			}
 			
 			if(formError) {
@@ -130,12 +129,10 @@ public class ViewStockServlet extends HttpServlet {
 				Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
 				homePageModule.addViewedStock(s);
 			}
-			
 			// Go back to homepage
-			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
-			return;
-			
-		} catch (Exception e) {
+			request.getRequestDispatcher("/homepage.jsp").forward(request, response);} 
+		catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception from ViewStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);}
 	}
