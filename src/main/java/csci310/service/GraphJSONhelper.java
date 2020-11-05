@@ -56,8 +56,17 @@ public class GraphJSONhelper {
 			}
 			
 			JSONObject json = new JSONObject(); // Make a helper that gets the Stock name
-			String company_name = FC.getCompanyNameString(symbol);
-			company_name = company_name + " value in $";
+			String company_name = "";
+			if(!symbol.equals("SPY"))
+			{
+				company_name = FC.getCompanyNameString(symbol);
+			}
+			else
+			{
+				company_name = " SPDR S&P 500 ETF Trust";
+			}
+			
+			 company_name = company_name + " value in $";
 			 json.put("label", company_name);
 			 json.put("data", values);
 			 json.put("fill", "false");
@@ -83,6 +92,7 @@ public class GraphJSONhelper {
 			 //return json.toString();
 		} catch (Exception e) {
 			System.out.println("Exception from GraphJSONhelper.Data_and_Labels StockGraphInfo()");
+			System.out.println(e);
 			return null;
 		}
 			
@@ -90,12 +100,13 @@ public class GraphJSONhelper {
 	// This provides total profolio info given a map of stock info
 	// Used when displaying the graph in homepage.jsp
 	// Very similar to function above with some changes
-	public String Total_portfolio_Info(Map<Date, Double> StockInfo)
+	public Data_and_Labels Total_portfolio_Info(Map<Date, Double> StockInfo)
 	{
 		
 		if(StockInfo==null)
 		{
-			return "";
+			Data_and_Labels Dns = null;
+			return Dns;
 		}
 		
 		Map<Date, Double> stock_info = new TreeMap<Date, Double>(StockInfo);
@@ -141,8 +152,15 @@ public class GraphJSONhelper {
 		 json.put("borderWidth", 1);
 		 
 		 System.out.println(json.toString());
+		 
+		 Data_and_Labels DnL = new Data_and_Labels();
+		 DnL.Data_Json = json.toString();
+		 DnL.Labels = new JSONArray(dates).toString();
 		
-		return json.toString();
+		 System.out.println(DnL.Labels);
+		 //Provides
+		 return DnL;
+		
 	}
 	
 //	public static void main(String [] args) {
