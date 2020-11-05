@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ try {
 		
 		String tp = (String)request.getParameter("timePeriod");
 		String snp = (String)request.getParameter("SNP500");
+		String startDate = request.getParameter("date-purchased");
+		String endDate = request.getParameter("date-sold");
 	
 	if(snp!=null) {	
 		if(snp.equals("1"))
@@ -50,6 +54,32 @@ try {
 		}
 	}
 	
+	if(startDate!=null)
+	{
+		session.setAttribute("tp", null);
+
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
+		Date datePurchasedObject = dateFormatter.parse(startDate);
+		long startDateUNIX = datePurchasedObject.getTime();
+		Date dateSoldObject = dateFormatter.parse(endDate);
+		long endDateUNIX = dateSoldObject.getTime();
+
+		if(startDateUNIX >= endDateUNIX)
+		{
+			request.setAttribute("customrangeerrorMessage", "End date same as/prior to Start date");
+		}
+		else {
+			System.out.println("setting start and end");
+
+			session.setAttribute("start_date", Long.toString(startDateUNIX));
+			session.setAttribute("end_date", Long.toString(endDateUNIX));
+		}
+		}
+	else {
+
+		session.setAttribute("start_date", null);
+		session.setAttribute("end_date", null);
+
 	
 		if(tp.equals("1D"))
 		{
@@ -66,13 +96,13 @@ try {
 			session.setAttribute("tp", "3");
 			System.out.println("set tp to 3");
 		}
-		else if(tp.equals("1Y"))
+		else //if(tp.equals("1Y"))
 		{
 			session.setAttribute("tp", "4");
 			System.out.println("set tp to 4");
 		}
 
-		
+	}		
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);	
 		}
 		catch (Exception e) {
