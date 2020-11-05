@@ -71,15 +71,6 @@
 	<script>
 		let numFailed = 0;
 		let url = "api/login";
-		var interval;
-		let targetTime;
-		let currentTime;
-		let minutes = 1;
-		let timer = false;
-		console.log(timer)
-		if(timer && !checkComplete()){
-			  interval = setInterval(checkComplete, 1000);
-			}
 		
 		function parseResponse(response){
 			let data = JSON.parse(response);
@@ -205,39 +196,7 @@
 			document.body.id = "start";
 			numFailed = 0;
 		}
-		/*var interval;
-		let minutes = 1;
-		let currentTime = localStorage.getItem('currentTime');
-		let targetTime = localStorage.getItem('targetTime');
-		if (targetTime == null && currentTime == null) {
-		  currentTime = new Date();
-		  targetTime = new Date(currentTime.getTime() + (minutes * 60000));
-		  localStorage.setItem('currentTime', currentTime);
-		  localStorage.setItem('targetTime', targetTime);
-		}
-		else{
-		  currentTime = new Date(currentTime);
-		  targetTime = new Date(targetTime);
-		}
-
-		if(!checkComplete()){
-		  interval = setInterval(checkComplete, 1000);
-		}
-
-		function checkComplete() {
-		  if (currentTime > targetTime) {
-		    clearInterval(interval);
-		    alert("Time is up");
-		  } else {
-		    currentTime = new Date();
-		    document.write(
-		     "\n <font color=\"white\"> Seconds Remaining:" + ((targetTime - currentTime) / 1000) + "</font>");
-		  }
-		}*/
-
-		document.onbeforeunload = function(){
-		  localStorage.setItem('currentTime', currentTime);
-		}
+		
 	</script>
 </body>
 </html>

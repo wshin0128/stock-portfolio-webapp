@@ -6,6 +6,11 @@ Feature: Sign Up Page
 		And I enter a confirm password in SU
 		And I click submit in SU
 		Then I should see the SU error "Username is already been chosen"
+		
+	Scenario: click cancel button
+		Given I am on the sign up page
+		When I click the cancel button in SU
+		Then I should land on the sign in page
 	
 	Scenario: Successful register
 		Given I am on the sign up page
