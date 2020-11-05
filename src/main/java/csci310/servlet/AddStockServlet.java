@@ -25,24 +25,40 @@ public class AddStockServlet extends HttpServlet {
 			
 			DatabaseClient dbc = new DatabaseClient();
 			FinnhubClient fc = new FinnhubClient();
-
-			// Get form values
-			String ticker = request.getParameter("ticker");
-			int shares = Integer.parseInt(request.getParameter("shares"));
-			String datePurchased = request.getParameter("date-purchased");
-			String dateSold = request.getParameter("date-sold");
-						
-			// Convert dates to UNIX time
-			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date datePurchasedObject = dateFormatter.parse(datePurchased);
-			long datePurchasedUnix = datePurchasedObject.getTime();
-			Date dateSoldObject = dateFormatter.parse(dateSold);
-			long dateSoldUnix = dateSoldObject.getTime();
 			
-			// Get userID from session
-			int userID = (Integer) request.getSession().getAttribute("userID");
+			boolean formError = false;
+			
+			System.out.println("Showing form data:");
+			System.out.println(request.getParameter("ticker"));
+			System.out.println(request.getParameter("shares"));
+			System.out.println(request.getParameter("date-purchased"));
+			System.out.println(request.getParameter("date-sold"));
+			
+			
+			// Check if form was populated
+			if(request.getParameter("ticker").equals("")) {
+				request.setAttribute("errorMessage", "Illegal ticker symbol");
+				request.setAttribute("errorMessageTicker", "Illegal ticker symbol");
+				formError = true;
+			}
+			if(request.getParameter("shares").equalsIgnoreCase("")) {
+				request.setAttribute("errorMessage", "Negative or zero values of quantity");
+				request.setAttribute("errorMessageShares", "Negative or zero values of quantity");
+				formError = true;
+			}
+			if((!request.getParameter("date-sold").equals("")) && (request.getParameter("date-purchased").equals(""))) {
+				request.setAttribute("errorMessage", "Sold date with no purchase date");
+				request.setAttribute("errorMessageDateSold", "Sold date with no purchase date");
+				formError = true;
+			}
+			if(request.getParameter("date-purchased").equals("")) {
+				request.setAttribute("errorMessage", "Purchase date is required");
+				request.setAttribute("errorMessageDatePurchased", "Purchase date is required");
+				formError = true;
+			}
 			
 			// Lookup stock name using ticker
+			String ticker = request.getParameter("ticker").toUpperCase();
 			String companyName = "";
 			boolean validTicker = true;
 			try {
@@ -53,38 +69,96 @@ public class AddStockServlet extends HttpServlet {
 			
 			// If stock ticker is invalid
 			if(!validTicker) {
-				request.setAttribute("errorMessage", "Your ticker is invalid");
-				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+				request.setAttribute("errorMessage", "Illegal ticker symbol");
+				request.setAttribute("errorMessageTicker", "Illegal ticker symbol");
+				formError = true;
 			}
+			
 			// If number of shares is 0 or smaller, set error
-			else if(shares <= 0) {
-				request.setAttribute("errorMessage", "You must buy at least one share");
-				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
-			}
-			// If purchase date is after sold date, set error and go back home
-			else if(datePurchasedUnix >= dateSoldUnix) {
-				request.setAttribute("errorMessage", "Your sell date must be after your buy date");
-				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
-			}
-			// No errors, add stock to database
-			else {				
-				// Color override (Admin feature, not visible to user)
-				if(request.getAttribute("colorOverride") != null) {
-					Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
-					dbc.addStockToPortfolio(userID, s);
-					homePageModule.addStock(s);
-				} else {
-					Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
-					dbc.addStockToPortfolio(userID, s);
-					homePageModule.addStock(s);
+			int shares = 0;
+			if(!request.getParameter("shares").equalsIgnoreCase("")) {
+				shares = Integer.parseInt(request.getParameter("shares"));
+				if(shares <= 0) {
+					request.setAttribute("errorMessage", "Negative or zero values of quantity");
+					request.setAttribute("errorMessageShares", "Negative or zero values of quantity");
+					formError = true;
 				}
 			}
-			// Go back to homepage
-			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
-		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			// Check dates
+			String datePurchased = "";
+			String dateSold = "";
+			long datePurchasedUnix = 0;
+			long dateSoldUnix = 0;
+			
+			datePurchased = request.getParameter("date-purchased");
+			dateSold = request.getParameter("date-sold");
+			
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
+			Date datePurchasedObject = new Date();
+			Date dateSoldObject = new Date();
+			Date now = new Date();
+	        long currentTimeUnix = now.getTime() / 1000L;
+	        long oneYearAgo = (currentTimeUnix - 31536000) * 1000 - 172800000;
+	        
+			// If date purchased exists
+			if(!datePurchased.equalsIgnoreCase("")) {
+				datePurchasedObject = dateFormatter.parse(datePurchased);
+				datePurchasedUnix = datePurchasedObject.getTime();
+				System.out.println("purchased: " + datePurchasedUnix);
+				
+				if(datePurchasedUnix < oneYearAgo) {
+		        	request.setAttribute("errorMessageDatePurchased", "Purchase date cannot be older than 1 year ago");
+		        	formError = true;
+		        }
+			}
+			// If date sold exists
+			if(!dateSold.equalsIgnoreCase("")) {
+				dateSoldObject = dateFormatter.parse(dateSold);
+				dateSoldUnix = dateSoldObject.getTime();
+				
+				if(dateSoldUnix < oneYearAgo) {
+		        	request.setAttribute("errorMessageDateSold", "Sold date cannot be older than 1 year ago");
+		        	formError = true;
+		        }
+			}
+			
+			// Check if sold date is prior to purchase date
+			if(!datePurchased.equalsIgnoreCase("") && !dateSold.equalsIgnoreCase("")) {
+				if(datePurchasedUnix >= dateSoldUnix) {
+		        	request.setAttribute("errorMessageDateSold", "Sold date prior to purchase date");
+		        	formError = true;
+				}
+			}
+			
+			if(formError) {
+				request.getRequestDispatcher("/homepage.jsp").forward(request, response);
+				return;
+			}
+			
+			// Get userID from session
+			int userID = (Integer) request.getSession().getAttribute("userID");
+
+			// Color override (Admin feature, not visible to user)
+			if(request.getAttribute("colorOverride") != null) {
+				Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
+				// add stock to database
+				// dbc.addStockToPortfolio(userID, s);
+				// add stock to front end
+				homePageModule.addStock(s); }
+			else {
+				Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
+				// add stock to database
+				// dbc.addStockToPortfolio(userID, s);
+				// add stock to front end
+				homePageModule.addStock(s);
+			}
+			// Go back to homepage page
+			request.getRequestDispatcher("/homepage.jsp").forward(request, response); }
+		catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("Exception from AddStockServlet.doPost()");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 }

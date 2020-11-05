@@ -17,8 +17,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 
-enum Resolution { Daily, Weekly, Monthly}; 
-
 /**
  * Frequency Limit: 
  * Usage: 
@@ -58,7 +56,9 @@ public class FinnhubClient {
 			break;
 		}
 		
-		String urlString = String.format(STOCK_PRICE_URL_FORMAT, symbol, resolutionString, startTime, endTime, API_KEY);
+		String urlString = String.format(STOCK_PRICE_URL_FORMAT, symbol.toUpperCase(), resolutionString, startTime, endTime, API_KEY);
+		System.out.println(urlString);
+		
 		JSONObject jsonObject = JsonReader.readJsonFromUrl(urlString);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = (ObjectNode) mapper.readTree(jsonObject.toString());

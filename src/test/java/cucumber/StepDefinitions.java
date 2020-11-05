@@ -1,18 +1,20 @@
 package cucumber;
 
-import io.cucumber.java.After;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
-import static org.junit.Assert.assertTrue;
+import io.cucumber.java.After;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Step definitions for Cucumber tests.
@@ -244,13 +246,13 @@ public class StepDefinitions {
 	@When("I enter a valid purchase date in the Add Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_Add_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020-10-11");
+		addStockBuyDate.sendKeys("2020\t1010");
 	}
 
 	@When("I enter a valid sell date in the Add Stocks popup")
 	public void i_enter_a_valid_sell_date_in_the_Add_Stocks_popup() {
 		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020-10-15");
+		addStockSellDate.sendKeys("2020\t1015");
 	}
 
 	@When("I click Add Stock")
@@ -281,13 +283,13 @@ public class StepDefinitions {
 	@When("I enter any valid purchase date in the Add Stocks popup")
 	public void i_enter_any_valid_purchase_date_in_the_Add_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020-10-11");
+		addStockBuyDate.sendKeys("2020\t1010");
 	}
 
 	@When("I enter any valid sell date in the Add Stocks popup")
 	public void i_enter_any_valid_sell_date_in_the_Add_Stocks_popup() {
 		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020-10-15");
+		addStockSellDate.sendKeys("2020\t1015");
 	}
 
 	@Then("I should see the error {string} in the Add Stocks popup")
@@ -306,7 +308,7 @@ public class StepDefinitions {
 	@When("I enter a sell date before the purchase date in the Add Stocks popup")
 	public void i_enter_a_sell_date_before_the_purchase_date_in_the_Add_Stocks_popup() {
 		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020-10-09");
+		addStockSellDate.sendKeys("2020\t1009");
 	}
 
 	@When("I click Add Stock in the Viewed Stocks box")
@@ -331,13 +333,13 @@ public class StepDefinitions {
 	@When("I enter a valid purchase date in the View Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_View_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#view-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020-10-11");
+		addStockBuyDate.sendKeys("2020\t1010");
 	}
 
 	@When("I enter a valid sell date in the View Stocks popup")
 	public void i_enter_a_valid_sell_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#view-stock-modal #date-sold"));
-		addStockBuyDate.sendKeys("2020-10-15");
+		WebElement addStockSellDate = driver.findElement(By.cssSelector("#view-stock-modal #date-sold"));
+		addStockSellDate.sendKeys("2020\t1015");
 	}
 
 	@When("I click View Stock")
@@ -368,13 +370,13 @@ public class StepDefinitions {
 	@When("I enter any valid purchase date in the View Stocks popup")
 	public void i_enter_any_valid_purchase_date_in_the_View_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[3]/input"));
-		addStockBuyDate.sendKeys("2020-10-11");
+		addStockBuyDate.sendKeys("2020\t1010");
 	}
 
 	@When("I enter any valid sell date in the View Stocks popup")
 	public void i_enter_any_valid_sell_date_in_the_View_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[4]/input"));
-		addStockBuyDate.sendKeys("2020-10-15");
+		addStockBuyDate.sendKeys("2020\t1015");
 	}
 
 	@Then("I should see the error {string} in the View Stocks popup")
@@ -393,7 +395,7 @@ public class StepDefinitions {
 	@When("I enter a sell date before the purchase date in the View Stocks popup")
 	public void i_enter_a_sell_date_before_the_purchase_date_in_the_View_Stocks_popup() {
 		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[4]/input"));
-		addStockBuyDate.sendKeys("2020-10-05");
+		addStockBuyDate.sendKeys("2020\t1005");
 	}
 
 	@When("I click the trash icon on a stock row in the Portfolio list")
@@ -433,7 +435,9 @@ public class StepDefinitions {
 
 	@When("I upload a valid CSV file")
 	public void i_upload_a_valid_CSV_file() {
-	    // TODO
+		WebElement uploadFile = driver.findElement(By.id("csvImport"));
+		File file = new File("stockTests/stock1.csv");
+		uploadFile.sendKeys(file.getAbsolutePath());
 	}
 
 	@When("I click Upload File")
@@ -444,19 +448,40 @@ public class StepDefinitions {
 
 	@Then("the stocks in the CSV should be added to the Portfolio list")
 	public void the_stocks_in_the_CSV_should_be_added_to_the_Portfolio_list() {
-	    // TODO
+		WebElement checkStock1 = driver.findElement(By.xpath("//*[text()[contains(.,'MSFT')]]"));
+		assertTrue(checkStock1 != null);
+		WebElement checkStock2 = driver.findElement(By.xpath("//*[text()[contains(.,'TSLA')]]"));
+		assertTrue(checkStock2 != null);
+		WebElement checkStock3 = driver.findElement(By.xpath("//*[text()[contains(.,'AAPL')]]"));
+		assertTrue(checkStock3 != null);
 	}
 
 	@When("I upload an invalid CSV file")
 	public void i_upload_an_invalid_CSV_file() {
-	    // TODO
+		WebElement uploadFile = driver.findElement(By.id("csvImport"));
+		File file = new File("stockTests/stock2.csv");
+		uploadFile.sendKeys(file.getAbsolutePath());
 	}
 
 	@Then("I should see an error")
 	public void i_should_see_an_error() throws InterruptedException {
 		Thread.sleep(3000);
 	    WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[2]/div/div[2]/form/div[2]/span"));
-	    assertTrue(errorMessage != null);
+	    String error = errorMessage.getText();
+	    assertTrue(error.contains("Row 1: requires minimum of 5 parameters."));
+	    assertTrue(error.contains("Row 2, Col A: stock name is a required field."));
+	    assertTrue(error.contains("Row 2, Col B: stock ticker is a required field."));
+	    assertTrue(error.contains("Row 2, Col C: stock quantity must be a Integer."));
+	    assertTrue(error.contains("Row 2, Col D: stock buy date must be a Long."));
+	    assertTrue(error.contains("Row 3, Col A: stock name is a required field."));
+	    assertTrue(error.contains("Row 3, Col B: stock ticker is a required field."));
+	    assertTrue(error.contains("Row 2, Col C: stock quantity must be a Integer."));
+	    assertTrue(error.contains("Row 4, Col C: stock quantity must be a Integer."));
+	    assertTrue(error.contains("Row 4, Col D: stock buy date must be a Long."));
+	    assertTrue(error.contains("Row 4, Col E: stock sell date must be a Long."));
+	    assertTrue(error.contains("Row 5, Col C: stock quantity must be a Integer."));
+	    assertTrue(error.contains("Row 6, Col D: stock buy date must be a Long."));
+	    assertTrue(error.contains("Row 6, Col E: stock sell date must be a Long."));
 	}
 
 	@When("I click the {int} week button of the home page.")

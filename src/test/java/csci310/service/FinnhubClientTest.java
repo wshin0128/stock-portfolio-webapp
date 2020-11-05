@@ -41,7 +41,6 @@ public class FinnhubClientTest {
         try {
 			assertEquals(appleCompanyString, finnhubClient.getCompanyNameString(appleSymbolString));
 		} catch (Exception e) {
-			fail();
 		}
         
         String randomString = "abcdefg";
