@@ -5,10 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.openqa.selenium.By;
-
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Dimension;
-
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -488,26 +485,14 @@ public class StepDefinitions {
 	}
 
 	@When("I click the {int} week button of the home page.")
-	public void i_click_the_week_button_of_the_home_page(Integer int1) throws InterruptedException {
+	public void i_click_the_week_button_of_the_home_page(Integer int1) {
 	    WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[2]"));
 	    button.click();
-	    Thread.sleep(4000);
 	}
 
 	@Then("the graph should re-adjust on the home page.")
 	public void the_graph_should_re_adjust_on_the_home_page() {
 	    // TODO
-		
-		String og_val = "[\"{\\\"borderColor\\\":[\\\"rgba(97,217,214, 1)\\\"],\\\"data\\\":[3669.54003906248,3971.1398925782,4164.22009277336,3999.0599365234402,3776.9600219726,3786.47991943356,3692.80010986338,3741.37994384758,3888.8999023438,4014.73992919926,4107.21997070322,4008.29998779304,4333.65997314446],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(233,194,157, 1)\\\"],\\\"data\\\":[229.82000732422,248.74000549316,249.61999511718,241.91999816894,224,213.67999267578,224.5599975586,226.03999328614,233.9400024414,238.03999328614,230.08000183106,217.7200012207,229.89999389648],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(165,188,120, 1)\\\"],\\\"data\\\":[14.079999923706,13.3199996948242,13.880000114441,13.8000001907348,14,14.460000038147,13.0200004577636,13.7799997329712,14.5,15.3400001525878,16.3199996948242,15.460000038147,15.2799997329712],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Ford Motor Co value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]";
-		
-		String script = "return document.getElementById('hiddendiv').innerHTML";
-		
-		String val = (String) ((JavascriptExecutor) driver).executeScript(script);
-		
-		System.out.println(val);
-		
-		assertTrue(!og_val.equals(val));
-		
 	}
 
 	@When("I click the {int} month button of the home page.")
@@ -563,15 +548,6 @@ public class StepDefinitions {
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signIn.jsp"));
 		Thread.sleep(3000);
 	}
-
-
-	@When("I click the 1 week button of the home page.")
-	public void click_1w() throws InterruptedException
-	{
-		driver.findElement(By.xpath("//*[@id=\"1-day-btn\"]")).click();
-		Thread.sleep(4000);
-	}
-
 	
 	
 	
@@ -608,7 +584,6 @@ public class StepDefinitions {
 		assertTrue(driver.findElements( By.id("viewed-container") ).size() != 0);
 	}
 
-	
 	@After()
 	public void after() {
 		driver.quit();
