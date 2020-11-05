@@ -209,10 +209,10 @@
 	    		<div class="graph-header">
 	    			<span id="portfolio-value">$<%=portfolioValue%></span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-	    			    <% if (percent > 0) {%>
+	    			    <% if (percent >= 0) {%>
 				            <span id="arrow">&#9650 +<%=percent %>% Today</span>
 				    	<% } %>
-    					<% if (percent <= 0) {%>
+    					<% if (percent < 0) {%>
 				            <span id="arrow2" style="color:red;"">&#9660 <%=percent %>% Today</span>
 				    	<% } %>
 	    			</div>
@@ -342,7 +342,7 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">View Stock</div>
 	    						<div class="popup-section">
-	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock">
+	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock" autocomplete="off">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
 	    									<input type="text" id="ticker" name="ticker">
