@@ -51,19 +51,9 @@ public class AddStockServlet extends HttpServlet {
 				request.setAttribute("errorMessageDateSold", "Sold date with no purchase date");
 				formError = true;
 			}
-			if((request.getParameter("date-sold").equals("")) && (!request.getParameter("date-purchased").equals(""))) {
-				request.setAttribute("errorMessage", "Purchase date with no sold date");
-				request.setAttribute("errorMessageDatePurchased", "Purchase date with no sold date");
-				formError = true;
-			}
 			if(request.getParameter("date-purchased").equals("")) {
 				request.setAttribute("errorMessage", "Purchase date is required");
 				request.setAttribute("errorMessageDatePurchased", "Purchase date is required");
-				formError = true;
-			}
-			if(request.getParameter("date-sold").equals("")) {
-				request.setAttribute("errorMessage", "Sold date is required");
-				request.setAttribute("errorMessageDateSold", "Sold date is required");
 				formError = true;
 			}
 			
@@ -100,42 +90,45 @@ public class AddStockServlet extends HttpServlet {
 			String dateSold = "";
 			long datePurchasedUnix = 0;
 			long dateSoldUnix = 0;
-			if(!request.getParameter("date-purchased").equalsIgnoreCase("") && !request.getParameter("date-sold").equalsIgnoreCase("")) {
-				// Get form values
-				datePurchased = request.getParameter("date-purchased");
-				dateSold = request.getParameter("date-sold");
-
-				// Convert dates to UNIX time
-				SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
-				Date datePurchasedObject = dateFormatter.parse(datePurchased);
+			
+			datePurchased = request.getParameter("date-purchased");
+			dateSold = request.getParameter("date-sold");
+			
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
+			Date datePurchasedObject = new Date();
+			Date dateSoldObject = new Date();
+			Date now = new Date();
+	        long currentTimeUnix = now.getTime() / 1000L;
+	        long oneYearAgo = (currentTimeUnix - 31536000) * 1000 - 172800000;
+	        
+			// If date purchased exists
+			if(!datePurchased.equalsIgnoreCase("")) {
+				datePurchasedObject = dateFormatter.parse(datePurchased);
 				datePurchasedUnix = datePurchasedObject.getTime();
-				Date dateSoldObject = dateFormatter.parse(dateSold);
-				dateSoldUnix = dateSoldObject.getTime();
+				System.out.println("purchased: " + datePurchasedUnix);
 				
-				// Validate date
-				Date now = new Date();
-		        long currentTimeUnix = now.getTime() / 1000L;
-		        long oneYearAgo = (currentTimeUnix - 31536000) * 1000;
-		        
-		        // If purchase date is after sold date, set error and go back home
-		        if(datePurchasedUnix >= dateSoldUnix) {
-		        	request.setAttribute("errorMessage", "Sold date prior to purchase date");
-		        	request.setAttribute("errorMessageDateSold", "Sold date prior to purchase date");
-		        	formError = true;
-				}
-		        
-		        // Make sure no dates are older than one year ago
-		        System.out.println("Purchased time: " + datePurchasedUnix);
-		        System.out.println("Sold time: " + dateSoldUnix);
-		        System.out.println("One year ago: " + oneYearAgo);
-		        if(datePurchasedUnix < oneYearAgo) {
+				if(datePurchasedUnix < oneYearAgo) {
 		        	request.setAttribute("errorMessageDatePurchased", "Purchase date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
-		        if(dateSoldUnix < oneYearAgo) {
+			}
+			// If date sold exists
+			if(!dateSold.equalsIgnoreCase("")) {
+				dateSoldObject = dateFormatter.parse(dateSold);
+				dateSoldUnix = dateSoldObject.getTime();
+				
+				if(dateSoldUnix < oneYearAgo) {
 		        	request.setAttribute("errorMessageDateSold", "Sold date cannot be older than 1 year ago");
 		        	formError = true;
 		        }
+			}
+			
+			// Check if sold date is prior to purchase date
+			if(!datePurchased.equalsIgnoreCase("") && !dateSold.equalsIgnoreCase("")) {
+				if(datePurchasedUnix >= dateSoldUnix) {
+		        	request.setAttribute("errorMessageDateSold", "Sold date prior to purchase date");
+		        	formError = true;
+				}
 			}
 			
 			if(formError) {
