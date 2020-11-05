@@ -304,6 +304,9 @@ input:checked + .slider:before {
 	background: #787878 !important;
 	border: none !important;
 }
+label.switch {
+	margin-bottom: 0;
+}
 
 
 

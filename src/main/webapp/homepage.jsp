@@ -217,11 +217,11 @@
 	    		<div class="graph-header">
 	    			<span id="portfolio-value">$<%=portfolioValue%></span>
 	    			<div id="portfolio-value-change" style="color: #51C58E;">
-	    			    <% if (percent > 0) {%>
+	    			    <% if (percent >= 0) {%>
 				            <span id="arrow">&#9650 +<%=percent %>% Today</span>
 				    	<% } %>
-    					<% if (percent <= 0) {%>
-				            <span id="arrow2">&#128315 <%=percent %>% Today</span>
+    					<% if (percent < 0) {%>
+				            <span id="arrow2" style="color:red;"">&#9660 <%=percent %>% Today</span>
 				    	<% } %>
 	    			</div>
 	    			<div>
@@ -251,6 +251,7 @@
 	    		</div>
 	    	</div> <!-- #graph-container -->
 	    	
+	    	<div class="grid-helper">
 	    	<div class="homepage-container" id="portfolio-container">
 	    		<div class="container-header">
 	    			Your Portfolio
@@ -340,6 +341,9 @@
 	    		</table>
 	    		
 	    	</div>  <!-- .homepage-container -->
+	    	</div> <!-- .grid-helper -->
+	    	
+	    	<div class="grid-helper">
 	    	<div class="homepage-container" id="viewed-container">
 	    		<div class="container-header">
 	    			Viewed Stocks
@@ -350,26 +354,27 @@
 	    					<div class="modal-box">
 	    						<div class="popup-header">View Stock</div>
 	    						<div class="popup-section">
-	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock">
+	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock" autocomplete="off">
 	    								<div class="form-row">
 	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker" name="ticker" required>
+	    									<input type="text" id="ticker" name="ticker">
 	    								</div>
+	    								<span class="error-msg">${viewedErrorMessageTicker}</span>
 	    								<div class="form-row">
 	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares" name="shares" required>
+	    									<input type="number" id="shares" name="shares">
 	    								</div>
+	    								<span class="error-msg">${viewedErrorMessageShares}</span>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
+	    									<input type="text" class="datepicker" id="date-purchased-viewed" placeholder="MM/DD/YYY" name="date-purchased">
 	    								</div>
+	    								<span class="error-msg">${viewedErrorMessageDatePurchased}</span>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
+	    									<input type="text" class="datepicker" id="date-sold-viewed" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
-	    								<div class="form-row">
-	    									<span class="error-msg">${viewStockErrorMessage}</span>
-	    								</div>
+	    								<span class="error-msg">${viewedErrorMessageDateSold}</span>	
 	    								<button type="submit" class="button" id="view-stock-submit">View Stock</button>
 	    							</form>
 	    						</div>
@@ -394,15 +399,14 @@
 							  	<span class="slider round"></span>
 							</label>
 						</td>
-	    				<td><a href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=viewed" class="remove-stock-portfolio-button" onclick="return confirm('Are you sure you want to delete viewed stock: <%=stock.getName()%>?')"><i class="fas fa-trash"></i></a></td>
+						<td><a data-toggle="confirmation" data-title="Are you sure?" data-content="You cannot undo this action" data-btn-ok-label="Delete Stock" datta-btn-ok-class="btn-danger" data-btn-cancel-label="Cancel" href="/api/removestock?ticker=<%=stock.getTicker()%>&selector=viewed"><i class="fas fa-trash"></i></a></td>
 				        </tr>
 				        
 				    <% } %>
 	    			
 	    		</table>
-	    			
-	    		
 	    	</div>  <!-- .homepage-container -->
+	    	</div> <!-- .grid-helper -->
     	</div>
     </div>
     
@@ -476,7 +480,10 @@
 		var viewStockModal = document.getElementById("view-stock-modal");
 		var viewStockButton = document.getElementById("view-stock-button");
 		var viewStockCancelButton = document.getElementById("view-stock-cancel");
-		var viewStockErrorMessage = '${viewStockErrorMessage}';
+		var tickerError = '${viewedErrorMessageTicker}';
+		var sharesError = '${viewedErrorMessageShares}';
+		var soldDateError = '${viewedErrorMessageDateSold}';
+		var purchaseDateError = '${viewedErrorMessageDatePurchased}';
 		
 		// When user clicks add stock button
 		viewStockButton.onclick = function() {
@@ -488,7 +495,7 @@
 			viewStockModal.style.display = "none";
 		}
 		// If the servlet returns an error message, display popup
-		if(viewStockErrorMessage != "") {
+		if(tickerError != "" || sharesError != "" || soldDateError != "" || purchaseDateError != "") {
 			console.log("viewStockErrorMessage = " + errorMessage);
 			viewStockModal.style.display = "flex";
 		}

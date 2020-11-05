@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import csci310.model.Portfolio;
 import csci310.model.Stock;
+import csci310.model.User;
 import csci310.service.DatabaseClient;
+import csci310.service.FinnhubClient;
+import csci310.service.HomePageModule;
 
 public class AddStockServletTest extends Mockito{
 
@@ -36,6 +39,13 @@ public class AddStockServletTest extends Mockito{
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("userID")).thenReturn(123);
 		// when(request.getAttribute("colorOverride")).thenReturn(nul;);
+		
+		// Mock Homepage module
+		User user = new User("some dummy value", 123);
+		Portfolio portfolio = dbc.getPortfolio(123);
+		user.setPortfolio(portfolio);
+		HomePageModule homePageModule = new HomePageModule(user, new FinnhubClient(), dbc);
+		when(session.getAttribute("module")).thenReturn(homePageModule); 
 		
 		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		
@@ -107,7 +117,6 @@ public class AddStockServletTest extends Mockito{
 		//verify(request).setAttribute("errorMessageTicker", "Illegal ticker symbol");
 		verify(request).setAttribute("errorMessageShares", "Negative or zero values of quantity");
 		verify(request).setAttribute("errorMessageDatePurchased", "Purchase date is required");
-		verify(request).setAttribute("errorMessageDateSold", "Sold date is required");
 	}
 	
 	@Test
