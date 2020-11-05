@@ -10,8 +10,11 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,9 +23,17 @@ import io.cucumber.java.en.When;
  * Step definitions for Cucumber tests.
  */
 public class StepDefinitions {
-	private static final String ROOT_URL = "http://localhost:8080/";
+	private static final String ROOT_URL = "https://localhost:8443/";
 
-	private final WebDriver driver = new ChromeDriver();
+	private WebDriver driver;
+	
+	@Before()
+	public void before() {
+		ChromeOptions capability = new ChromeOptions();
+		capability.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+		capability.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS,true);
+		driver = new ChromeDriver(capability);
+	}
 
 	@Given("I am on the index page")
 	public void i_am_on_the_index_page() {
@@ -602,6 +613,32 @@ public class StepDefinitions {
 	public void the_viewed_stocks_list_should_still_be_visible() {
 		assertTrue(driver.findElements( By.id("viewed-container") ).size() != 0);
 	}
+	
+	@Then("the login form should still be visible in SI")
+	public void the_login_form_should_still_be_visible_in_SI() {
+		assertTrue(driver.findElements( By.id("logInForm") ).size() != 0);
+	}
+
+	@Then("the button should still be visible in SI")
+	public void the_button_should_still_be_visible_in_SI() {
+		assertTrue(driver.findElements( By.id("b") ).size() != 0);
+	}
+
+	@Then("the submit button should still be visible in SU")
+	public void the_submit_button_should_still_be_visible_in_SU() {
+		assertTrue(driver.findElements( By.id("b") ).size() != 0);
+	}
+
+	@Then("the cancel button should still be visible in SU")
+	public void the_cancel_button_should_still_be_visible_in_SU() {
+		assertTrue(driver.findElements( By.id("c") ).size() != 0);
+	}
+
+	@Then("the reg form should still be visible in SU")
+	public void the_reg_form_should_still_be_visible_in_SU() {
+		assertTrue(driver.findElements( By.id("register") ).size() != 0);
+	}
+
 
 	@After()
 	public void after() {
