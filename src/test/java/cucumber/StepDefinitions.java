@@ -538,6 +538,34 @@ public class StepDefinitions {
 		addStockBuyDate.sendKeys(Keys.ESCAPE);
 		Thread.sleep(1000);
 	}
+	
+	@When("I enter a purchase date older than one year ago in the View Stocks popup")
+	public void i_enter_a_purchase_date_older_than_one_year_ago_in_the_View_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-viewed"));
+		addStockBuyDate.sendKeys("10/10/2019");
+	}
+	
+	@When("I enter a sell date older than one year ago in the View Stocks popup")
+	public void i_enter_a_sell_date_older_than_one_year_ago_in_the_View_Stocks_popup() throws InterruptedException {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-sold-viewed"));
+		addStockBuyDate.sendKeys("10/12/2019");
+		addStockBuyDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
+	}
+	
+	@When("I enter a purchase date older than one year ago in the Add Stocks popup")
+	public void i_enter_a_purchase_date_older_than_one_year_ago_in_the_Add_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-portfolio"));
+		addStockBuyDate.sendKeys("10/10/2019");
+	}
+	
+	@When("I enter a sell date older than one year ago in the Add Stocks popup")
+	public void i_enter_a_sell_date_older_than_one_year_ago_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-sold-portfolio"));
+		addStockBuyDate.sendKeys("10/12/2019");
+		addStockBuyDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
+	}
 
 	@When("I click the trash icon on a stock row in the Portfolio list")
 	public void i_click_the_trash_icon_on_a_stock_row_in_the_Portfolio_list() throws InterruptedException {

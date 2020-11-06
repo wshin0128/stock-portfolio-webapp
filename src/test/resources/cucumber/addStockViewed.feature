@@ -70,6 +70,26 @@ Feature: Adding stocks to the viewed stocks list
     And I click View Stock
     Then I should see the error "Sold date prior to purchase date" in the View Stocks popup
     
+  Scenario: Adding a stock with a purchase date older than one year ago
+    Given I am on the home page
+    When I click Add Stock in the Viewed Stocks box
+    And I enter a valid Ticker symbol in the View Stocks popup
+    And I enter a valid number of shares in the View Stocks popup
+    And I enter a purchase date older than one year ago in the View Stocks popup
+    And I enter any valid sell date in the View Stocks popup
+    And I click View Stock
+    Then I should see the error "Purchase date cannot be older than 1 year ago" in the View Stocks popup
+
+  Scenario: Adding a stock with a sold date older than one year ago
+    Given I am on the home page
+    When I click Add Stock in the Viewed Stocks box
+    And I enter a valid Ticker symbol in the View Stocks popup
+    And I enter a valid number of shares in the View Stocks popup
+    And I enter a purchase date older than one year ago in the View Stocks popup
+    And I enter a sell date older than one year ago in the View Stocks popup
+    And I click View Stock
+    Then I should see the error "Sold date cannot be older than 1 year ago" in the View Stocks popup
+    
   Scenario: Showing the View Stock button
     Given I am on the home page
     When I click Add Stock in the Viewed Stocks box
