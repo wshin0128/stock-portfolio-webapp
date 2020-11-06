@@ -66,8 +66,35 @@
 		    function logout() {
 		    	// Alert user logout
 		        alert("You have been logged out due to two minutes of inactivity.")
-		        // Redirect to sign in page
-		        location.href = "/signIn.jsp";
+		        
+		        let httpRequest = new XMLHttpRequest();
+		        httpRequest.open("POST", "api/sio" , true);
+
+
+		        // We will get alerted when backend gives back some kind of response
+		        httpRequest.onreadystatechange = function(){
+		          // This function runs when we get some kind of response back from iTunes
+		          console.log(httpRequest);
+		          // When we get back a DONE state (readyState == 4, let's do something with it)
+		          if(httpRequest.readyState == httpRequest.DONE) {
+		            // Check for errors - status code 200 means success
+		            if(httpRequest.status == 200) {
+		              console.log(httpRequest.responseText);
+
+		              // Display the results on the browser - a separate function is created for this purpose
+		              window.location.href = "signIn.jsp";
+
+		            }
+		            else {
+		              console.log("AJAX Error!!");
+		              console.log(httpRequest.status);
+		              console.log(httpRequest.statusText);
+		            }
+
+		          }
+		        }
+		        httpRequest.send(); 
+		        
 		    }
 		    // Reset the timer
 		    function resetTimer() {
