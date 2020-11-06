@@ -52,7 +52,8 @@ public class HomePageModuleTest extends Mockito{
 			databaseClient = new DatabaseClient();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Something went wrong");
 		}
 	}
 	
@@ -114,7 +115,8 @@ public class HomePageModuleTest extends Mockito{
 				yesterdayTotalDouble += yesterdayPrice * stock.getQuantity();
 			} catch (Exception e) {	
 				// Finnhub client error, do nothing
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println("Something went wrong");
 			}
 		}
 		// Calculate change percentage

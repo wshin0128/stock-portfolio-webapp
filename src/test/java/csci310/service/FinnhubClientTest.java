@@ -49,6 +49,7 @@ public class FinnhubClientTest {
 			fail();
 		} catch (Exception e) {
 			// Pass this test case
+			System.out.println("This is intended, indicates test pass");
 		}
         
 	}
