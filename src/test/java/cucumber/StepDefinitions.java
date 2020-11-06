@@ -2,12 +2,22 @@ package cucumber;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,6 +34,59 @@ import io.cucumber.java.en.When;
  * Step definitions for Cucumber tests.
  */
 public class StepDefinitions {
+	//http://www.software-testing-tutorials-automation.com/2015/01/how-to-capture-element-screenshot-using.html
+	public void captureElementScreenshot(WebElement element) throws IOException{
+		  //Capture entire page screenshot as buffer.
+		  //Used TakesScreenshot, OutputType Interface of selenium and File class of java to capture screenshot of entire page.
+		  File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		  //Used selenium getSize() method to get height and width of element.
+		  //Retrieve width of element.
+		  int ImageWidth = element.getSize().getWidth();
+		  //Retrieve height of element.
+		  int ImageHeight = element.getSize().getHeight();  
+		  //Used selenium Point class to get x y coordinates of Image element.
+		  //get location(x y coordinates) of the element.
+		  Point point = element.getLocation();
+		  int xcord = point.getX();
+		  int ycord = point.getY();
+		  //Reading full image screenshot.
+		  BufferedImage img = ImageIO.read(screen);
+		  //cut Image using height, width and x y coordinates parameters.
+		  BufferedImage dest = img.getSubimage(xcord, ycord, ImageWidth, ImageHeight);
+		  ImageIO.write(dest, "png", screen);
+		  //Used FileUtils class of apache.commons.io.
+		  //save Image screenshot In D: drive.
+		  FileUtils.copyFile(screen, new File("to_test.png"));
+		 }
+	//https://stackoverflow.com/questions/8567905/how-to-compare-images-for-similarity-using-java
+	public static boolean compareImage(File fileA, File fileB) {        
+	    try {
+	        // take buffer data from botm image files //
+	        BufferedImage biA = ImageIO.read(fileA);
+	        DataBuffer dbA = biA.getData().getDataBuffer();
+	        int sizeA = dbA.getSize();                      
+	        BufferedImage biB = ImageIO.read(fileB);
+	        DataBuffer dbB = biB.getData().getDataBuffer();
+	        int sizeB = dbB.getSize();
+	        // compare data-buffer objects //
+	        if(sizeA == sizeB) {
+	            for(int i=0; i<sizeA; i++) { 
+	                if(dbA.getElem(i) != dbB.getElem(i)) {
+	                    return false;
+	                }
+	            }
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    } 
+	    catch (Exception e) { 
+	        System.out.println("");
+	        return  false;
+	    }
+	}
+
 	private static final String ROOT_URL = "https://localhost:8443/";
 
 	private WebDriver driver;
@@ -683,33 +746,117 @@ public class StepDefinitions {
 	}
 
 	@When("I click the {int} week button of the home page.")
-	public void i_click_the_week_button_of_the_home_page(Integer int1) {
+	public void i_click_the_week_button_of_the_home_page(Integer int1) throws InterruptedException {
 	    WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[2]"));
 	    button.click();
+	    Thread.sleep(4000);
 	}
-
 	@Then("the graph should re-adjust on the home page.")
 	public void the_graph_should_re_adjust_on_the_home_page() {
 	    // TODO
+		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
+				+ "";
+		String script = "return document.getElementById('hiddendiv').innerHTML";
+		String val = (String) ((JavascriptExecutor) driver).executeScript(script);
+		System.out.println(val);
+		assertTrue(!default_val.equals(val));
 	}
-
 	@When("I click the {int} month button of the home page.")
-	public void i_click_the_month_button_of_the_home_page(Integer int1) {
+	public void i_click_the_month_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[3]"));
 	    button.click();
+	    Thread.sleep(4000);
 	}
-
 	@When("I click the {int} year button of the home page.")
-	public void i_click_the_year_button_of_the_home_page(Integer int1) {
+	public void i_click_the_year_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[4]"));
 	    button.click();
+	    Thread.sleep(4000);
 	}
-
 	@When("I click the {int} day button of the home page.")
-	public void i_click_the_day_button_of_the_home_page(Integer int1) {
+	public void i_click_the_day_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[1]"));
 	    button.click();
+	    Thread.sleep(4000);
 	}
+	@When("I click the zoom in button of the home page.")
+	public void click_zoom_in() throws InterruptedException, IOException{
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomin\"]"));
+	    button.click();
+	    Thread.sleep(400);
+	    WebElement graph = driver.findElement(By.xpath("//*[@id=\"myChart\"]"));
+	    captureElementScreenshot(graph);
+	}
+	@When("I click the zoom out button of the home page.")
+	public void click_zoom_out() throws InterruptedException, IOException{
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomout\"]"));
+	    button.click();
+	    Thread.sleep(400);
+	    WebElement graph = driver.findElement(By.xpath("//*[@id=\"myChart\"]"));
+	    captureElementScreenshot(graph);
+	}
+	@When("I click the custom range button.")
+	public void click_cust_range() throws InterruptedException, IOException
+	{
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"customrange-button\"]"));
+	    button.click();
+	}
+	@When("I enter proper start,end dates n submit")
+	public void proper_info() throws InterruptedException
+	{
+		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
+		start.sendKeys("10/10/2020");
+		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
+		end.sendKeys("10/15/2020");
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+	}
+	@When("I enter incorrect start,end dates n submit")
+	public void inproper_info() throws InterruptedException
+	{
+		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
+		start.sendKeys("10/10/2020");
+		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
+		end.sendKeys("10/10/2020");
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+	}
+	@Then("I should see an error message.")
+	public void bad_inp()
+	{
+		WebElement err = driver.findElement(By.xpath("//*[@id=\"customrange-form\"]/div[3]/span"));  
+		assertTrue(!err.getText().equals(""));
+	}
+	@Then("the graph should zoom in on the home page.")
+	public void graph_zoom_in()
+	{
+		File A = new File("OG.PNG");
+		File B = new File("to_test.PNG");
+		assertTrue(!compareImage(A,B));
+	}
+	@Then("the graph should zoom out on the home page.")
+	public void graph_zoom_out()
+	{
+		File A = new File("OG.PNG");
+		File B = new File("to_test.PNG");
+		assertTrue(!compareImage(A,B));
+	}
+	@When("I click the snp checkbox of the home page.")
+	public void snp_check() throws InterruptedException, IOException
+	{
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"graph-container\"]/form/div[2]/input[1]"));
+	    button.click();
+	    Thread.sleep(4000);
+	}
+	@When("I click on the toggle button of a portfolio stock.")
+	public void portfolio_toggle() throws InterruptedException, IOException
+	{
+		// TODO
+	}
+	
+	
+	
+	
 
 	@When("{int} seconds of inactivity occurs")
 	public void seconds_of_inactivity_occurs(Integer int1) throws InterruptedException {
