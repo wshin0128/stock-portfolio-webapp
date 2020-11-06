@@ -501,10 +501,7 @@
     </div>
 
     
-    
-
-    <div id = "hiddendiv" style="display: none;">
-    </div>
+    <div id='hiddendiv' name='hiddendiv' style='display:none;'>
     
   <!-- toggle button -->
   <script>
