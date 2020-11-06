@@ -6,12 +6,16 @@ import java.io.File;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -22,7 +26,15 @@ import io.cucumber.java.en.When;
 public class StepDefinitions {
 	private static final String ROOT_URL = "https://localhost:8443/";
 
-	private final WebDriver driver = new ChromeDriver();
+	private WebDriver driver;
+	
+	@Before()
+	public void before() {
+		ChromeOptions capability = new ChromeOptions();
+		capability.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+		capability.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+		driver = new ChromeDriver(capability);
+	}
 
 	@Given("I am on the index page")
 	public void i_am_on_the_index_page() {
@@ -104,17 +116,16 @@ public class StepDefinitions {
 	@Given("I am on the home page")
 	public void i_am_on_the_home_page() throws InterruptedException {
 	    driver.get(ROOT_URL+"signIn.jsp");
-	    Thread.sleep(2000);
-	    WebElement currentElement = driver.switchTo().activeElement();
-	    currentElement.sendKeys("thisisunsafe");
-	    Thread.sleep(1000);
+//	    WebElement currentElement = driver.switchTo().activeElement();
+//	    currentElement.sendKeys("thisisunsafe");
+//	    Thread.sleep(1000);
 	    WebElement username = driver.findElement(By.id("username"));
 		username.sendKeys("test2");
 		WebElement password = driver.findElement(By.id("pass"));
 		password.sendKeys("test2test");
 		WebElement searchButton = driver.findElement(By.id("b"));
 	    searchButton.click();
-	    Thread.sleep(8000);
+	    Thread.sleep(5000);
 	}
 	
 	@When("I click on the sign out button")
@@ -256,26 +267,74 @@ public class StepDefinitions {
 
 	@When("I enter a valid Ticker symbol in the Add Stocks popup")
 	public void i_enter_a_valid_Ticker_symbol_in_the_Add_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#add-stock-form #ticker"));
+		WebElement addStockTicker = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div/div[1]/div/div[2]/form/div[1]/input"));
 	    addStockTicker.sendKeys("AMZN");
 	}
 
 	@When("I enter a valid number of shares in the Add Stocks popup")
 	public void i_enter_a_valid_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
+		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div/div[1]/div/div[2]/form/div[2]/input"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter a valid purchase date in the Add Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-form #date-purchased"));
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-portfolio"));
 		addStockBuyDate.sendKeys("10/10/2020");
+	}
+	
+	@When("I enter a valid purchase date using the calendar popup in the Add Stocks popup")
+	public void i_enter_a_valid_purchase_date_using_the_calendar_popup_in_the_Add_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-portfolio"));
+		addStockBuyDate.click();
+		WebElement previous = driver.findElement(By.className("ui-datepicker-prev"));
+		previous.click();
+		WebElement tenth = driver.findElement(By.xpath("/html/body/div[4]/table/tbody/tr[2]/td[7]/a"));
+		tenth.click();
+	}
+	
+	@When("I enter a valid purchase date using the calendar popup in the View Stocks popup")
+	public void i_enter_a_valid_purchase_date_using_the_calendar_popup_in_the_View_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-viewed"));
+		addStockBuyDate.click();
+		WebElement previous = driver.findElement(By.className("ui-datepicker-prev"));
+		previous.click();
+		WebElement tenth = driver.findElement(By.xpath("/html/body/div[4]/table/tbody/tr[2]/td[7]/a"));
+		tenth.click();
 	}
 
 	@When("I enter a valid sell date in the Add Stocks popup")
-	public void i_enter_a_valid_sell_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-form #date-sold"));
+	public void i_enter_a_valid_sell_date_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockSellDate = driver.findElement(By.id("date-sold-portfolio"));
 		addStockSellDate.sendKeys("10/15/2020");
+		addStockSellDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
+	}
+	
+	@When("I enter a valid sell date using the calendar popup in the Add Stocks popup")
+	public void i_enter_a_valid_sell_date_using_the_calendar_popup_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockSoldDate = driver.findElement(By.id("date-sold-portfolio"));
+		addStockSoldDate.click();
+		WebElement previous = driver.findElement(By.className("ui-datepicker-prev"));
+		previous.click();
+		WebElement fifteenth = driver.findElement(By.xpath("/html/body/div[4]/table/tbody/tr[3]/td[5]/a"));
+		fifteenth.click();
+		Thread.sleep(500);
+		addStockSoldDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
+	}
+	
+	@When("I enter a valid sell date using the calendar popup in the View Stocks popup")
+	public void i_enter_a_valid_sell_date_using_the_calendar_popup_in_the_View_Stocks_popup() throws InterruptedException {
+		WebElement addStockSoldDate = driver.findElement(By.id("date-sold-viewed"));
+		addStockSoldDate.click();
+		WebElement previous = driver.findElement(By.className("ui-datepicker-prev"));
+		previous.click();
+		WebElement fifteenth = driver.findElement(By.xpath("/html/body/div[4]/table/tbody/tr[3]/td[5]/a"));
+		fifteenth.click();
+		Thread.sleep(500);
+		addStockSoldDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 
 	@When("I click Add Stock")
@@ -287,7 +346,7 @@ public class StepDefinitions {
 	@Then("the stock should be added to the Portfolio list")
 	public void the_stock_should_be_added_to_the_Portfolio_list() throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement checkStock = driver.findElement(By.xpath("//*[text()[contains(.,'Amazon.com Inc')]]"));
+		WebElement checkStock = driver.findElement(By.xpath("//*[text()[contains(.,'AMZN')]]"));
 		assertTrue(checkStock != null);
 	}
 
@@ -299,27 +358,29 @@ public class StepDefinitions {
 
 	@When("I enter any number of shares in the Add Stocks popup")
 	public void i_enter_any_number_of_shares_in_the_Add_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-modal #shares"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#add-stock-form #shares"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter any valid purchase date in the Add Stocks popup")
 	public void i_enter_any_valid_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020\t1010");
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-portfolio"));
+		addStockBuyDate.sendKeys("10/10/2020");
 	}
 
 	@When("I enter any valid sell date in the Add Stocks popup")
-	public void i_enter_any_valid_sell_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020\t1015");
+	public void i_enter_any_valid_sell_date_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockSellDate = driver.findElement(By.id("date-sold-portfolio"));
+		addStockSellDate.sendKeys("10/15/2020");
+		addStockSellDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 
 	@Then("I should see the error {string} in the Add Stocks popup")
 	public void i_should_see_the_error_in_the_Add_Stocks_popup(String string) throws InterruptedException {
 		Thread.sleep(3000);
 		WebElement errorMessage = driver.findElement(By.xpath("//span[.='"+string+"']"));
-		assertTrue(string.equalsIgnoreCase(errorMessage.getText()));
+		assertTrue(errorMessage != null);
 	}
 
 	@When("I enter zero shares in the Add Stocks popup")
@@ -336,28 +397,51 @@ public class StepDefinitions {
 	
 	@When("I do not enter a purchase date in the Add Stocks popup")
 	public void i_do_not_enter_a_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#add-stock-modal #date-purchased"));
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-portfolio"));
+		addStockBuyDate.sendKeys("");
+	}
+	
+	@When("I do not enter a purchase date in the View Stocks popup")
+	public void i_do_not_enter_a_purchase_date_in_the_View_Stocks_popup() {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-viewed"));
 		addStockBuyDate.sendKeys("");
 	}
 
 	@When("I enter a sell date before the purchase date in the Add Stocks popup")
-	public void i_enter_a_sell_date_before_the_purchase_date_in_the_Add_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.cssSelector("#add-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020\t1009");
+	public void i_enter_a_sell_date_before_the_purchase_date_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockSellDate = driver.findElement(By.id("date-sold-portfolio"));
+		addStockSellDate.sendKeys("10/09/2020");
+		addStockSellDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 	
 	@Then("I should see the Add Stock button in the Add Stocks popup")
 	public void i_should_see_the_add_stock_button_in_the_add_stocks_popup() {
-		
+		WebElement button = driver.findElement(By.id("add-stock-submit"));
+		assertTrue(button.getText().equalsIgnoreCase("Add Stock"));
+	}
+	
+	@Then("I should see the View Stock button in the View Stocks popup")
+	public void i_should_see_the_view_stock_button_in_the_view_stocks_popup() {
+		WebElement button = driver.findElement(By.id("view-stock-submit"));
+		assertTrue(button.getText().equalsIgnoreCase("View Stock"));
 	}
 	
 	@Then("I should see the Cancel button in the Add Stocks popup")
 	public void i_should_see_the_cancel_button_in_the_add_stocks_popup() {
-		
+		WebElement button = driver.findElement(By.id("add-stock-cancel"));
+		assertTrue(button.getText().equalsIgnoreCase("Cancel"));
+	}
+	
+	@Then("I should see the Cancel button in the View Stocks popup")
+	public void i_should_see_the_cancel_button_in_the_view_stocks_popup() {
+		WebElement button = driver.findElement(By.id("view-stock-cancel"));
+		assertTrue(button.getText().equalsIgnoreCase("Cancel"));
 	}
 
 	@When("I click Add Stock in the Viewed Stocks box")
 	public void i_click_Add_Stock_in_the_Viewed_Stocks_box() throws InterruptedException {
+		Thread.sleep(1000);
 		WebElement addStockButton = driver.findElement(By.id("view-stock-button"));
 		addStockButton.click();
 		Thread.sleep(1000);
@@ -365,30 +449,32 @@ public class StepDefinitions {
 
 	@When("I enter a valid Ticker symbol in the View Stocks popup")
 	public void i_enter_a_valid_Ticker_symbol_in_the_View_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-modal #ticker"));
-	    addStockTicker.sendKeys("AMZN");
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-form #ticker"));
+	    addStockTicker.sendKeys("F");
 	}
 
 	@When("I enter a valid number of shares in the View Stocks popup")
 	public void i_enter_a_valid_number_of_shares_in_the_View_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-modal #shares"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-form #shares"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter a valid purchase date in the View Stocks popup")
 	public void i_enter_a_valid_purchase_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.cssSelector("#view-stock-modal #date-purchased"));
-		addStockBuyDate.sendKeys("2020\t1010");
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-viewed"));
+		addStockBuyDate.sendKeys("10/10/2020");
 	}
 
 	@When("I enter a valid sell date in the View Stocks popup")
-	public void i_enter_a_valid_sell_date_in_the_View_Stocks_popup() {
-		WebElement addStockSellDate = driver.findElement(By.cssSelector("#view-stock-modal #date-sold"));
-		addStockSellDate.sendKeys("2020\t1015");
+	public void i_enter_a_valid_sell_date_in_the_View_Stocks_popup() throws InterruptedException {
+		WebElement addStockSellDate = driver.findElement(By.id("date-sold-viewed"));
+		addStockSellDate.sendKeys("10/15/2020");
+		addStockSellDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 
 	@When("I click View Stock")
-	public void i_click_View_Stock() {
+	public void i_click_View_Stock() throws InterruptedException {
 		WebElement viewStockSubmit = driver.findElement(By.id("view-stock-submit"));
 		viewStockSubmit.click();
 	}
@@ -396,73 +482,104 @@ public class StepDefinitions {
 	@Then("the stock should be added to the Viewed Stocks list")
 	public void the_stock_should_be_added_to_the_Viewed_Stocks_list() throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement checkStock = driver.findElement(By.xpath("//*[text()[contains(.,'Amazon.com Inc')]]"));
+		WebElement checkStock = driver.findElement(By.xpath("//*[text()[contains(.,'Ford Motor Co')]]"));
 		assertTrue(checkStock != null);
 	}
 
 	@When("I enter an invalid Ticker symbol in the View Stocks popup")
 	public void i_enter_an_invalid_Ticker_symbol_in_the_View_Stocks_popup() {
-		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-modal #ticker"));
+		WebElement addStockTicker = driver.findElement(By.cssSelector("#view-stock-form #ticker"));
 	    addStockTicker.sendKeys("ADSFSWDZFD");
 	}
 
 	@When("I enter any number of shares in the View Stocks popup")
 	public void i_enter_any_number_of_shares_in_the_View_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[2]/input"));
+		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-form #shares"));
 		addStockShares.sendKeys("2");
 	}
 
 	@When("I enter any valid purchase date in the View Stocks popup")
 	public void i_enter_any_valid_purchase_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[3]/input"));
-		addStockBuyDate.sendKeys("2020\t1010");
+		WebElement addStockBuyDate = driver.findElement(By.id("date-purchased-viewed"));
+		addStockBuyDate.sendKeys("10/10/2020");
 	}
 
 	@When("I enter any valid sell date in the View Stocks popup")
-	public void i_enter_any_valid_sell_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[4]/input"));
-		addStockBuyDate.sendKeys("2020\t1015");
+	public void i_enter_any_valid_sell_date_in_the_View_Stocks_popup() throws InterruptedException {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-sold-viewed"));
+		addStockBuyDate.sendKeys("10/15/2020");
+		addStockBuyDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 
 	@Then("I should see the error {string} in the View Stocks popup")
 	public void i_should_see_the_error_in_the_View_Stocks_popup(String string) throws InterruptedException {
-		Thread.sleep(3000);
+		Thread.sleep(4000);
 		WebElement errorMessage = driver.findElement(By.xpath("//span[.='"+string+"']"));
-		assertTrue(string.equalsIgnoreCase(errorMessage.getText()));
+		assertTrue(errorMessage != null);
 	}
 
-	@When("I enter an invalid number of shares in the View Stocks popup")
-	public void i_enter_an_invalid_number_of_shares_in_the_View_Stocks_popup() {
-		WebElement addStockShares = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[2]/input"));
+	@When("I enter zero shares in the View Stocks popup")
+	public void i_enter_zero_shares_in_the_View_Stocks_popup() {
+		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-form #shares"));
+		addStockShares.sendKeys("0");
+	}
+	
+	@When("I enter a negative number of shares in the View Stocks popup")
+	public void i_enter_a_negative_number_of_shares_in_the_View_Stocks_popup() {
+		WebElement addStockShares = driver.findElement(By.cssSelector("#view-stock-form #shares"));
 		addStockShares.sendKeys("-2");
 	}
 
 	@When("I enter a sell date before the purchase date in the View Stocks popup")
-	public void i_enter_a_sell_date_before_the_purchase_date_in_the_View_Stocks_popup() {
-		WebElement addStockBuyDate = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/div/div/div/div[2]/form/div[4]/input"));
-		addStockBuyDate.sendKeys("2020\t1005");
+	public void i_enter_a_sell_date_before_the_purchase_date_in_the_View_Stocks_popup() throws InterruptedException {
+		WebElement addStockBuyDate = driver.findElement(By.id("date-sold-viewed"));
+		addStockBuyDate.sendKeys("10/05/2020");
+		addStockBuyDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
 	}
 
 	@When("I click the trash icon on a stock row in the Portfolio list")
-	public void i_click_the_trash_icon_on_a_stock_row_in_the_Portfolio_list() {
-		WebElement trashButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/table/tbody/tr[1]/td[4]/a"));
+	public void i_click_the_trash_icon_on_a_stock_row_in_the_Portfolio_list() throws InterruptedException {
+		WebElement trashButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/table/tbody/tr[1]/td[4]/a"));
 	    trashButton.click();
+	    Thread.sleep(1000);
+	}
+	
+	@Then("I should see the Delete Stock button")
+	public void i_should_see_the_delete_stock_button() {
+		WebElement deleteStock = driver.findElement(By.cssSelector(".confirmation-buttons .btn-primary"));
+		assertTrue(deleteStock.getText().equalsIgnoreCase("Delete stock"));
+	}
+	
+	@Then("I should see the Cancel button")
+	public void i_should_see_the_cancel_button() {
+		WebElement cancel = driver.findElement(By.cssSelector(".confirmation-buttons .btn-secondary"));
+		assertTrue(cancel.getText().equalsIgnoreCase("Cancel"));
+	}
+	
+	@When("I click Delete Stock")
+	public void i_click_delete_stock() throws InterruptedException {
+		WebElement confirmButton = driver.findElement(By.cssSelector(".confirmation-buttons .btn-primary"));
+		confirmButton.click();
+		Thread.sleep(3000);
 	}
 
-	@Then("the stock should be removed from the Portfolio list")
-	public void the_stock_should_be_removed_from_the_Portfolio_list() {
-	    // TODO
+	@Then("the stock should be removed from the Portfolio list and graph")
+	public void the_stock_should_be_removed_from_the_Portfolio_list_and_graph() {
+		assertTrue(driver.findElements(By.xpath("//td[.='Microsoft Corp']")).isEmpty());
 	}
 
 	@When("I click the trash icon on a stock row in the Viewed Stocks list")
-	public void i_click_the_trash_icon_on_a_stock_row_in_the_Viewed_Stocks_list() {
-		WebElement trashButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/table/tbody/tr[1]/td[4]/a"));
+	public void i_click_the_trash_icon_on_a_stock_row_in_the_Viewed_Stocks_list() throws InterruptedException {
+		WebElement trashButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/table/tbody/tr[1]/td[4]/a"));
 	    trashButton.click();
+	    Thread.sleep(1000);
 	}
 
-	@Then("the stock should be removed from the Viewed Stocks list")
-	public void the_stock_should_be_removed_from_the_Viewed_Stocks_list() {
-		// TODO
+	@Then("the stock should be removed from the Viewed Stocks list and graph")
+	public void the_stock_should_be_removed_from_the_Viewed_Stocks_list_and_graph() {
+		assertTrue(driver.findElements(By.xpath("//td[.='Apple Inc']")).isEmpty());
 	}
 
 	@When("I click Import CSV")
