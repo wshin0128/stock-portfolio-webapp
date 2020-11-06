@@ -98,7 +98,8 @@ public class DatabaseClientTest extends Mockito {
 			mockDb.createUser(username, password);
 			assertTrue(true);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testCreateUserThrowsException");
 		}
 	}
 	
@@ -132,7 +133,8 @@ public class DatabaseClientTest extends Mockito {
 			assertTrue("Actual is " + result, result == -1);
 			
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testGetUserThrowsNoSuchAlgorithmException");
 		}
 	}
 	
@@ -147,7 +149,8 @@ public class DatabaseClientTest extends Mockito {
 			String password = "password";
 			assertTrue(mockDb.getUser(new PasswordAuthentication(), username, password) == -1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testGetUserThrowsException");
 		}
 	}
 	

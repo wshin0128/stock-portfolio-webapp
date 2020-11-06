@@ -852,6 +852,9 @@ public class StepDefinitions {
 	public void portfolio_toggle() throws InterruptedException, IOException
 	{
 		// TODO
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"stock-list\"]/tbody/tr/td[3]/label/span"));
+	    button.click();
+	    Thread.sleep(4000);
 	}
 	
 	
