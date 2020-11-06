@@ -183,9 +183,9 @@ public class StepDefinitions {
 //	    currentElement.sendKeys("thisisunsafe");
 //	    Thread.sleep(1000);
 	    WebElement username = driver.findElement(By.id("username"));
-		username.sendKeys("test2");
+		username.sendKeys("ttrojan");
 		WebElement password = driver.findElement(By.id("pass"));
-		password.sendKeys("test2test");
+		password.sendKeys("12345678");
 		WebElement searchButton = driver.findElement(By.id("b"));
 	    searchButton.click();
 	    Thread.sleep(5000);
