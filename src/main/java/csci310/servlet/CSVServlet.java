@@ -16,6 +16,10 @@ import javax.servlet.http.Part;
 import csci310.model.Stock;
 import csci310.service.HomePageModule;
 
+/**
+ * Servlet to parse CSV file into stock and add the stock to portfolio
+ *
+ */
 @MultipartConfig	
 public class CSVServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,6 +37,7 @@ public class CSVServlet extends HttpServlet {
 		while ((line = br.readLine()) != null) {
 			String[] parameters = line.split(",");
 			
+			// Check the format of the CSV file
 			if(parameters.length < 5) {
 				errorMsg += ("Row " + String.valueOf(i) + ": requires minimum of 5 parameters.<br>");
 			}
@@ -72,7 +77,7 @@ public class CSVServlet extends HttpServlet {
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			return;
 		}
-		
+		// Add stock with homePage module (covers both model and database)
 		HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
 		for(Stock s : stocks) {
 			homePageModule.addStock(s);
