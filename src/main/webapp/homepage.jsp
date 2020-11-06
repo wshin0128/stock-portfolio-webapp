@@ -278,7 +278,7 @@
 				</form>
 	    		<div class = "graph-main">
 	    		<div class="canvas-container">
-	    			<canvas id="myChart" width="300" height="200"></canvas>
+	    			<canvas id="myChart" ></canvas>
 	    		</div>
 				<div class="container-header">
 	    			<div class="add-stocks-container">
@@ -338,12 +338,12 @@
 	    								<span class="error-msg">${errorMessageShares}</span>
 	    								<div class="form-row">
 	    									<label for="date-purchased">Date Purchased</label>
-	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased">
+	    									<input type="text" class="datepicker" id="date-purchased-portfolio" placeholder="MM/DD/YYY" name="date-purchased">
 	    								</div>
 	    								<span class="error-msg">${errorMessageDatePurchased}</span>
 	    								<div class="form-row">
 	    									<label for="date-sold">Date Sold</label>
-	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold">
+	    									<input type="text" class="datepicker" id="date-sold-portfolio" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
 	    								<span class="error-msg">${errorMessageDateSold}</span>	    								
 	    								<button type="submit" class="button" id="add-stock-submit">Add Stock</button>
@@ -526,7 +526,12 @@
 		var addStockModal = document.getElementById("add-stock-modal");
 		var addStockButton = document.getElementById("add-stock-button");
 		var addStockCancelButton = document.getElementById("add-stock-cancel");
-		var errorMessage = '${errorMessage}';
+		var addTickerError = '${errorMessageTicker}';
+		var addSharesError = '${errorMessageShares}';
+		var addSoldDateError = '${errorMessageDateSold}';
+		var addPurchaseDateError = '${errorMessageDatePurchased}';
+		
+		console.log("TESTING" + addTickerError);
 		
 		// When user clicks add stock button
 		addStockButton.onclick = function() {
@@ -550,8 +555,7 @@
 			}
 		}
 		// If the servlet returns an error message, display popup
-		if(errorMessage != "") {
-			console.log("errorMessage = " + errorMessage);
+		if(addTickerError != "" || addSharesError != "" || addSoldDateError != "" || addPurchaseDateError != "") {
 			addStockModal.style.display = "flex";
 		}
 	</script>
@@ -625,7 +629,6 @@
 		}
 		// If the servlet returns an error message, display popup
 		if(tickerError != "" || sharesError != "" || soldDateError != "" || purchaseDateError != "") {
-			console.log("viewStockErrorMessage = " + errorMessage);
 			viewStockModal.style.display = "flex";
 		}
 	</script>
