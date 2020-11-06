@@ -10,10 +10,10 @@
 </head>
 <body id = "start">
 	<%
-		Object login = session.getAttribute("login");
+		String login = (String) session.getAttribute("login");
 		boolean loginB = false;
 		if (login != null) {
-			loginB = (boolean) login;
+			loginB = Boolean.parseBoolean(login);
 		}
 		
 		if(loginB){

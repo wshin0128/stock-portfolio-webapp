@@ -28,13 +28,6 @@ public class AddStockServlet extends HttpServlet {
 			
 			boolean formError = false;
 			
-			System.out.println("Showing form data:");
-			System.out.println(request.getParameter("ticker"));
-			System.out.println(request.getParameter("shares"));
-			System.out.println(request.getParameter("date-purchased"));
-			System.out.println(request.getParameter("date-sold"));
-			
-			
 			// Check if form was populated
 			if(request.getParameter("ticker").equals("")) {
 				request.setAttribute("errorMessage", "Illegal ticker symbol");
@@ -105,7 +98,6 @@ public class AddStockServlet extends HttpServlet {
 			if(!datePurchased.equalsIgnoreCase("")) {
 				datePurchasedObject = dateFormatter.parse(datePurchased);
 				datePurchasedUnix = datePurchasedObject.getTime();
-				System.out.println("purchased: " + datePurchasedUnix);
 				
 				if(datePurchasedUnix < oneYearAgo) {
 		        	request.setAttribute("errorMessageDatePurchased", "Purchase date cannot be older than 1 year ago");
@@ -142,21 +134,14 @@ public class AddStockServlet extends HttpServlet {
 			// Color override (Admin feature, not visible to user)
 			if(request.getAttribute("colorOverride") != null) {
 				Stock s = new Stock(companyName, ticker, (String)request.getAttribute("colorOverride"), shares, datePurchasedUnix, dateSoldUnix);
-				// add stock to database
-				// dbc.addStockToPortfolio(userID, s);
-				// add stock to front end
 				homePageModule.addStock(s); }
 			else {
 				Stock s = new Stock(companyName, ticker, null, shares, datePurchasedUnix, dateSoldUnix);
-				// add stock to database
-				// dbc.addStockToPortfolio(userID, s);
-				// add stock to front end
 				homePageModule.addStock(s);
 			}
 			// Go back to homepage page
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response); }
 		catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Exception from AddStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

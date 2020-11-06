@@ -81,7 +81,6 @@ public class ViewStockServlet extends HttpServlet {
 			Date now = new Date();
 	        long currentTimeUnix = now.getTime() / 1000L;
 	        long oneYearAgo = (currentTimeUnix - 31536000) * 1000 - 172800000;
-	        System.out.println("one year ago: " + oneYearAgo);
 			
 	        // If date purchased exists
 			if(!datePurchased.equalsIgnoreCase("")) {
@@ -132,7 +131,6 @@ public class ViewStockServlet extends HttpServlet {
 			// Go back to homepage
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);} 
 		catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Exception from ViewStockServlet.doPost()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);}
 	}
