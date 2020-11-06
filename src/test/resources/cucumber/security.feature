@@ -17,5 +17,11 @@ Feature: Security
     
   Scenario: Attempting to access homepage while not logged in
     Given I am not logged in
-    When I attempt to access "localhost:8080/homepage.jsp"
+    When I attempt to access "https://localhost:8443/homepage.jsp"
     Then I should be redirected to the sign in page
+    
+  Scenario: Attempting to access without https
+  	Given I have the brower open
+  	When I attempt to access "http://localhost:8443/signIn.jsp"
+  	Then I should not be able to access the page
+  	

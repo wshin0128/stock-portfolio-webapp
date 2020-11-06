@@ -39,8 +39,15 @@ Feature: Sign in Page
     When I click submit on login
     And I click submit on login
     And I click submit on login
-    And I click submit on login
     Then I should see the error "You have been locked for failing to sign in three times"
+    
+  Scenario: Lock out for 1 minute with unlock
+		Given I am on the sign in page
+	    When I click submit on login
+	    And I click submit on login
+	    And I click submit on login
+	    And I wait 1 minute
+	    Then I should see the unlock message "The lock has been unlocked"
     
   Scenario: Successful Sign in
     Given I am on the sign in page

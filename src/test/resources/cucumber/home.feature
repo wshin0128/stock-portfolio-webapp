@@ -1,20 +1,20 @@
-Feature: Home Page
-  Scenario: Adjust date to view past performance  
+Feature: Mobile resize
+  Scenario: Making sure navbar is still visible on homepage
     Given I am on the home page
-    When I click the 1 week button of the home page.
-    Then the graph should re-adjust on the home page.
+    When I resize to mobile dimensions
+    Then the navbar should still be visible
  
-   Scenario: Adjust date to view past performance 2  
+   Scenario: Making sure graph container is still visible on homepage
     Given I am on the home page
-    When I click the 1 month button of the home page.
-    Then the graph should re-adjust on the home page.
+    When I resize to mobile dimensions
+    Then the graph container should still be visible
 
-   Scenario: Adjust date to view past performance 3  
+   Scenario: Making sure portfolio list is still visible on homepage
     Given I am on the home page
-    When I click the 1 year button of the home page.
-    Then the graph should re-adjust on the home page.
+    When I resize to mobile dimensions
+    Then the portfolio list should still be visible
     
-   Scenario: Adjust date to view past performance 4  
+   Scenario: Making sure viewed stocks list is still visible on homepage
     Given I am on the home page
-    When I click the 1 day button of the home page.
-    Then the graph should re-adjust on the home page.
+    When I resize to mobile dimensions
+    Then the viewed stocks list should still be visible

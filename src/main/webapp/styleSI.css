@@ -5,7 +5,17 @@ body {
 	font-family: "Cairo", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	
 }
+#Munlock{
+	color: #51C58E;
+}
 
+#b{
+	margin: 10px;
+}
+
+#c{
+	margin: 10px;
+}
 #start{
 	animation-name: color;
   	animation-duration: 6s;
@@ -120,9 +130,9 @@ input[type=password], input[type=text] {
 
 .login {
 	margin-top: 5%;
-	max-width: 75%;
+	max-width: 25%;
 	color: #444;
-	width: 300px;
+	
 	margin-left: auto;
 	margin-right: auto;
 	background: #fff;
@@ -134,9 +144,9 @@ input[type=password], input[type=text] {
 
 .signup{
 	margin-top: 5%;
-	max-width: 75%;
+	max-width: 25%;
 	color: #444;
-	width: 300px;
+	
 	margin-left: auto;
 	margin-right: auto;
 	background: #fff;
@@ -179,4 +189,57 @@ label {
     display: inline-block;
     padding-top: 10px;
     font-size: 14px;
+}
+
+/* Medium Devices, Desktops */
+@media (max-width : 991px) {
+	.wrap {
+		max-width: 100%;
+		margin: 0 30px;
+	}
+	.login {
+		max-width: 80%;
+		
+	}
+	
+	.sign-in-button{
+		font-size: 40px;
+	}
+	#errorMessage{
+		font-size: 40px;
+	}
+	#eMess{
+		font-size: 40px;
+	}
+	#signUpLink{
+		font-size: 40px;
+	}
+	.sign-in-button-error{
+		font-size: 40px;
+	}
+	.signup{
+		max-width: 80%;
+	}
+	.login h3{
+		font-size: 50px;
+	}
+	.login label{
+		font-size: 40px;
+	}
+	.login input{
+		font-size: 40px;
+	}
+	
+	.signup h3{
+		font-size: 50px;
+	}
+	.signup label{
+		font-size: 40px;
+	}
+	.signup input{
+		font-size: 40px;
+	}
+	.navbar h1 {
+		font-size: 40px;
+	}
 }

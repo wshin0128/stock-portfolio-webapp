@@ -98,7 +98,8 @@ public class DatabaseClientTest extends Mockito {
 			mockDb.createUser(username, password);
 			assertTrue(true);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testCreateUserThrowsException");
 		}
 	}
 	
@@ -132,7 +133,8 @@ public class DatabaseClientTest extends Mockito {
 			assertTrue("Actual is " + result, result == -1);
 			
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testGetUserThrowsNoSuchAlgorithmException");
 		}
 	}
 	
@@ -147,14 +149,63 @@ public class DatabaseClientTest extends Mockito {
 			String password = "password";
 			assertTrue(mockDb.getUser(new PasswordAuthentication(), username, password) == -1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("this is in testGetUserThrowsException");
 		}
 	}
 	
 	@Test
 	public void testAddStockToPortfolio() {
-		Stock testStock = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
-		assertTrue(db.addStockToPortfolio(3, testStock));
+		// portfolio should contain 0 stocks on start up
+		assertEquals(db.getPortfolio(3).getSize(), 0);
+
+		// add first stock to portfolio
+		Stock testStock1 = new Stock("Apple", "APPL", null, 1, 1599027025, 1601619025);
+		assertTrue(db.addStockToPortfolio(3, testStock1));
+
+		// check first stock added to portfolio
+		Portfolio portfolio = db.getPortfolio(3);
+		assertEquals(portfolio.getSize(), 1);
+		assertTrue(portfolio.contains(testStock1));
+
+		// add duplicate of first stock to portfolio
+		Stock testStock2 = new Stock("Apple", "APPL", null, 2, 1599027000, 1601619000);
+		assertTrue(db.addStockToPortfolio(3, testStock2));
+
+		// old stock should be overwritten
+		portfolio = db.getPortfolio(3);
+		// where size of same user's portfolio is unchanged
+		assertEquals(portfolio.getSize(), 1);
+		// and with updated stock info
+		assertFalse(portfolio.contains(testStock1));
+		assertTrue(portfolio.contains(testStock2));
+
+		// add second stock to portfolio
+		Stock testStock3 = new Stock("Microsoft", "MSFT", null, 1, 1599027025, 1601619025);
+		assertTrue(db.addStockToPortfolio(3, testStock3));
+
+		// check second stock added to portfolio
+		portfolio = db.getPortfolio(3);
+		// portfolio should now contain two stocks
+		assertEquals(portfolio.getSize(), 2);
+		// new one added
+		assertTrue(portfolio.contains(testStock3));
+		// old duplicate
+		assertTrue(portfolio.contains(testStock2));
+
+		// add duplicate to second stock to portfolio
+		Stock testStock4 = new Stock("Microsoft", "MSFT", null, 2, 1599027000, 1601619000);
+		assertTrue(db.addStockToPortfolio(3, testStock4));
+
+		// second stock from previous should now be overwritten
+		portfolio = db.getPortfolio(3);
+		// where size of same user's portfolio is unchanged
+		assertEquals(portfolio.getSize(), 2);
+		// and with updated stock info
+		assertFalse(portfolio.contains(testStock3));
+		assertTrue(portfolio.contains(testStock4));
+		// old duplicate
+		assertTrue(portfolio.contains(testStock2));
 	}
 	
 	@Test
@@ -162,11 +213,11 @@ public class DatabaseClientTest extends Mockito {
 		try {
 			Connection mockConn = mock(Connection.class);
 			mockDb.setConnection(mockConn);
-			String query = "SELECT COUNT(*) FROM Portfolio WHERE userID=? AND tickerSymbol=?";
-			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
-			
+			String createStockQuery = "DELETE FROM Portfolio WHERE userID=? AND tickerSymbol=?;";
+			when(mockConn.prepareStatement(createStockQuery, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
+
 			Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
-			assertTrue(mockDb.addStockToPortfolio(3, appl) == false);
+			assertFalse(mockDb.addStockToPortfolio(3, appl));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -204,10 +255,56 @@ public class DatabaseClientTest extends Mockito {
 	
 	@Test
 	public void testAddStockToViewed() {
-		Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
-		
-		assertTrue(db.addStockToViewed(1, appl));
-		assertFalse(db.addStockToViewed(1, appl));
+		// viewed list should contain 0 stocks on start up
+		assertEquals(db.getViewedStocks(3).getSize(), 0);
+
+		// add first stock to viewed list
+		Stock testStock1 = new Stock("Apple", "APPL", null, 1, 1599027025, 1601619025);
+		assertTrue(db.addStockToViewed(3, testStock1));
+
+		// check first stock added to viewed list
+		Portfolio viewedStocks = db.getViewedStocks(3);
+		assertEquals(viewedStocks.getSize(), 1);
+		assertTrue(viewedStocks.contains(testStock1));
+
+		// add duplicate of first stock to viewed list
+		Stock testStock2 = new Stock("Apple", "APPL", null, 2, 1599027000, 1601619000);
+		assertTrue(db.addStockToViewed(3, testStock2));
+
+		// old stock should be overwritten
+		viewedStocks = db.getViewedStocks(3);
+		// where size of same user's viewed list is unchanged
+		assertEquals(viewedStocks.getSize(), 1);
+		// and with updated stock info
+		assertFalse(viewedStocks.contains(testStock1));
+		assertTrue(viewedStocks.contains(testStock2));
+
+		// add second stock to viewed list
+		Stock testStock3 = new Stock("Microsoft", "MSFT", null, 1, 1599027025, 1601619025);
+		assertTrue(db.addStockToViewed(3, testStock3));
+
+		// check second stock added to viewed list
+		viewedStocks = db.getViewedStocks(3);
+		// viewed list should now contain two stocks
+		assertEquals(viewedStocks.getSize(), 2);
+		// new one added
+		assertTrue(viewedStocks.contains(testStock3));
+		// old duplicate
+		assertTrue(viewedStocks.contains(testStock2));
+
+		// add duplicate to second stock to viewed list
+		Stock testStock4 = new Stock("Microsoft", "MSFT", null, 2, 1599027000, 1601619000);
+		assertTrue(db.addStockToViewed(3, testStock4));
+
+		// second stock from previous should now be overwritten
+		viewedStocks = db.getViewedStocks(3);
+		// where size of same user's viewed list is unchanged
+		assertEquals(viewedStocks.getSize(), 2);
+		// and with updated stock info
+		assertFalse(viewedStocks.contains(testStock3));
+		assertTrue(viewedStocks.contains(testStock4));
+		// old duplicate
+		assertTrue(viewedStocks.contains(testStock2));
 	}
 	
 	@Test
@@ -215,11 +312,11 @@ public class DatabaseClientTest extends Mockito {
 		try {
 			Connection mockConn = mock(Connection.class);
 			mockDb.setConnection(mockConn);
-			String query = "SELECT COUNT(*) FROM ViewedStocks WHERE userID=? AND tickerSymbol=?";
+			String query = "DELETE FROM ViewedStocks WHERE userID=? AND tickerSymbol=?;";
 			when(mockConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenThrow(new SQLException());
-			
+
 			Stock appl = new Stock("Apple", "APPL", null, 2, 1599027025, 1601619025);
-			assertTrue(mockDb.addStockToViewed(3, appl) == false);
+			assertFalse(mockDb.addStockToViewed(3, appl));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

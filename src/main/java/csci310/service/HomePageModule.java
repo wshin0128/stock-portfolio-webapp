@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,10 +25,29 @@ public class HomePageModule {
 	
 	public Double todayTotalDouble;
 	private final FinnhubClient finnhubClient;
+	private final DatabaseClient databaseClient;
 	
-	public HomePageModule(User user, FinnhubClient finnhubClient) {
+	private Portfolio viewedStockPortfolio;
+	
+	/**
+	 * stock to be counted in the graph
+	 */
+	private Map<Stock, Boolean> stockToGraphMap;
+	
+	public HomePageModule(User user, FinnhubClient finnhubClient, DatabaseClient databaseClient) {
 		this.user = user;
 		this.finnhubClient = finnhubClient;
+		this.databaseClient = databaseClient;
+		
+		// Initialize viewed stocks when module is created
+		viewedStockPortfolio = databaseClient.getViewedStocks(user.getUserID());
+		
+		// Initialize graphPortfolio when module is created
+		// Deep copy each elements from user viewed stock to graphPortfolio
+		stockToGraphMap = new HashMap<Stock, Boolean>();
+		for (Stock stock : user.getPortfolio().getPortfolio()) {
+			stockToGraphMap.put(stock, true);
+		}
 	}
 	
 	/**
@@ -47,8 +67,9 @@ public class HomePageModule {
 			cal.add(Calendar.DAY_OF_YEAR, -7);
 			long yesterdayTime = cal.getTimeInMillis() / 1000;
 			
-            if (yesterdayTime > stock.getSellDate()) {
-            	// if the stock is sold before yesterday, do not calculate that
+            if (yesterdayTime > stock.getSellDate() / 1000 || currentTime < stock.getBuyDate() / 1000) {
+            	// if the stock is sold before yesterday or buy after today, do not calculate that
+            	// System.out.println(yesterdayTime + " " + stock.getSellDate());
             	continue;
             }
 			try {
@@ -86,25 +107,106 @@ public class HomePageModule {
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
 		return changePercentageDouble;
     }
-    
+    /**
+     * Add stock to owned stock portfolio and db
+     * @param stock
+     */
     public void addStock(Stock stock) {
-    	// add stock to portfolio in homepage module
-    	user.getPortfolio().getPortfolio().add(stock);
+    	// Check if stock with the same ticker exists. if so, overwrite 
+    	removeStock(stock.getTicker());
+    	// add stock to data model
+    	user.getPortfolio().addStock(stock);
+    	// add stock to stock displayed on graph
+    	stockToGraphMap.put(stock, true);
+    	// add stock to database
+    	databaseClient.addStockToPortfolio(user.getUserID(), stock);
     }
     
-    
+    /**
+     * remove stock from owned stock portfolio and db
+     * @param tickerString
+     */
     public void removeStock(String tickerString) {
-    	// remove stock portfolio in page module
-    	// remove stock from database.
-    	
-    	// deal with the case where stock is not already in portfolio
+    	Portfolio ownedStocksPortfolio = user.getPortfolio();
+    	for (Stock stock : ownedStocksPortfolio.getPortfolio()) {
+    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
+    			// remove stock portfolio in page module
+    			ownedStocksPortfolio.removeStock(stock);
+    			// remove stock from stock in the graph
+    			stockToGraphMap.remove(stock);
+    			// remove stock from database
+    			databaseClient.removeStockFromPortfolio(user.getUserID(), tickerString);
+    			break;
+    		}
+    	}
+    	return; // Do not do anything if tickerString is not found
+    }
+    
+    /**
+     * remove stock from viewed stock portfolio and db
+     * @param tickerString
+     */
+    public void removeViewedStock(String tickerString) {
+    	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
+    		if (stock.getTicker().equalsIgnoreCase(tickerString)){
+    			// remove stock portfolio in page module
+    			viewedStockPortfolio.removeStock(stock);
+    			// remove stock from database
+    			databaseClient.removeStockFromViewed(user.getUserID(), tickerString);
+    			break;
+    		}
+    	}
+    	return; // Do not do anything if tickerString is not found
+    }
+    
+    /**
+     * remove stock from viewed stock portfolio and db
+     * @param stock
+     */
+    public void addViewedStock(Stock stock) {
+    	removeViewedStock(stock.getTicker());
+    	viewedStockPortfolio.addStock(stock);
+    	databaseClient.addStockToViewed(user.getUserID(), stock);
     }
     
     public ArrayList<Stock> getStockList(){
     	return user.getPortfolio().getPortfolio();
     }
     
+    public ArrayList<Stock> getViewedStockList(){
+    	return viewedStockPortfolio.getPortfolio();
+    }
+    
     public double getPortfolioValue() {
 		return portfolioValue;
     }
+    /**
+     * Used for CSV file module
+     * @param portfolio
+     */
+    public void setPortfolio(Portfolio portfolio) {
+    	// only set this portfolio; do not touch the database;
+    	user.setPortfolio(portfolio);
+    }
+    
+    public void toggleStock(String tickerString) {
+    	for (Stock stock : stockToGraphMap.keySet()) {
+    		String stockTickerString = stock.getTicker();
+    		if (stockTickerString.equalsIgnoreCase(tickerString)) {
+    			Boolean current = stockToGraphMap.get(stock);
+    			stockToGraphMap.replace(stock, !current);
+    		}
+    	}
+    }
+
+    
+	public Map<Stock, Boolean> getStockToGraphMap() {
+		return stockToGraphMap;
+	}
+
+	public void setStockToGraphMap(Map<Stock, Boolean> stockToGraphMap) {
+		this.stockToGraphMap = stockToGraphMap;
+	}
+    
+    
 }
