@@ -199,7 +199,7 @@ public class StepDefinitions {
 	}
 	@Then("I should be signed out and taken back to the sign in page")
 	public void i_should_be_signed_out_and_taken_back_to_the_sign_in_page() {
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase("http://localhost:8080/signIn.jsp"));
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signIn.jsp"));
 	}
 	
 	@When("I redirect to sign in")
@@ -675,14 +675,22 @@ public class StepDefinitions {
 
 	@When("I click Import CSV")
 	public void i_click_Import_CSV() {
-		WebElement importButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/button[2]"));
+		WebElement importButton = driver.findElement(By.id("import-stock-button"));
 		importButton.click();
 	}
 	
-	@Then("I should see an Upload File button")
-	public void i_should_see_an_upload_file_button() throws InterruptedException {
+	@Then("I should see an Upload File button in CSV Popup")
+	public void i_should_see_an_upload_file_button_in_csv_popup() throws InterruptedException {
 		Thread.sleep(3000);
-		WebElement uploadFileButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[2]/div/div[2]/form/button"));
+																  
+		WebElement uploadFileButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div/div[2]/div/div[2]/form/button"));
+		assertTrue(uploadFileButton != null);
+	}
+	
+	@Then("I should see a Cancel button in CSV Popup")
+	public void i_should_see_a_cancel_button_in_csv_popup() throws InterruptedException {
+		Thread.sleep(3000);
+		WebElement uploadFileButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div/div[2]/div/div[3]/button"));
 		assertTrue(uploadFileButton != null);
 	}
 
@@ -695,7 +703,7 @@ public class StepDefinitions {
 
 	@When("I click Upload File")
 	public void i_click_Upload_File() {
-		WebElement uploadFileButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[2]/div/div[2]/form/button"));
+		WebElement uploadFileButton = driver.findElement(By.id("import-stock-submit"));
 	    uploadFileButton.click();
 	}
 
@@ -716,10 +724,10 @@ public class StepDefinitions {
 		uploadFile.sendKeys(file.getAbsolutePath());
 	}
 
-	@Then("I should see an error")
-	public void i_should_see_an_error() throws InterruptedException {
+	@Then("I should see an error for invalid CVS")
+	public void i_should_see_an_error_for_invalid_csv() throws InterruptedException {
 		Thread.sleep(3000);
-	    WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[2]/div/div[2]/form/div[2]/span"));
+	    WebElement errorMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div/div[2]/div/div[2]/form/div[2]/span"));
 	    String error = errorMessage.getText();
 	    assertTrue(error.contains("Row 1: requires minimum of 5 parameters."));
 	    assertTrue(error.contains("Row 2, Col A: stock name is a required field."));
@@ -886,13 +894,16 @@ public class StepDefinitions {
 		Thread.sleep(3000);
 	}
 	
+	@Given("I have the brower open")
+	public void i_have_the_brower_open() throws InterruptedException {
+		Thread.sleep(500);
+	}
 	
-	
-	
-	
-	
-	
-	
+	@Then("I should not be able to access the page")
+	public void i_should_not_be_able_to_access_the_page() throws InterruptedException {
+		Thread.sleep(2000);
+		assertTrue(driver.findElements(By.xpath("//*[text()[contains(.,'Stock')]]")).isEmpty());
+	}
 
 	@When("I resize to mobile dimensions")
 	public void i_resize_to_mobile_dimensions() throws InterruptedException {

@@ -3,7 +3,12 @@ Feature: Adding stocks to the portfolio and viewed stocks lists
   Scenario: Showing Upload CSV Popup
     Given I am on the home page
     When I click Import CSV
-    Then I should see an Upload File button
+    Then I should see an Upload File button in CSV Popup
+  
+  Scenario: Showing Cancel CSV Popup
+    Given I am on the home page
+    When I click Import CSV
+    Then I should see a Cancel button in CSV Popup
     
   Scenario: Successfully adding stocks to Portfolio using CSV file
     Given I am on the home page
@@ -17,4 +22,4 @@ Feature: Adding stocks to the portfolio and viewed stocks lists
     When I click Import CSV
     And I upload an invalid CSV file
     And I click Upload File
-    Then I should see an error
+    Then I should see an error for invalid CVS
