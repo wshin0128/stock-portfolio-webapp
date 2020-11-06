@@ -1,4 +1,5 @@
-Feature: Adding stocks to the portfolio and viewed stocks lists
+Feature: Adding stocks to the portfolio list
+
   Scenario: Successfully adding a stock to the portfolio list
     Given I am on the home page
     When I click Add Stock in the Portfolio box
@@ -74,7 +75,17 @@ Feature: Adding stocks to the portfolio and viewed stocks lists
     When I click Add Stock in the Portfolio box
     Then I should see the Add Stock button in the Add Stocks popup
     
-  Scenario: Showing the Add Stock button
+  Scenario: Showing the Cancel button
     Given I am on the home page
     When I click Add Stock in the Portfolio box
     Then I should see the Cancel button in the Add Stocks popup
+    
+  Scenario: Successfully adding a stock to the portfolio list using calendar popups
+    Given I am on the home page
+    When I click Add Stock in the Portfolio box
+    And I enter a valid Ticker symbol in the Add Stocks popup
+    And I enter a valid number of shares in the Add Stocks popup
+    And I enter a valid purchase date using the calendar popup in the Add Stocks popup
+    And I enter a valid sell date using the calendar popup in the Add Stocks popup
+    And I click Add Stock
+    Then the stock should be added to the Portfolio list
