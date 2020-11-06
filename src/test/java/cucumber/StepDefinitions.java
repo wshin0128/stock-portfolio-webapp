@@ -833,6 +833,22 @@ public class StepDefinitions {
 		File B = new File("to_test.PNG");
 		assertTrue(!compareImage(A,B));
 	}
+	@When("I click the snp checkbox of the home page.")
+	public void snp_check() throws InterruptedException, IOException
+	{
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"graph-container\"]/form/div[2]/input[1]"));
+	    button.click();
+	    Thread.sleep(4000);
+	}
+	@When("I click on the toggle button of a portfolio stock.")
+	public void portfolio_toggle() throws InterruptedException, IOException
+	{
+		// TODO
+	}
+	
+	
+	
+	
 
 	@When("{int} seconds of inactivity occurs")
 	public void seconds_of_inactivity_occurs(Integer int1) throws InterruptedException {

@@ -40,9 +40,11 @@ Feature: Graph
     When I click the custom range button.
     And I enter incorrect start,end dates n submit
     Then I should see an error message.
-    
-    
-    
-
-    
-    
+  Scenario: SNP checkbox  
+    Given I am on the home page
+    When I click the snp checkbox of the home page.
+    Then the graph should re-adjust on the home page.
+   Scenario: Portfolio toggle  
+    Given I am on the home page
+    When I click on the toggle button of a portfolio stock.
+    Then the graph should re-adjust on the home page.
