@@ -1,0 +1,14 @@
+Best Practice Refactor Report
+Owner: TeamZ
+Grade: 10.0/10
+Comments: 
+Issue 95
+	nandhakumar23 satisfied 7 of 7 requirements for this issue.
+Issue 94
+	wshin0128 satisfied 7 of 7 requirements for this issue.
+Issue 90
+	markzcc satisfied 7 of 7 requirements for this issue.
+Issue 87
+	mouchunyang satisfied 7 of 7 requirements for this issue.
+Issue 85
+	manavkau satisfied 7 of 7 requirements for this issue.
