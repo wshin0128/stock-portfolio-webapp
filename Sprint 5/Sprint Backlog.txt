@@ -1,0 +1,21 @@
+Sprint backlog:
+1. SignUp
+  a. Add acceptance tests for buttons to check if on screen
+  b. Rename submit button
+2. Resizing
+  a. Fix resizing in sign in
+  b. Fix resizing in sign up	
+3. CSV
+  a. Fix stock value drop problem
+4. Graph Display
+  a. Handle empty start date/ end date cases properly.	
+  b. Add acceptance tests for default login 3 months, Clear visible dates and acceptance tests for the start/end date cases listed above.	 
+5. Home Page module
+  a. Implement the toggle function for the viewed stock
+  b. Implement toggle everything off and toggle everything on
+  c. Write acceptance test for the change percent.
+  d. Write acceptance test for the portfolio value
+  e. Write acceptance test for the viewed stock toggle functionality
+6. Fix feasibility report
+7. Front-end
+  a. Change navbar font family
