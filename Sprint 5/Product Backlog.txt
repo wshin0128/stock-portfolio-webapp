@@ -1,0 +1,16 @@
+Product Backlog:
+1. Prediction of future values of the portfolio 
+  a. Complete feasibility report for this feature
+3. Track and visualize changes in value over time of user’s portfolio 
+  a. Single graph must be displayed for the entire web app 
+    i. Apart from fixed unit buttons, User can choose the start and end date. Handle empty start/end date cases as specified by stakeholder.
+    ii. All View stocks must be toggleable for display on the graph
+    iii. Add a toggle all on/off button for stocks
+4. View and compare the historical performance of a stock 
+  a. Viewed Stocks must be toggleable for display on the graph
+  b. Users can specify start & end date for viewing a stock
+5. Works on the Chrome web browser and mobile devices
+  a. Must resize responsively on mobile device view
+  b. Add acceptance tests for mobile device functionality
+8. User interfaces must look modern and be attractive. 
+  a. Change the font family of navbar
