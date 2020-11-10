@@ -19,3 +19,8 @@ Sprint backlog:
 6. Fix feasibility report
 7. Front-end
   a. Change navbar font family
+
+Paragraph Explanation:
+This is our last and final sprint, whatever is left for us to complete must be completed. We have about 51 implementation points left to gain for the project. For signup we have to add some acceptance tests and renaming of buttons. Some font fixings are also required for fixing the resized version of the pages of signup and signin. We have to add a small tweak in CSV to get full credit as well. There is also some functionality to add to the graph display, with some acceptance tests to add for some already complete plus new functionality for handling cases where the start/end date are not entered by the user. We need to add acceptance tests for some functions of the homepage module to get full credit as well as implement some subsets of toggling certain stocks. We also need to fix the feasibility report to remove the difficult to complete requirement in our project. Finally, we need to change the font of the navbar as asked by the CPs.
+
+Meeting Participants: Woody Shin, Mark Zhan, Manav Kaushik, Chunyang Mou, Nandhakumar Saravana
