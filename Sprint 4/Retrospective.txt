@@ -13,3 +13,5 @@ What process aspects will be changed?
 What tasks will be added to the product backlog as a result of review feedback?
 3. Track and visualize changes in value over time of user’s portfolio 
   a. Add button to toggle on and toggle off all stocks in portfolio for display in graph
+8. User interfaces must look modern and be attractive.
+ a. Change font family of navbar
