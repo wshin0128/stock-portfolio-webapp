@@ -1,0 +1,15 @@
+List of meeting participants 
+Mark Zhan
+Nandhakumar Saravana
+Woody Shin
+Manav Kaushik
+Chunyang Mou
+
+What process aspects will be changed? 
+ - Do a better job keeping sustainable pace, especially near the end of the sprint when we have last-minute changes/fixes
+ - Try to run Travis on builds regularly so we don’t overload it last minute
+ - Handle merge conflicts more properly
+
+What tasks will be added to the product backlog as a result of review feedback?
+3. Track and visualize changes in value over time of user’s portfolio 
+  a. Add button to toggle on and toggle off all stocks in portfolio for display in graph
