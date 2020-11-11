@@ -433,8 +433,8 @@
 	    		</table>
 	    		
 	    		<div class="toggle-buttons">
-	    			<a href="" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
-	    			<a href="" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
+	    			<a href="/api/toggleStock?type=selectAll" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
+	    			<a href="/api/toggleStock?type=deSelectAll" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
 	    		</div> <!-- .toggle-buttons -->
 	    		
 	    	</div>  <!-- .homepage-container -->
