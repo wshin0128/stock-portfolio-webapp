@@ -6,10 +6,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,6 +27,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
 
+import csci310.model.Stock;
+import csci310.service.DatabaseClient;
+import csci310.service.PasswordAuthentication;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -861,7 +867,6 @@ public class StepDefinitions {
 	@When("I click on the toggle button of a portfolio stock.")
 	public void portfolio_toggle() throws InterruptedException, IOException
 	{
-		// TODO
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"stock-list\"]/tbody/tr/td[3]/label/span"));
 	    button.click();
 	    Thread.sleep(4000);
@@ -969,7 +974,95 @@ public class StepDefinitions {
 	public void the_reg_form_should_still_be_visible_in_SU() {
 		assertTrue(driver.findElements( By.id("register") ).size() != 0);
 	}
+	
+	
+	
+	@Given("I am on the home page with a new account")
+	public void i_am_on_the_home_page_with_a_new_account() throws NoSuchAlgorithmException, SQLException, InterruptedException {
+		String newUser = RandomStringUtils.randomAlphanumeric(10);
+		System.out.println(newUser);
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		String hashedPass = passAuth.hash("12345678", null, null);
+		DatabaseClient database = new DatabaseClient();
+		database.createUser(newUser, hashedPass);
+		
+		int userID = database.getUser(passAuth, newUser, "12345678");
+		System.out.println(userID);
+		
+		
+		driver.get(ROOT_URL+"signIn.jsp");
+	    WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys(newUser);
+		WebElement password = driver.findElement(By.id("pass"));
+		password.sendKeys("12345678");
+		WebElement searchButton = driver.findElement(By.id("b"));
+	    searchButton.click();
+	    Thread.sleep(3000);
+	    WebElement portfolioValue = driver.findElement(By.id("portfolio-value"));
+	    assertTrue(portfolioValue.getText().equals("$0.0"));
+	}
+	
+	@When("I enter a future sell date in the Add Stocks popup")
+	public void i_enter_a_future_sell_date_in_the_Add_Stocks_popup() throws InterruptedException {
+		WebElement addStockSellDate = driver.findElement(By.id("date-sold-portfolio"));
+		addStockSellDate.sendKeys("03/15/2021");
+		addStockSellDate.sendKeys(Keys.ESCAPE);
+		Thread.sleep(1000);
+	}
 
+	@Then("the porfolio value should no longer be zero")
+	public void the_porfolio_value_should_no_longer_be_zero() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement portfolioValue = driver.findElement(By.id("portfolio-value"));
+		assertTrue(!portfolioValue.getText().equals("$0.0"));
+	}
+
+	@Given("I am on the home page with only one stock in the porfolio")
+	public void i_am_on_the_home_page_with_only_one_stock_in_the_porfolio() throws NoSuchAlgorithmException, SQLException, InterruptedException {
+		String newUser = RandomStringUtils.randomAlphanumeric(10);
+		System.out.println(newUser);
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		String hashedPass = passAuth.hash("12345678", null, null);
+		DatabaseClient database = new DatabaseClient();
+		database.createUser(newUser, hashedPass);
+		
+		int userID = database.getUser(passAuth, newUser, "12345678");
+		Stock s = new Stock("Amazon.com Inc", "AMZN", null, 2, 1602313200000L, 1615791600000L);
+		database.addStockToPortfolio(userID, s);
+		
+		
+		driver.get(ROOT_URL+"signIn.jsp");
+	    WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys(newUser);
+		WebElement password = driver.findElement(By.id("pass"));
+		password.sendKeys("12345678");
+		WebElement searchButton = driver.findElement(By.id("b"));
+	    searchButton.click();
+	    Thread.sleep(3000);
+	    WebElement portfolioValue = driver.findElement(By.id("portfolio-value"));
+	    assertTrue(!portfolioValue.getText().equals("$0.0"));
+	}
+
+	@Then("the porfolio value should be back to zero")
+	public void the_porfolio_value_should_be_back_to_zero() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement portfolioValue = driver.findElement(By.id("portfolio-value"));
+		assertTrue(portfolioValue.getText().equals("$0.0"));
+	}
+
+	@Then("the porfolio percentage change should no longer be zero")
+	public void the_porfolio_percentage_change_should_no_longer_be_zero() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
+		assertTrue(!portfolioPercentage.getText().contains("0.0%"));
+	}
+
+	@Then("the porfolio percentage change should be back to zero")
+	public void the_porfolio_percentage_change_should_be_back_to_zero() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
+		assertTrue(portfolioPercentage.getText().contains("0.0%"));
+	}
 
 	@After()
 	public void after() {

@@ -1,4 +1,4 @@
-Feature: Adding stocks to the portfolio and viewed stocks lists
+Feature: Adding stocks to the portfolio by importing a CSV file
     
   Scenario: Showing Upload CSV Popup
     Given I am on the home page
