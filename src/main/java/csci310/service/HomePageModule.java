@@ -65,10 +65,7 @@ public class HomePageModule {
 	 * Get portfolio value change compare to  yesterday
 	 * @return ex. 0.01 (today's stock price increased 1 percent compared with yesterday
 	 */
-    public Double getChangePercentDouble() {
-    	Portfolio portfolio = user.getPortfolio();
-    	List<Stock> stockList = portfolio.getPortfolio();
-    	
+    public Double getChangePercentDouble(ArrayList<Stock> stockList) {
 		todayTotalDouble = 0.0;
 		Double yesterdayTotalDouble = 0.0;
 		for (Stock stock : stockList) {

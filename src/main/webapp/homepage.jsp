@@ -116,17 +116,27 @@
         DatabaseClient db = new DatabaseClient();
         ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
         
+        // Get stock to graph map
+        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
         Map<Stock, Boolean> viewedMap = homePageModule.getViewedStockPortfolioMap();
         // change format to xxx.xx
-        double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         
-        System.out.println("percent is = " + percent);
+        // Get the arrayList which we will calculate the stock value
+        ArrayList<Stock> stockToCal = new ArrayList<Stock>();
+        for (Stock stock : stockToGraphMap.keySet()){
+        	if (stockToGraphMap.get(stock)){
+        		stockToCal.add(stock);
+        	}
+        }
+        double percent = ((int) (homePageModule.getChangePercentDouble(stockToCal) * 10000)) / 100.0;
+        
+        // System.out.println("percent is = " + percent);
         
         
         // chaneg format to xxx.xx
         double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
         
-        System.out.println("portfolio is = " + portfolioValue);
+        // System.out.println("portfolio is = " + portfolioValue);
         
         // Calculate graph data
         // Calculate start time and current time
@@ -206,8 +216,7 @@
         	}
         }
         GraphingModule GMM = new GraphingModule();
-        // Get stock to graph map
-        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
+        
         Portfolio portfolioToGraph = new Portfolio();
         for (Stock stock : stockToGraphMap.keySet()){
         	if (stockToGraphMap.get(stock)){

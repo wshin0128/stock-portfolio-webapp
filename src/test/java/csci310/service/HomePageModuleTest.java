@@ -120,7 +120,7 @@ public class HomePageModuleTest extends Mockito{
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
-		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble(homePageModule.getStockList()));
 		
 		// mock exception 
 		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
@@ -128,7 +128,7 @@ public class HomePageModuleTest extends Mockito{
 			.thenThrow(new Exception ());
 		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient, new DatabaseClient());
 		
-		assertNotNull(homePageModule2.getChangePercentDouble());
+		assertNotNull(homePageModule2.getChangePercentDouble(homePageModule.getStockList()));
 	}
 	
 	@Test
