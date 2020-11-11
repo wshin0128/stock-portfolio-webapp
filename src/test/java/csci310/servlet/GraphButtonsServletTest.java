@@ -225,7 +225,34 @@ public class GraphButtonsServletTest extends Mockito {
 		GraphButtonsServlet g = new GraphButtonsServlet();
 		g.doPost(request, response);
 
-		verify(session).setAttribute("start_date", null);
+		verifyZeroInteractions(session);
 	}
+	
+	@Test
+	public void testDoPost10() throws Exception {
+
+		DatabaseClient dbc = new DatabaseClient();
+		dbc.createTable();
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
+
+		when(request.getParameter("date-purchased")).thenReturn("");
+		when(request.getParameter("date-sold")).thenReturn("");
+		when(session.getAttribute("GStart")).thenReturn((long)1602140400);
+		
+		
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
+
+		GraphButtonsServlet g = new GraphButtonsServlet();
+		g.doPost(request, response);
+
+		verify(session).getAttribute("GStart");
+	}
+	
+	
 
 }
