@@ -27,10 +27,17 @@ public class HomePageModule {
 	private final FinnhubClient finnhubClient;
 	private final DatabaseClient databaseClient;
 	
-	private Portfolio viewedStockPortfolio;
-	
 	/**
-	 * stock to be counted in the graph
+	 * Viewed stock to be counted in the graph
+	 */
+	private Map<Stock, Boolean> viewedStockPortfolioMap;
+	
+	public Map<Stock, Boolean> getViewedStockPortfolioMap() {
+		return viewedStockPortfolioMap;
+	}
+
+	/**
+	 * Owned stock to be counted in the graph
 	 */
 	private Map<Stock, Boolean> stockToGraphMap;
 	
@@ -40,7 +47,11 @@ public class HomePageModule {
 		this.databaseClient = databaseClient;
 		
 		// Initialize viewed stocks when module is created
-		viewedStockPortfolio = databaseClient.getViewedStocks(user.getUserID());
+		viewedStockPortfolioMap = new HashMap<>();
+		Portfolio viewedStockPortfolio = databaseClient.getViewedStocks(user.getUserID());
+		for (Stock stock : viewedStockPortfolio.getPortfolio()) {
+			viewedStockPortfolioMap.put(stock, true);
+		}
 		
 		// Initialize graphPortfolio when module is created
 		// Deep copy each elements from user viewed stock to graphPortfolio
@@ -147,10 +158,10 @@ public class HomePageModule {
      * @param tickerString
      */
     public void removeViewedStock(String tickerString) {
-    	for (Stock stock : viewedStockPortfolio.getPortfolio()) {
+    	for (Stock stock : viewedStockPortfolioMap.keySet()) {
     		if (stock.getTicker().equalsIgnoreCase(tickerString)){
     			// remove stock portfolio in page module
-    			viewedStockPortfolio.removeStock(stock);
+    			viewedStockPortfolioMap.remove(stock);
     			// remove stock from database
     			databaseClient.removeStockFromViewed(user.getUserID(), tickerString);
     			break;
@@ -164,8 +175,9 @@ public class HomePageModule {
      * @param stock
      */
     public void addViewedStock(Stock stock) {
+    	// If the stock is already viewed, overwrite it
     	removeViewedStock(stock.getTicker());
-    	viewedStockPortfolio.addStock(stock);
+    	viewedStockPortfolioMap.put(stock, true);
     	databaseClient.addStockToViewed(user.getUserID(), stock);
     }
     
@@ -173,8 +185,14 @@ public class HomePageModule {
     	return user.getPortfolio().getPortfolio();
     }
     
-    public ArrayList<Stock> getViewedStockList(){
-    	return viewedStockPortfolio.getPortfolio();
+    public Portfolio getViewedStockList(){
+    	Portfolio portfolio = new Portfolio();
+    	for (Stock stock : viewedStockPortfolioMap.keySet()) {
+    		if (viewedStockPortfolioMap.get(stock) == true) {
+    			portfolio.addStock(stock);
+    		}
+    	}
+    	return portfolio;
     }
     
     public double getPortfolioValue() {
@@ -195,6 +213,20 @@ public class HomePageModule {
     		if (stockTickerString.equalsIgnoreCase(tickerString)) {
     			Boolean current = stockToGraphMap.get(stock);
     			stockToGraphMap.replace(stock, !current);
+    		}
+    	}
+    }
+    
+    /**
+     * Toggle the viewed stock
+     * @param tickerString
+     */
+    public void toggleViewedStock(String tickerString) {
+    	for (Stock stock : viewedStockPortfolioMap.keySet()) {
+    		String stockTickerString = stock.getTicker();
+    		if (stockTickerString.equalsIgnoreCase(tickerString)) {
+    			Boolean current = viewedStockPortfolioMap.get(stock);
+    			viewedStockPortfolioMap.replace(stock, !current);
     		}
     	}
     }

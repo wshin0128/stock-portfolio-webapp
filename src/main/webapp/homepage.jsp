@@ -115,7 +115,8 @@
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         DatabaseClient db = new DatabaseClient();
         ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
-        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
+        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList().getPortfolio();
+        Map<Stock, Boolean> viewedMap = homePageModule.getViewedStockPortfolioMap();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         
@@ -198,7 +199,7 @@
 	    System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
-        Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
+        Portfolio Current_user_view_portfolio = homePageModule.getViewedStockList();
         GraphingModule GMM = new GraphingModule();
         // Get stock to graph map
         Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
@@ -417,7 +418,7 @@
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>'">
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>&type=owned'">
 	    						<% if (stockToGraphMap.get(stock)) { %>
 	    							<input type="checkbox" checked>
 	    						<% } %>
@@ -434,8 +435,8 @@
 	    		</table>
 	    		
 	    		<div class="toggle-buttons">
-	    			<a href="" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
-	    			<a href="" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
+	    			<a href="/api/toggleStock?type=selectAll" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
+	    			<a href="/api/toggleStock?type=deSelectAll" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
 	    		</div> <!-- .toggle-buttons -->
 	    		
 	    	</div>  <!-- .homepage-container -->
@@ -487,13 +488,18 @@
 	    		
 	    		<!-- table for view stock -->
 	    		<table id="stock-list">
-	    		    <% for(Stock stock : viewedStocks) { %>
+	    		    <% for(Stock stock : viewedMap.keySet()) { %>
 				        <tr>      
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>&type=viewed'">
+	    						<% if (viewedMap.get(stock)) { %>
+	    							<input type="checkbox" checked>
+	    						<% } %>
+	    						<% if (!viewedMap.get(stock)) { %>
+	    							<input type="checkbox">
+	    						<% } %>
 							  	<span class="slider round"></span>
 							</label>
 						</td>

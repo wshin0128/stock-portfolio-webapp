@@ -1009,6 +1009,20 @@ public class StepDefinitions {
 		addStockSellDate.sendKeys(Keys.ESCAPE);
 		Thread.sleep(1000);
 	}
+	
+	@When("I click on the toggle-all button of a portfolio stock.") 
+	public void i_click_on_the_toggleall_button() throws InterruptedException{
+		WebElement deselectAll = driver.findElement(By.id("deselect-all"));
+		deselectAll.click();
+		Thread.sleep(1000);
+	}
+	
+	@When("I click on the toggle button for the viewed portfolio stock.")
+	public void i_click_on_the_view_portfolio_toggle() throws InterruptedException {
+		WebElement toggleButton = driver.findElement(By.xpath("//*[@id=\"stock-list\"]/tbody/tr/td[3]/label"));
+		toggleButton.click();
+		Thread.sleep(1000);
+	}
 
 	@Then("the porfolio value should no longer be zero")
 	public void the_porfolio_value_should_no_longer_be_zero() throws InterruptedException {
@@ -1063,6 +1077,8 @@ public class StepDefinitions {
 		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
 		assertTrue(portfolioPercentage.getText().contains("0.0%"));
 	}
+	
+	
 
 	@After()
 	public void after() {

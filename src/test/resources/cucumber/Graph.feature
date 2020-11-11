@@ -48,3 +48,11 @@ Feature: Graph
     Given I am on the home page
     When I click on the toggle button of a portfolio stock.
     Then the graph should re-adjust on the home page.
+  Scenario: Portfolio toggle all  
+    Given I am on the home page
+    When I click on the toggle-all button of a portfolio stock.
+    Then the graph should re-adjust on the home page. 
+  Scenario: Viewed Stock toggle all  
+    Given I am on the home page
+    When I click on the toggle button for the viewed portfolio stock.
+    Then the graph should re-adjust on the home page. 

@@ -167,6 +167,8 @@ public class HomePageModuleTest extends Mockito{
 	@Test
 	public void testGetViewedStockList() {
 		assertNotNull(homePageModule.getViewedStockList());
+		homePageModule.toggleStock(TEST_STOCK_1.getTicker());
+		assertNotNull(homePageModule.getViewedStockList());
 	}
 	
 	@Test
@@ -193,5 +195,15 @@ public class HomePageModuleTest extends Mockito{
 		assertEquals(true, stockToDisplayMap.get(TEST_STOCK_1));
 		assertEquals(homePageModule.getStockToGraphMap(), stockToDisplayMap);
 	}
+	
+	@Test
+	public void testToggleViewedStock() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
+		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
+		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
+		
+		assertNotNull(homePageModule.getViewedStockPortfolioMap());
+	}
+	
 
 }
