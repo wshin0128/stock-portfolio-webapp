@@ -115,7 +115,7 @@
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         DatabaseClient db = new DatabaseClient();
         ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
-        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList().getPortfolio();
+        
         Map<Stock, Boolean> viewedMap = homePageModule.getViewedStockPortfolioMap();
         // change format to xxx.xx
         double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
@@ -197,7 +197,12 @@
 	    System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
-        Portfolio Current_user_view_portfolio = homePageModule.getViewedStockList();
+        Portfolio Current_user_view_portfolio = new Portfolio();
+        for (Stock stock : viewedMap.keySet()){
+        	if (viewedMap.get(stock)){
+        		Current_user_view_portfolio.addStock(stock); // prepare for viewed stock graph
+        	}
+        }
         GraphingModule GMM = new GraphingModule();
         // Get stock to graph map
         Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();

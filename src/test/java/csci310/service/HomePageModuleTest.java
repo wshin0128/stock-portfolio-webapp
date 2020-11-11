@@ -164,12 +164,6 @@ public class HomePageModuleTest extends Mockito{
 		assertNotNull(homePageModule.getPortfolioValue());
 	}
 	
-	@Test
-	public void testGetViewedStockList() {
-		assertNotNull(homePageModule.getViewedStockList());
-		homePageModule.toggleStock(TEST_STOCK_1.getTicker());
-		assertNotNull(homePageModule.getViewedStockList());
-	}
 	
 	@Test
 	public void testAddViewedStockList() {

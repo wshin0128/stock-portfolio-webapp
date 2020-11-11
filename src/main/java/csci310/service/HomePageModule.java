@@ -185,15 +185,7 @@ public class HomePageModule {
     	return user.getPortfolio().getPortfolio();
     }
     
-    public Portfolio getViewedStockList(){
-    	Portfolio portfolio = new Portfolio();
-    	for (Stock stock : viewedStockPortfolioMap.keySet()) {
-    		if (viewedStockPortfolioMap.get(stock) == true) {
-    			portfolio.addStock(stock);
-    		}
-    	}
-    	return portfolio;
-    }
+
     
     public double getPortfolioValue() {
 		return portfolioValue;
