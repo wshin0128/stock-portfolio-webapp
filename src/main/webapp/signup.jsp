@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="styleSI.css">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@200;400;700;900&display=swap" rel="stylesheet">
 <title>Register for Portfolio Management</title>
 
 

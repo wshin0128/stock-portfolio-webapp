@@ -50,7 +50,9 @@ body {
 	align-items: center;
 }
 .navbar h1 {
-	font-size: 22px;
+	font-family: "Teko", Arial, sans-serif !important;
+	font-size: 34px;
+	font-weight: normal;
 }
 .navbar .sign-out-button {
 	margin-left: auto;
@@ -240,6 +242,6 @@ label {
 		font-size: 40px;
 	}
 	.navbar h1 {
-		font-size: 25px;
+		font-size: 28px;
 	}
 }
