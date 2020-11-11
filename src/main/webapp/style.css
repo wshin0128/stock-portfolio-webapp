@@ -17,7 +17,8 @@ body {
 	align-items: center;
 }
 .navbar h1 {
-	font-size: 22px;
+	font-family: "Teko", Arial, sans-serif !important;
+	font-size: 34px;
 	margin-bottom: 0;
 }
 .button {
