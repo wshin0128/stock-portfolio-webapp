@@ -181,7 +181,7 @@
 	    	{
 	    		r = Resolution.Daily;
 	    	}
-	    	else if(day_diff <=90)
+	    	else if(day_diff <=100)
 	    	{
 	    		r = Resolution.Weekly;
 	    	}
@@ -192,6 +192,8 @@
 	    	
 	    	
 	    }
+	    
+	    session.setAttribute("GStart", start_time);
 	    
 	    System.out.println("start time = " + start_time);
 	    
@@ -319,11 +321,11 @@
 	    							<form id="customrange-form" name="customrange-form" method="post" action="/api/GraphButtons">
 	    								<div class="form-row">
 	    									<label for="date-purchased">Start Date</label>
-	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
+	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased">
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">End Date</label>
-	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
+	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">${customrangeerrorMessage}</span>
