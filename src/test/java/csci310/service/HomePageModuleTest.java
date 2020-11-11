@@ -198,8 +198,11 @@ public class HomePageModuleTest extends Mockito{
 	
 	@Test
 	public void testToggleViewedStock() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
 		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
 		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
+		
+		assertNotNull(homePageModule.getViewedStockPortfolioMap());
 	}
 	
 

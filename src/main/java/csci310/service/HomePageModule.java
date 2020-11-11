@@ -32,6 +32,10 @@ public class HomePageModule {
 	 */
 	private Map<Stock, Boolean> viewedStockPortfolioMap;
 	
+	public Map<Stock, Boolean> getViewedStockPortfolioMap() {
+		return viewedStockPortfolioMap;
+	}
+
 	/**
 	 * Owned stock to be counted in the graph
 	 */
@@ -213,8 +217,18 @@ public class HomePageModule {
     	}
     }
     
+    /**
+     * Toggle the viewed stock
+     * @param tickerString
+     */
     public void toggleViewedStock(String tickerString) {
-    	
+    	for (Stock stock : viewedStockPortfolioMap.keySet()) {
+    		String stockTickerString = stock.getTicker();
+    		if (stockTickerString.equalsIgnoreCase(tickerString)) {
+    			Boolean current = viewedStockPortfolioMap.get(stock);
+    			viewedStockPortfolioMap.replace(stock, !current);
+    		}
+    	}
     }
 
     

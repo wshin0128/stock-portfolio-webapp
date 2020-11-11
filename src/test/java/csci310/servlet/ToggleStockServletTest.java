@@ -37,6 +37,7 @@ public class ToggleStockServletTest extends Mockito{
 		RequestDispatcher rd = mock(RequestDispatcher.class);
 		
 		when(request.getParameter("ticker")).thenReturn("AAPL");
+		when(request.getParameter("type")).thenReturn("owned");
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("module")).thenReturn(homePageModule);
 		
@@ -47,6 +48,8 @@ public class ToggleStockServletTest extends Mockito{
 		when(request.getRequestDispatcher("/homepage.jsp")).thenReturn(rd);
 		toggleStockServlet.doGet(request, response);
 		
+		when(request.getParameter("type")).thenReturn("viewedStock");
+		toggleStockServlet.doGet(request, response);
 	}
 
 }
