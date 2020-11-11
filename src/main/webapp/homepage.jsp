@@ -27,6 +27,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/style.css">
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Teko:wght@200;400;700;900&display=swap" rel="stylesheet">
 	<title>Home</title>
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" crossorigin="anonymous"></script>
@@ -429,6 +430,11 @@
 				        
 				    <% } %>
 	    		</table>
+	    		
+	    		<div class="toggle-buttons">
+	    			<a href="" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
+	    			<a href="" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
+	    		</div> <!-- .toggle-buttons -->
 	    		
 	    	</div>  <!-- .homepage-container -->
 	    	</div> <!-- .grid-helper -->
