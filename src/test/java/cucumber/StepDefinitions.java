@@ -315,7 +315,17 @@ public class StepDefinitions {
 	}
 
 
+	@Then("I should see the text on the cancel button say cancel")
+	public void i_should_see_the_text_on_the_cancel_button_say_cancel() {
+		WebElement searchButton = driver.findElement(By.id("c"));
+		assertTrue(searchButton.getText().equals("  CANCEL"));
+	}
 
+	@Then("I should see the text on the create user button say create user")
+	public void i_should_see_the_text_on_the_create_user_button_say_create_user() {
+		WebElement searchButton = driver.findElement(By.id("b"));
+		assertTrue(searchButton.getText().equals("  CREATE USER"));
+	}
   
 	/**
 	 * @throws InterruptedException ***********************************************************************/

@@ -54,8 +54,10 @@
 					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspCancel
 				</a>
 				
+	
+				
 				<button type="submit" id = "b" class="sign-in-button">
-					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspSubmit
+					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspCreate User
 				</button>
 			</div>
 			 </br>
