@@ -248,6 +248,33 @@ table#stock-list td a{
 table#stock-list td a:hover {
 	opacity:0.6;
 }
+
+.toggle-buttons {
+	background: #51C58E;
+	height: 68px;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 0 26px;
+}
+.toggle-button {
+	background: #DCF8EB;
+	text-align: center;
+	width: 50%;
+}
+.toggle-button:hover {
+	background: white;
+	color: #51C58E;
+	text-decoration: none;
+}
+#select-all {
+	margin-right: 13px;
+}
+#deselect-all {
+	margin-left: 13px;
+}
+
 /* The switch - the box around the slider */
 .switch {
   	position: relative;
