@@ -1125,6 +1125,7 @@ public class StepDefinitions {
 	public void the_porfolio_percentage_change_should_no_longer_be_zero() throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
+		//System.out.println(portfolioPercentage.getText());
 		assertTrue(!portfolioPercentage.getText().contains("0.0%"));
 	}
 
@@ -1132,11 +1133,78 @@ public class StepDefinitions {
 	public void the_porfolio_percentage_change_should_be_back_to_zero() throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
+		//System.out.println(portfolioPercentage.getText());
 		assertTrue(portfolioPercentage.getText().contains("0.0%"));
 	}
 	
-	
+	@Given("I am on the home page with deselect all pressed")
+	public void i_am_on_the_home_page_with_deselect_all_pressed() throws NoSuchAlgorithmException, SQLException, InterruptedException {
+		String newUser = RandomStringUtils.randomAlphanumeric(10);
+		System.out.println(newUser);
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		String hashedPass = passAuth.hash("12345678", null, null);
+		DatabaseClient database = new DatabaseClient();
+		database.createUser(newUser, hashedPass);
+		
+		int userID = database.getUser(passAuth, newUser, "12345678");
+		Stock s1 = new Stock("Amazon.com Inc", "AMZN", null, 2, 1602313200000L, 1615791600000L);
+		database.addStockToPortfolio(userID, s1);
+		
+		Stock s2 = new Stock("Apple Inc", "AAPL", null, 3, 1602313200000L, 1615791600000L);
+		database.addStockToPortfolio(userID, s2);
+		
+		
+		driver.get(ROOT_URL+"signIn.jsp");
+	    WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys(newUser);
+		WebElement password = driver.findElement(By.id("pass"));
+		password.sendKeys("12345678");
+		WebElement searchButton = driver.findElement(By.id("b"));
+	    searchButton.click();
+	    Thread.sleep(3000);
+	    driver.get(ROOT_URL+"api/toggleStock?type=deSelectAll");
+	    Thread.sleep(1000);
+	}
 
+	@When("I click the select all button")
+	public void i_click_the_select_all_button() {
+		WebElement selectAll = driver.findElement(By.id("select-all"));
+		selectAll.click();
+	}
+
+	@Given("I am on the home page with select all pressed")
+	public void i_am_on_the_home_page_with_select_all_pressed() throws NoSuchAlgorithmException, SQLException, InterruptedException {
+		String newUser = RandomStringUtils.randomAlphanumeric(10);
+		System.out.println(newUser);
+		PasswordAuthentication passAuth = new PasswordAuthentication();
+		String hashedPass = passAuth.hash("12345678", null, null);
+		DatabaseClient database = new DatabaseClient();
+		database.createUser(newUser, hashedPass);
+		
+		int userID = database.getUser(passAuth, newUser, "12345678");
+		Stock s1 = new Stock("Amazon.com Inc", "AMZN", null, 2, 1602313200000L, 1615791600000L);
+		database.addStockToPortfolio(userID, s1);
+		
+		Stock s2 = new Stock("Apple Inc", "AAPL", null, 3, 1602313200000L, 1615791600000L);
+		database.addStockToPortfolio(userID, s2);
+		
+		
+		driver.get(ROOT_URL+"signIn.jsp");
+	    WebElement username = driver.findElement(By.id("username"));
+		username.sendKeys(newUser);
+		WebElement password = driver.findElement(By.id("pass"));
+		password.sendKeys("12345678");
+		WebElement searchButton = driver.findElement(By.id("b"));
+	    searchButton.click();
+	    Thread.sleep(3000);
+	}
+
+	@When("I click the deselect all button")
+	public void i_click_the_deselect_all_button() {
+		WebElement deSelectAll = driver.findElement(By.id("deselect-all"));
+		deSelectAll.click();
+	}
+	
 	@After()
 	public void after() {
 		driver.quit();
