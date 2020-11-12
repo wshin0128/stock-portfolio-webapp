@@ -12,21 +12,25 @@ import csci310.model.Stock;
 import csci310.service.HomePageModule;
 
 
-
+//Servlet is for when a stock is toggled on the homepage from a single stock to all stocks
 public class ToggleStockServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-		try {		
+		try {	
+			//Get the ticker and type of toggle and get the home module
+			//Module is what will actually toggle the stocks
 			String tickerString = request.getParameter("ticker");
 			String typeString = request.getParameter("type");
 			HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module");
+			
+			//4 cases, one for selecting all, one for deselcting all, one for portfolio one for viewed stocks (in that order)
 			if (typeString.equals("selectAll")) {
 				Map<Stock, Boolean> ownedMap = homePageModule.getStockToGraphMap();
 				for (Stock stock : ownedMap.keySet()) {
-					if (ownedMap.get(stock) == false) { // not selected
+					if (ownedMap.get(stock) == false) { // if not selected select stock
 						homePageModule.toggleStock(stock.getTicker());
 					}
 				}
@@ -34,7 +38,7 @@ public class ToggleStockServlet extends HttpServlet{
 			else if (typeString.equals("deSelectAll")) {
 				Map<Stock, Boolean> ownedMap = homePageModule.getStockToGraphMap();
 				for (Stock stock : ownedMap.keySet()) {
-					if (ownedMap.get(stock) == true) { // selected
+					if (ownedMap.get(stock) == true) { // if selected unselect stock
 						homePageModule.toggleStock(stock.getTicker());
 					}
 				}
@@ -44,6 +48,7 @@ public class ToggleStockServlet extends HttpServlet{
 			} else {
 				homePageModule.toggleViewedStock(tickerString);
 			}
+			//Direct back to homepage
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			return;
 		} catch (Exception e) {
