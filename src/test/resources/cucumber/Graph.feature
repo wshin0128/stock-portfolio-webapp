@@ -40,6 +40,33 @@ Feature: Graph
     When I click the custom range button.
     And I enter incorrect start,end dates n submit
     Then I should see an error message.
+    
+   Scenario: Custom range empty start  
+    Given I am on the home page
+    When I click the custom range button.
+    And I enter a start date,leave end empty n submit
+    Then the graph should re-adjust on the home page.
+    
+   Scenario: Custom range empty end  
+    Given I am on the home page
+    When I click the custom range button.
+    And I enter a end date,leave start empty n submit
+    Then the graph should re-adjust on the home page.
+    
+   Scenario: Custom range calendar popup 
+    Given I am on the home page
+    When I click the custom range button.
+    And I enter proper start date, end date using the popup n submit
+    Then the graph should re-adjust on the home page.
+    
+   Scenario: Default 3 months  
+    Given I am on the home page
+    Then the graph should have a default range of 3 months.
+    
+   Scenario: clearly visible dates  
+    Given I am on the home page
+    Then the graph should have distinct, clearly visible dates.    
+ 
   Scenario: SNP checkbox  
     Given I am on the home page
     When I click the snp checkbox of the home page.
