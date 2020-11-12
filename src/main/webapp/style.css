@@ -176,7 +176,7 @@ button {
 .modal-box form input:focus {
 	border-color: #51C58E;
 }
-.modal-box form input#ticker {
+.modal-box form input.ticker {
 	text-transform: uppercase;
 }
 .modal-box form input[type="file"] {
