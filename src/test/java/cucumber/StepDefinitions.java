@@ -157,6 +157,7 @@ public class StepDefinitions {
 		WebElement queryBox = driver.findElement(By.id("pass"));
 		queryBox.sendKeys(string);
 	}
+	
 	@Then("I should see the error {string}")
 	public void i_should_see_the_error(String string) throws InterruptedException {
 		Thread.sleep(1000);
@@ -169,6 +170,7 @@ public class StepDefinitions {
 		WebElement queryBox = driver.findElement(By.id("username"));
 		queryBox.sendKeys(string);
 	}
+	
 	@When("I enter any password")
 	public void i_enter_any_password() {
 		WebElement queryBox = driver.findElement(By.id("pass"));
@@ -185,9 +187,6 @@ public class StepDefinitions {
 	@Given("I am on the home page")
 	public void i_am_on_the_home_page() throws InterruptedException {
 	    driver.get(ROOT_URL+"signIn.jsp");
-//	    WebElement currentElement = driver.switchTo().activeElement();
-//	    currentElement.sendKeys("thisisunsafe");
-//	    Thread.sleep(1000);
 	    WebElement username = driver.findElement(By.id("username"));
 		username.sendKeys("ttrojan");
 		WebElement password = driver.findElement(By.id("pass"));
@@ -203,6 +202,7 @@ public class StepDefinitions {
 	    driver.findElement(By.id("signOutB")).click();
 	    Thread.sleep(1000);
 	}
+	
 	@Then("I should be signed out and taken back to the sign in page")
 	public void i_should_be_signed_out_and_taken_back_to_the_sign_in_page() {
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(ROOT_URL+"signIn.jsp"));
@@ -243,9 +243,6 @@ public class StepDefinitions {
 		WebElement errorBox = driver.findElement(By.id("Munlock"));
 		assertTrue(string.equalsIgnoreCase(errorBox.getText()));
 	}
-	
-/**
- * @throws InterruptedException ***********************************************************************/
 	
 	@Given("I am on the sign up page")
 	public void i_am_on_the_sign_up_page() throws InterruptedException {
@@ -332,10 +329,6 @@ public class StepDefinitions {
 		WebElement searchButton = driver.findElement(By.id("b"));
 		assertTrue(searchButton.getText().equals("  CREATE USER"));
 	}
-  
-	/**
-	 * @throws InterruptedException ***********************************************************************/
-
 
 	@When("I click Add Stock in the Portfolio box")
 	public void i_click_Add_Stock_in_the_Portfolio_box() throws InterruptedException {
@@ -767,9 +760,9 @@ public class StepDefinitions {
 	    button.click();
 	    Thread.sleep(4000);
 	}
+	
 	@Then("the graph should re-adjust on the home page.")
 	public void the_graph_should_re_adjust_on_the_home_page() {
-	    // TODO
 		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
 				+ "";
 		String script = "return document.getElementById('hiddendiv').innerHTML";
@@ -777,49 +770,54 @@ public class StepDefinitions {
 		System.out.println(val);
 		assertTrue(!default_val.equals(val));
 	}
+	
 	@When("I click the {int} month button of the home page.")
 	public void i_click_the_month_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[3]"));
 	    button.click();
 	    Thread.sleep(4000);
 	}
+	
 	@When("I click the {int} year button of the home page.")
 	public void i_click_the_year_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[4]"));
 	    button.click();
 	    Thread.sleep(4000);
 	}
+	
 	@When("I click the {int} day button of the home page.")
 	public void i_click_the_day_button_of_the_home_page(Integer int1) throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/form/div/input[1]"));
 	    button.click();
 	    Thread.sleep(4000);
 	}
+	
 	@When("I click the zoom in button of the home page.")
-	public void click_zoom_in() throws InterruptedException, IOException{
+	public void click_zoom_in() throws InterruptedException, IOException {
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomin\"]"));
 	    button.click();
 	    Thread.sleep(400);
 	    WebElement graph = driver.findElement(By.xpath("//*[@id=\"myChart\"]"));
 	    captureElementScreenshot(graph);
 	}
+	
 	@When("I click the zoom out button of the home page.")
-	public void click_zoom_out() throws InterruptedException, IOException{
+	public void click_zoom_out() throws InterruptedException, IOException {
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomout\"]"));
 	    button.click();
 	    Thread.sleep(400);
 	    WebElement graph = driver.findElement(By.xpath("//*[@id=\"myChart\"]"));
 	    captureElementScreenshot(graph);
 	}
+	
 	@When("I click the custom range button.")
-	public void click_cust_range() throws InterruptedException, IOException
-	{
+	public void click_cust_range() throws InterruptedException, IOException {
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"customrange-button\"]"));
 	    button.click();
 	}
+	
 	@When("I enter proper start,end dates n submit")
-	public void proper_info() throws InterruptedException
-	{
+	public void proper_info() throws InterruptedException {
 		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
 		start.sendKeys("10/10/2020");
 		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
@@ -829,8 +827,7 @@ public class StepDefinitions {
 	}
 	
 	@When("I enter a start date,leave end empty n submit")
-	public void empty_end() throws InterruptedException
-	{
+	public void empty_end() throws InterruptedException {
 		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
 		start.sendKeys("10/10/2020");
 		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
@@ -840,8 +837,7 @@ public class StepDefinitions {
 	}
 	
 	@When("I enter a end date,leave start empty n submit")
-	public void empty_start() throws InterruptedException
-	{
+	public void empty_start() throws InterruptedException {
 		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
 		start.sendKeys("");
 		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
@@ -852,8 +848,7 @@ public class StepDefinitions {
 	}
 	
 	@When("I enter proper start date, end date using the popup n submit")
-	public void proper_info_popup() throws InterruptedException
-	{
+	public void proper_info_popup() throws InterruptedException {
 		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
 		start.click();
 		driver.findElement(By.xpath("//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[1]/td[1]")).click();
@@ -1125,7 +1120,6 @@ public class StepDefinitions {
 	public void the_porfolio_percentage_change_should_no_longer_be_zero() throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
-		//System.out.println(portfolioPercentage.getText());
 		assertTrue(!portfolioPercentage.getText().contains("0.0%"));
 	}
 
@@ -1133,7 +1127,6 @@ public class StepDefinitions {
 	public void the_porfolio_percentage_change_should_be_back_to_zero() throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement portfolioPercentage = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div[1]/div[1]/span"));
-		//System.out.println(portfolioPercentage.getText());
 		assertTrue(portfolioPercentage.getText().contains("0.0%"));
 	}
 	

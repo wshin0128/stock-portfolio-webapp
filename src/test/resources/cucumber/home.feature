@@ -1,4 +1,5 @@
 Feature: Mobile resize
+
   Scenario: Making sure navbar is still visible on homepage
     Given I am on the home page
     When I resize to mobile dimensions
