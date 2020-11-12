@@ -98,6 +98,7 @@ public class LoginServletTest extends Mockito {
 			ls.doPost(request, response);
 			
 		}catch(IOException e){
+			System.out.println("this is intended for TestDoPost3");
 			assertNotNull(e);
 		}
 
@@ -117,6 +118,7 @@ public class LoginServletTest extends Mockito {
 			ls.doPost(request, response);
 			
 		}catch(Exception e){
+			System.out.println("this is intended for TestDoPost4");
 			assertNotNull(e);
 		}
 
