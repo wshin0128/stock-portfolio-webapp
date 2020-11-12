@@ -827,6 +827,45 @@ public class StepDefinitions {
 		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
 		Thread.sleep(4000);
 	}
+	
+	@When("I enter a start date,leave end empty n submit")
+	public void empty_end() throws InterruptedException
+	{
+		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
+		start.sendKeys("10/10/2020");
+		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
+		end.sendKeys("");
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+	}
+	
+	@When("I enter a end date,leave start empty n submit")
+	public void empty_start() throws InterruptedException
+	{
+		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
+		start.sendKeys("");
+		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
+		end.sendKeys("10/15/2020");
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+		
+	}
+	
+	@When("I enter proper start date, end date using the popup n submit")
+	public void proper_info_popup() throws InterruptedException
+	{
+		WebElement start = driver.findElement(By.xpath("//*[@id=\"date-purchased\"]")); 
+		start.click();
+		driver.findElement(By.xpath("//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[1]/td[1]")).click();
+		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
+		end.click();
+		driver.findElement(By.xpath("//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[2]/td[4]")).click();
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+	}
+	
+	
+	
 	@When("I enter incorrect start,end dates n submit")
 	public void inproper_info() throws InterruptedException
 	{
@@ -872,9 +911,27 @@ public class StepDefinitions {
 	    Thread.sleep(4000);
 	}
 	
+	@Then("the graph should have a default range of 3 months.")
+	public void graph_def()
+	{
+		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
+				+ "";
+		String script = "return document.getElementById('hiddendiv').innerHTML";
+		String val = (String) ((JavascriptExecutor) driver).executeScript(script);
+		System.out.println(val);
+		assertTrue(!default_val.equals(val));
+	}
 	
-	
-	
+	@Then("the graph should have distinct, clearly visible dates.")
+	public void clear_dates()
+	{
+		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
+				+ "";
+		String script = "return document.getElementById('hiddendiv').innerHTML";
+		String val = (String) ((JavascriptExecutor) driver).executeScript(script);
+		System.out.println(val);
+		assertTrue(!default_val.equals(val));
+	}
 
 	@When("{int} seconds of inactivity occurs")
 	public void seconds_of_inactivity_occurs(Integer int1) throws InterruptedException {
