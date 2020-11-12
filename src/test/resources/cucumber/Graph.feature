@@ -67,19 +67,22 @@ Feature: Graph
     Given I am on the home page
     Then the graph should have distinct, clearly visible dates.    
  
-  Scenario: SNP checkbox  
+   Scenario: SNP checkbox  
     Given I am on the home page
     When I click the snp checkbox of the home page.
     Then the graph should re-adjust on the home page.
+    
    Scenario: Portfolio toggle  
     Given I am on the home page
     When I click on the toggle button of a portfolio stock.
     Then the graph should re-adjust on the home page.
-  Scenario: Portfolio toggle all  
+    
+   Scenario: Portfolio toggle all  
     Given I am on the home page
     When I click on the toggle-all button of a portfolio stock.
     Then the graph should re-adjust on the home page. 
-  Scenario: Viewed Stock toggle all  
+    
+   Scenario: Viewed Stock toggle all  
     Given I am on the home page
     When I click on the toggle button for the viewed portfolio stock.
     Then the graph should re-adjust on the home page. 

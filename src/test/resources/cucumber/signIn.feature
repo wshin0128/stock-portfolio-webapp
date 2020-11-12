@@ -1,4 +1,5 @@
 Feature: Sign in Page
+
   Scenario: Sign in with username that does not exist
     Given I am on the sign in page
     When I enter an invalid username "test3"

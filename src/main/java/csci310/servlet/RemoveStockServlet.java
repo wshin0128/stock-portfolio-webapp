@@ -1,5 +1,7 @@
 package csci310.servlet;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +34,8 @@ public class RemoveStockServlet extends HttpServlet {
 			// Go back to homepage page
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOException from RemoveStockServlet.doGet()");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
