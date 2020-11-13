@@ -762,7 +762,8 @@ public class StepDefinitions {
 	}
 	
 	@Then("the graph should re-adjust on the home page.")
-	public void the_graph_should_re_adjust_on_the_home_page() {
+	public void the_graph_should_re_adjust_on_the_home_page() throws InterruptedException {
+		Thread.sleep(4000);
 		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
 				+ "";
 		String script = "return document.getElementById('hiddendiv').innerHTML";
@@ -801,8 +802,15 @@ public class StepDefinitions {
 	    captureElementScreenshot(graph);
 	}
 	
+	@Then("the zoom in button should have a plus symbol.")
+	public void the_zoom_in_button_should_have_a_plus_symbol() {
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomin\"]"));
+		assertTrue(button.getText().equalsIgnoreCase("+"));
+	}
+	
 	@When("I click the zoom out button of the home page.")
 	public void click_zoom_out() throws InterruptedException, IOException {
+		Thread.sleep(4000);
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomout\"]"));
 	    button.click();
 	    Thread.sleep(400);
@@ -810,8 +818,16 @@ public class StepDefinitions {
 	    captureElementScreenshot(graph);
 	}
 	
+	@Then("the zoom out button should have a minus symbol.")
+	public void the_zoom_out_button_should_have_a_minus_symbol() throws InterruptedException {
+		Thread.sleep(4000);
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"zoomout\"]"));
+		assertTrue(button.getText().equalsIgnoreCase("-"));
+	}
+	
 	@When("I click the custom range button.")
 	public void click_cust_range() throws InterruptedException, IOException {
+		Thread.sleep(4000);
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"customrange-button\"]"));
 	    button.click();
 	}
@@ -855,6 +871,7 @@ public class StepDefinitions {
 		WebElement end = driver.findElement(By.xpath("//*[@id=\"date-sold\"]")); 
 		end.click();
 		driver.findElement(By.xpath("//*[@id=\"ui-datepicker-div\"]/table/tbody/tr[2]/td[4]")).click();
+		end.sendKeys(Keys.ESCAPE);
 		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
 		Thread.sleep(4000);
 	}
@@ -901,7 +918,8 @@ public class StepDefinitions {
 	@When("I click on the toggle button of a portfolio stock.")
 	public void portfolio_toggle() throws InterruptedException, IOException
 	{
-		WebElement button = driver.findElement(By.xpath("//*[@id=\"stock-list\"]/tbody/tr/td[3]/label/span"));
+		Thread.sleep(4000);
+		WebElement button = driver.findElement(By.id("snpcheck"));
 	    button.click();
 	    Thread.sleep(4000);
 	}
@@ -1071,7 +1089,7 @@ public class StepDefinitions {
 	
 	@When("I click on the toggle button for the viewed portfolio stock.")
 	public void i_click_on_the_view_portfolio_toggle() throws InterruptedException {
-		WebElement toggleButton = driver.findElement(By.xpath("//*[@id=\"stock-list\"]/tbody/tr/td[3]/label"));
+		WebElement toggleButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/table/tbody/tr[1]/td[3]/label"));
 		toggleButton.click();
 		Thread.sleep(1000);
 	}
@@ -1196,6 +1214,41 @@ public class StepDefinitions {
 	public void i_click_the_deselect_all_button() {
 		WebElement deSelectAll = driver.findElement(By.id("deselect-all"));
 		deSelectAll.click();
+	}
+	
+	@When("I leave the end date,start empty empty n submit.")
+	public void proper_info_fllwed_empty() throws InterruptedException {
+		driver.findElement(By.xpath("//*[@id=\"customrange-submit\"]")).click();
+		Thread.sleep(4000);
+	}
+	
+	@Then("the graph should have start as earliest start and end as curr day.")
+	public void graph_erly_start_n_end() throws InterruptedException
+	{
+		Thread.sleep(4000);
+		String default_val = "[\"{\\\"borderColor\\\":[\\\"rgba(104,152,204, 1)\\\"],\\\"data\\\":[626.6999816894399,639.06001281738,686.73001098633,642.75,612.0899963379,601.16999816895,623.46002197266,618.57000732423,647.42999267577,658.98001098633,648.68998718262,607.4100036621,669.86997985839],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Portfolio value in $\\\",\\\"fill\\\":\\\"false\\\"}\",\"{\\\"borderColor\\\":[\\\"rgba(238,96,6, 1)\\\"],\\\"data\\\":[1608.74005126954,1741.18003845212,1747.33996582026,1693.43998718258,1568,1495.75994873046,1571.9199829102,1582.27995300298,1637.5800170898,1666.27995300298,1610.56001281742,1524.0400085449,1666.4199829102],\\\"borderWidth\\\":1,\\\"label\\\":\\\"Apple Inc value in $\\\",\\\"fill\\\":\\\"false\\\"}\"]\r\n"
+				+ "";
+		String script = "return document.getElementById('hiddendiv').innerHTML";
+		String val = (String) ((JavascriptExecutor) driver).executeScript(script);
+		System.out.println(val);
+		assertTrue(!default_val.equals(val));
+	}
+	
+	@Then("the color of text should be green n up if positive or red n down if negative.")
+	public void color_n_triangle() throws InterruptedException
+	{
+		Thread.sleep(2000);
+		WebElement info = driver.findElement(By.xpath("//*[@id=\"arrow2\"]"));  
+		String text = info.getText();
+		String color =  info.getCssValue("color");
+		if(text.contains("+"))
+		{
+			assertTrue(!color.equals("red"));
+		}
+		else
+		{
+			assertTrue(!color.equals("green"));
+		}
 	}
 	
 	@After()

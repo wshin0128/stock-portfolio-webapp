@@ -286,8 +286,8 @@
 				    	<% } %>
 	    			</div>
 	    			<div>
-	    			<button class="btn" id="zoomin"><i class="fas fa-search-plus"></i></button>
-	    			<button class="btn" id = "zoomout"><i class="fas fa-search-minus"></i></button>
+	    			<button class="btn" id="zoomin">+</i></button>
+	    			<button class="btn" id = "zoomout">-</button>
 	    			</div>
 	    		</div>
 
@@ -300,7 +300,7 @@
 				</div>
 				<div>
 				SNP500 
-				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
+				<input id="snpcheck" onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
 				<input  type="hidden" name="SNP500" value="0"/>
 				</div>
 				</form>
