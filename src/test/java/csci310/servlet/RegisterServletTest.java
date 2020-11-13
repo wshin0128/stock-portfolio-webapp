@@ -58,8 +58,10 @@ public class RegisterServletTest extends Mockito {
 			String hashedPass = passAuth.hash("test2test", null, null);
 			db.createUser("test2", hashedPass);
 		} catch (SQLException e) {
+			System.out.println("Something went wrong in TestDoPost1");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Something went wrong in TestDoPost1");
 			e.printStackTrace();
 		}
 		
@@ -98,6 +100,7 @@ public class RegisterServletTest extends Mockito {
 			rs.doPost(request, response);
 			
 		}catch(IOException e){
+			System.out.println("this is intended for TestDoPost2");
 			assertNotNull(e);
 		}
 	}
@@ -116,6 +119,7 @@ public class RegisterServletTest extends Mockito {
 			rs.doPost(request, response);
 			
 		}catch(Exception e){
+			System.out.println("this is intended for TestDoPost3");
 			assertNotNull(e);
 		}
 	}

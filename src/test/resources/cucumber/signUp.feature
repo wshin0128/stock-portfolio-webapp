@@ -1,4 +1,5 @@
 Feature: Sign Up Page
+
 	Scenario: Sign in with username already taken
 		Given I am on the sign up page
 		When I enter an already used username in SU
@@ -53,4 +54,12 @@ Feature: Sign Up Page
 		And I enter a confirm password in SU
 		And I click submit in SU
 		And I click submit on login
-    	Then I should be taken to the home page
+    Then I should be taken to the home page
+    	
+  Scenario: Cancel button text check
+		Given I am on the sign up page
+		Then I should see the text on the cancel button say cancel
+		
+	Scenario: Create user button text check
+		Given I am on the sign up page
+		Then I should see the text on the create user button say create user

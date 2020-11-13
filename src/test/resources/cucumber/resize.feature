@@ -1,4 +1,5 @@
 Feature: The webapp resizes responsively
+
   Scenario: Navbar visible on SI
   	Given I am on the sign in page
   	When I resize to mobile dimensions

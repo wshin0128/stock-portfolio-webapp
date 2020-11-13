@@ -15,12 +15,19 @@ import org.json.JSONObject;
 import csci310.service.DatabaseClient;
 import csci310.service.PasswordAuthentication;
 
+/**
+ * Servlet to sign out the account 
+ *
+ */
 public class SignOutServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		// clear login attributes
 		session.setAttribute("login", "false");
+		// clear homePage module
+		session.removeAttribute("module");
 		PrintWriter pw = response.getWriter();
 		pw.write("complete");
 		pw.flush();

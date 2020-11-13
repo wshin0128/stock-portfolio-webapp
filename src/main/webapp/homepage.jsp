@@ -24,23 +24,23 @@
 
 <html>
 <head>
+	<title>Home</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/style.css">
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
-	<title>Home</title>
+	<link href="https://fonts.googleapis.com/css2?family=Teko:wght@200;400;700;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://bootstrap-confirmation.js.org/assets/css/docs.min.css" rel="stylesheet">
+  	<link href="https://bootstrap-confirmation.js.org/assets/css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
 	<script src="https://kit.fontawesome.com/dbcc9507e2.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.5/dist/chartjs-plugin-zoom.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href="https://bootstrap-confirmation.js.org/assets/css/docs.min.css" rel="stylesheet">
-  	<link href="https://bootstrap-confirmation.js.org/assets/css/style.css" rel="stylesheet">
-	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -49,6 +49,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js"></script>
 	
 	<script>
+	// Function to enable datepicker plugin
 	$( function() {
 	  $( ".datepicker" ).datepicker();
 	} );
@@ -70,7 +71,6 @@
 		        let httpRequest = new XMLHttpRequest();
 		        httpRequest.open("POST", "api/sio" , true);
 
-
 		        // We will get alerted when backend gives back some kind of response
 		        httpRequest.onreadystatechange = function(){
 		          // This function runs when we get some kind of response back from iTunes
@@ -90,7 +90,6 @@
 		              console.log(httpRequest.status);
 		              console.log(httpRequest.statusText);
 		            }
-
 		          }
 		        }
 		        httpRequest.send(); 
@@ -114,17 +113,23 @@
     	HomePageModule homePageModule = (HomePageModule) request.getSession().getAttribute("module"); 
         DatabaseClient db = new DatabaseClient();
         ArrayList<Stock> stockList = homePageModule.getStockList(); // owned stock
-        ArrayList<Stock> viewedStocks = homePageModule.getViewedStockList();
+        
+        // Get stock to graph map
+        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
+        Map<Stock, Boolean> viewedMap = homePageModule.getViewedStockPortfolioMap();
         // change format to xxx.xx
-        double percent = ((int) (homePageModule.getChangePercentDouble() * 10000)) / 100.0;
         
-        System.out.println("percent is = " + percent);
+        // Get the arrayList which we will calculate the stock value
+        ArrayList<Stock> stockToCal = new ArrayList<Stock>();
+        for (Stock stock : stockToGraphMap.keySet()){
+        	if (stockToGraphMap.get(stock)){
+        		stockToCal.add(stock);
+        	}
+        }
+        double percent = ((int) (homePageModule.getChangePercentDouble(stockToCal) * 10000)) / 100.0;        
         
-        
-        // chaneg format to xxx.xx
+        // Change format to xxx.xx
         double portfolioValue = (int) (homePageModule.getPortfolioValue() * 100) / 100.0;
-        
-        System.out.println("portfolio is = " + portfolioValue);
         
         // Calculate graph data
         // Calculate start time and current time
@@ -173,14 +178,13 @@
 	    	
 	    	long day_diff = (end - start)/(60*60*24*1000);
 	    	
-	    	System.out.println("Day diff is = " + day_diff);
-	    	
+	    	// System.out.println("Day diff is = " + day_diff);
 	    	
 	    	if(day_diff <=14)
 	    	{
 	    		r = Resolution.Daily;
 	    	}
-	    	else if(day_diff <=90)
+	    	else if(day_diff <=100)
 	    	{
 	    		r = Resolution.Weekly;
 	    	}
@@ -188,17 +192,21 @@
 	    	{
 	    		r = Resolution.Monthly;
 	    	}
-	    	
-	    	
 	    }
 	    
-	    System.out.println("start time = " + start_time);
+	    session.setAttribute("GStart", start_time);
+	    
+	    // System.out.println("start time = " + start_time);
 	    
         int userID = (int) session.getAttribute("userID");
-        Portfolio Current_user_view_portfolio = db.getViewedStocks(userID);
+        Portfolio Current_user_view_portfolio = new Portfolio();
+        for (Stock stock : viewedMap.keySet()){
+        	if (viewedMap.get(stock)){
+        		Current_user_view_portfolio.addStock(stock); // prepare for viewed stock graph
+        	}
+        }
         GraphingModule GMM = new GraphingModule();
-        // Get stock to graph map
-        Map<Stock, Boolean> stockToGraphMap = homePageModule.getStockToGraphMap();
+        
         Portfolio portfolioToGraph = new Portfolio();
         for (Stock stock : stockToGraphMap.keySet()){
         	if (stockToGraphMap.get(stock)){
@@ -211,16 +219,13 @@
 		GraphJSONhelper GJH = new GraphJSONhelper();
 		Data_and_Labels Dn_L = GJH.Total_portfolio_Info(portfolio_info);
 		String main_portfolio_json = Dn_L.Data_Json;
-		
-		
-		
+				
 		ArrayList<String> userGraphInfo = new ArrayList<String>();	
 		String Labels = "";
 		Labels = Dn_L.Labels;
 		if(db.getPortfolio(userID).getSize() <=0) //if the user has no portfolio, then dont append portfolio info into graph
 		{
-			System.out.println("empty portfolio");
-			
+			//System.out.println("empty portfolio");
 		}
 		else
 		{
@@ -233,7 +238,6 @@
 		//Fills the formatted JSON of Graphing point array list with all Data points of all viewed stocks
 		for(Stock stock: Current_user_view_portfolio.getPortfolio())
 		{
-			
 			GraphJSONhelper G = new GraphJSONhelper();
 			Data_and_Labels DnL = G.StockGraphInfo(stock.getTicker(), stock.getQuantity(), r, start_time, curr_time); 
 			userGraphInfo.add(DnL.Data_Json);
@@ -242,10 +246,7 @@
 			{
 				Labels = DnL.Labels;
 				first_time = false;
-				
-				
 			}
-			
 		}
         
 		String snp = (String)session.getAttribute("snp");
@@ -285,8 +286,8 @@
 				    	<% } %>
 	    			</div>
 	    			<div>
-	    			<button class="btn" id="zoomin"><i class="fas fa-search-plus"></i></button>
-	    			<button class="btn" id = "zoomout"><i class="fas fa-search-minus"></i></button>
+	    			<button class="btn" id="zoomin">+</i></button>
+	    			<button class="btn" id = "zoomout">-</button>
 	    			</div>
 	    		</div>
 
@@ -299,7 +300,7 @@
 				</div>
 				<div>
 				SNP500 
-				<input onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
+				<input id="snpcheck" onChange="this.form.submit()" type="checkbox" name="SNP500" value="1" <%if(session.getAttribute("snp")!=null){%> <%="checked"%> <% } %>/>
 				<input  type="hidden" name="SNP500" value="0"/>
 				</div>
 				</form>
@@ -318,11 +319,11 @@
 	    							<form id="customrange-form" name="customrange-form" method="post" action="/api/GraphButtons">
 	    								<div class="form-row">
 	    									<label for="date-purchased">Start Date</label>
-	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased" required>
+	    									<input type="text" class="datepicker" id="date-purchased" placeholder="MM/DD/YYY" name="date-purchased">
 	    								</div>
 	    								<div class="form-row">
 	    									<label for="date-sold">End Date</label>
-	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold" required>
+	    									<input type="text" class="datepicker" id="date-sold" placeholder="MM/DD/YYY" name="date-sold">
 	    								</div>
 	    								<div class="form-row">
 	    									<span class="error-msg">${customrangeerrorMessage}</span>
@@ -354,13 +355,13 @@
 	    						<div class="popup-section">
 	    							<form id="add-stock-form" name="addStock" method="post" action="/api/addstock" autocomplete="off">
 	    								<div class="form-row">
-	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker" name="ticker">
+	    									<label for="add-stock-ticker">Stock Ticker</label>
+	    									<input type="text" class="ticker" id="add-stock-ticker" name="ticker">
 	    								</div>
 	    								<span class="error-msg">${errorMessageTicker}</span>
 	    								<div class="form-row">
-	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares" name="shares">
+	    									<label for="add-stock-shares"># of Shares</label>
+	    									<input type="number" id="add-stock-shares" name="shares">
 	    								</div>
 	    								<span class="error-msg">${errorMessageShares}</span>
 	    								<div class="form-row">
@@ -414,7 +415,7 @@
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>'">
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>&type=owned'">
 	    						<% if (stockToGraphMap.get(stock)) { %>
 	    							<input type="checkbox" checked>
 	    						<% } %>
@@ -429,6 +430,11 @@
 				        
 				    <% } %>
 	    		</table>
+	    		
+	    		<div class="toggle-buttons">
+	    			<a href="/api/toggleStock?type=selectAll" class="button toggle-button" id="select-all"><i class="fas fa-toggle-on"></i> &nbspSelect All</a>
+	    			<a href="/api/toggleStock?type=deSelectAll" class="button toggle-button" id="deselect-all"><i class="fas fa-toggle-off"></i> &nbspDeselect All</a>
+	    		</div> <!-- .toggle-buttons -->
 	    		
 	    	</div>  <!-- .homepage-container -->
 	    	</div> <!-- .grid-helper -->
@@ -446,13 +452,13 @@
 	    						<div class="popup-section">
 	    							<form id="view-stock-form" name="viewStock" method="post" action="/api/viewstock" autocomplete="off">
 	    								<div class="form-row">
-	    									<label for="ticker">Stock Ticker</label>
-	    									<input type="text" id="ticker" name="ticker">
+	    									<label for="view-stock ticker">Stock Ticker</label>
+	    									<input type="text" class="ticker" id="view-stock-ticker" name="ticker">
 	    								</div>
 	    								<span class="error-msg">${viewedErrorMessageTicker}</span>
 	    								<div class="form-row">
-	    									<label for="ticker"># of Shares</label>
-	    									<input type="number" id="shares" name="shares">
+	    									<label for="view-stock-shares"># of Shares</label>
+	    									<input type="number" id="view-stock-shares" name="shares">
 	    								</div>
 	    								<span class="error-msg">${viewedErrorMessageShares}</span>
 	    								<div class="form-row">
@@ -479,13 +485,18 @@
 	    		
 	    		<!-- table for view stock -->
 	    		<table id="stock-list">
-	    		    <% for(Stock stock : viewedStocks) { %>
+	    		    <% for(Stock stock : viewedMap.keySet()) { %>
 				        <tr>      
 				            <td><%=stock.getName()%></td>
 				            <td><%=stock.getTicker()%></td>
 				            <td>
-	    					<label class="switch">
-	    						<input type="checkbox" checked>
+	    					<label class="switch" onclick="window.location='/api/toggleStock?ticker=<%=stock.getTicker()%>&type=viewed'">
+	    						<% if (viewedMap.get(stock)) { %>
+	    							<input type="checkbox" checked>
+	    						<% } %>
+	    						<% if (!viewedMap.get(stock)) { %>
+	    							<input type="checkbox">
+	    						<% } %>
 							  	<span class="slider round"></span>
 							</label>
 						</td>
@@ -506,7 +517,7 @@
   <!-- toggle button -->
   <script>
       toggleInvoke = (event) => {
-        console.log('go to event');
+        // console.log('go to event');
         let arg1 = event.target.getAttribute('data-arg1');
           // let arg1 = event.target.getAttribute('data-arg1');
           window.location='api/toggleStock?ticker' + arg1;
@@ -555,7 +566,7 @@
 		var addSoldDateError = '${errorMessageDateSold}';
 		var addPurchaseDateError = '${errorMessageDatePurchased}';
 		
-		console.log("TESTING" + addTickerError);
+		// console.log("TESTING" + addTickerError);
 		
 		// When user clicks add stock button
 		addStockButton.onclick = function() {

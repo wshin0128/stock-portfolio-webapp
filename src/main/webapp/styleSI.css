@@ -50,7 +50,9 @@ body {
 	align-items: center;
 }
 .navbar h1 {
-	font-size: 22px;
+	font-family: "Teko", Arial, sans-serif !important;
+	font-size: 34px;
+	font-weight: normal;
 }
 .navbar .sign-out-button {
 	margin-left: auto;
@@ -88,7 +90,7 @@ input[type=password], input[type=text] {
 	color: #51C58E;
 	border-radius: 4px;
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 10px;
 	font-weight: bold;
 	padding: 10px 14px;;
 	transition: 0.1s;
@@ -101,7 +103,7 @@ input[type=password], input[type=text] {
 	color: #FF0033;
 	border-radius: 4px;
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 10px;
 	font-weight: bold;
 	padding: 10px 14px;;
 	transition: 0.1s;
@@ -203,7 +205,7 @@ label {
 	}
 	
 	.sign-in-button{
-		font-size: 40px;
+		font-size: 20px;
 	}
 	#errorMessage{
 		font-size: 40px;
@@ -215,7 +217,7 @@ label {
 		font-size: 40px;
 	}
 	.sign-in-button-error{
-		font-size: 40px;
+		font-size: 20px;
 	}
 	.signup{
 		max-width: 80%;
@@ -240,6 +242,6 @@ label {
 		font-size: 40px;
 	}
 	.navbar h1 {
-		font-size: 40px;
+		font-size: 28px;
 	}
 }

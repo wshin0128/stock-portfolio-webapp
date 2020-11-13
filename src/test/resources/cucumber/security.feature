@@ -1,4 +1,5 @@
 Feature: Security
+
   Scenario: Signing out from home page
     Given I am on the sign in page
     When I enter an valid username "test2"

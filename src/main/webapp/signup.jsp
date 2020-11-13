@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="styleSI.css">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@200;400;700;900&display=swap" rel="stylesheet">
 <title>Register for Portfolio Management</title>
 
 
@@ -54,8 +55,10 @@
 					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspCancel
 				</a>
 				
+	
+				
 				<button type="submit" id = "b" class="sign-in-button">
-					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspSubmit
+					<i class="fas fa-sign-out-alt"></i>&nbsp&nbspCreate User
 				</button>
 			</div>
 			 </br>

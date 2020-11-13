@@ -120,7 +120,7 @@ public class HomePageModuleTest extends Mockito{
 		// Calculate change percentage
 		Double diffDouble = todayTotalDouble - yesterdayTotalDouble;
 		Double changePercentageDouble = diffDouble / yesterdayTotalDouble;
-		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble());
+		assertEquals(changePercentageDouble, homePageModule.getChangePercentDouble(homePageModule.getStockList()));
 		
 		// mock exception 
 		FinnhubClient mockFinnhubClient = mock(FinnhubClient.class);
@@ -128,7 +128,7 @@ public class HomePageModuleTest extends Mockito{
 			.thenThrow(new Exception ());
 		HomePageModule homePageModule2 = new HomePageModule(user, mockFinnhubClient, new DatabaseClient());
 		
-		assertNotNull(homePageModule2.getChangePercentDouble());
+		assertNotNull(homePageModule2.getChangePercentDouble(homePageModule.getStockList()));
 	}
 	
 	@Test
@@ -164,10 +164,6 @@ public class HomePageModuleTest extends Mockito{
 		assertNotNull(homePageModule.getPortfolioValue());
 	}
 	
-	@Test
-	public void testGetViewedStockList() {
-		assertNotNull(homePageModule.getViewedStockList());
-	}
 	
 	@Test
 	public void testAddViewedStockList() {
@@ -193,5 +189,15 @@ public class HomePageModuleTest extends Mockito{
 		assertEquals(true, stockToDisplayMap.get(TEST_STOCK_1));
 		assertEquals(homePageModule.getStockToGraphMap(), stockToDisplayMap);
 	}
+	
+	@Test
+	public void testToggleViewedStock() {
+		homePageModule.addViewedStock(TEST_STOCK_1);
+		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
+		homePageModule.toggleViewedStock(TEST_STOCK_1.getTicker());
+		
+		assertNotNull(homePageModule.getViewedStockPortfolioMap());
+	}
+	
 
 }

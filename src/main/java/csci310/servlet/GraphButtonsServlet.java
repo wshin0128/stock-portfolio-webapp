@@ -54,28 +54,8 @@ try {
 		}
 	}
 	
-	if(startDate!=null)
-	{
-		session.setAttribute("tp", null);
 
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
-		Date datePurchasedObject = dateFormatter.parse(startDate);
-		long startDateUNIX = datePurchasedObject.getTime();
-		Date dateSoldObject = dateFormatter.parse(endDate);
-		long endDateUNIX = dateSoldObject.getTime();
-
-		if(startDateUNIX >= endDateUNIX)
-		{
-			request.setAttribute("customrangeerrorMessage", "End date same as/prior to Start date");
-		}
-		else {
-			System.out.println("setting start and end");
-
-			session.setAttribute("start_date", Long.toString(startDateUNIX));
-			session.setAttribute("end_date", Long.toString(endDateUNIX));
-		}
-		}
-	else {
+	if(tp!=null) {
 
 		session.setAttribute("start_date", null);
 		session.setAttribute("end_date", null);
@@ -102,7 +82,54 @@ try {
 			System.out.println("set tp to 4");
 		}
 
-	}		
+	}
+	else
+	{
+		
+		if(endDate.equals(""))
+		{
+			long curr_time = System.currentTimeMillis();
+			Date currentDate = new Date(curr_time);
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyy");
+			System.out.println(df.format(currentDate));
+			endDate=df.format(currentDate);
+		}
+		
+		
+		if(startDate.equals(""))
+		{
+			
+			long s_time = (long) session.getAttribute("GStart");
+			
+			Date currentDate = new Date(s_time*1000);
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyy");
+			System.out.println(df.format(currentDate));
+			startDate=df.format(currentDate);
+			System.out.println("here");
+		}
+		
+		session.setAttribute("tp", null);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
+		Date datePurchasedObject = dateFormatter.parse(startDate);
+		long startDateUNIX = datePurchasedObject.getTime();
+		Date dateSoldObject = dateFormatter.parse(endDate);
+		long endDateUNIX = dateSoldObject.getTime();
+
+		if(startDateUNIX >= endDateUNIX)
+		{
+			request.setAttribute("customrangeerrorMessage", "End date same as/prior to Start date");
+		}
+		else {
+			System.out.println("setting start and end");
+
+			session.setAttribute("start_date", Long.toString(startDateUNIX));
+			session.setAttribute("end_date", Long.toString(endDateUNIX));
+		}
+		
+		
+		
+		
+	}
 			request.getRequestDispatcher("/homepage.jsp").forward(request, response);	
 		}
 		catch (Exception e) {
